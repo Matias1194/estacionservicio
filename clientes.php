@@ -6,14 +6,14 @@
     <head>
 
     	<!-- Título -->
-        <title> Estación de Servicio - Proveedores </title>
+        <title> Estación de Servicio - Clientes </title>
         
         <!-- Estilos -->
         <?php include('secciones/estilos.php'); ?>
 
         <!-- Scripts -->
         <?php include('secciones/scripts.php'); ?>
-        <script src="js/proveedores.js"></script>
+        <script src="js/clientes.js"></script>
         
     </head>
 
@@ -28,22 +28,22 @@
 		<!-- Contenido -->
 		<main role="main" class="container">
 			
-			<!-- Listado de Proveedores -->
-			<div id="divListadoProveedores">
+			<!-- Listado de Clientes -->
+			<div id="divListadoClientes">
 
 	            <div class="row mt-5">
 	                
 	                <!-- Título -->
 	                <div class="col-sm-6">
 	                    <h1 class="font-weight-normal">
-	                        Listado de Proveedores
+	                        Listado de Clientes
 	                    </h1>
 	                </div>
 
 	                <?php //if(tienePermiso(10)) { ?>
 	                <!-- Nuevo curso -->
                     <div class="col-sm-6 text-right">
-                        <button type="button" id="botonNuevoProveedor" class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Nuevo Proveedor">
+                        <button type="button" id="botonNuevoCliente" class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Nuevo Cliente">
                             <span class="fa fa-plus"></span>
                             <span class="fa fa-parachute-box"></span>
                         </button>
@@ -59,7 +59,7 @@
 	            	<!-- Barra cargando -->
                     <?php include('secciones/barraCargando.php'); ?>
 
-	                <!-- Tabla Proveedores -->
+	                <!-- Tabla Clientes -->
 	                <div class="table-responsive-xl">
 	                    
 	                    <table class="table table-striped table-dark">
@@ -71,6 +71,9 @@
 	                                </th>
 	                                <th scope="col">
 	                                    CUIT
+	                                </th>
+	                                <th scope="col">
+	                                    Tipo
 	                                </th>
 	                                <th scope="col">
 	                                    Domicilio
@@ -97,15 +100,15 @@
 
 	        </div>
 
-	        <!-- Nuevo Proveedor -->
-	        <div id="divNuevoProveedor" style="display: none;">
+	        <!-- Nuevo Cliente -->
+	        <div id="divNuevoCliente" style="display: none;">
 	            
 	            <div class="row mt-5">
 
 	            	<!-- Título -->
 	                <div class="col-md-6">
 	                    <h1 class="font-weight-normal">
-	                        Nuevo Proveedor
+	                        Nuevo Cliente
 	                    </h1>
 	                </div>
 	                
@@ -140,6 +143,14 @@
 	                            CUIT
 	                        </label>
 	                        <input type="number" class="form-control" name="cuit" required>
+	                    </div>
+
+	                    <!-- Tipo Cliente -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            Tipo Cliente
+	                        </label>
+	                        <select id="comboTipoCliente" class="form-control" name="id_tipo_cliente" required> </select>
 	                    </div>
 
 	                </div>
@@ -188,15 +199,15 @@
 
 	        </div>
 
-	        <!-- Editar Proveedor -->
-	        <div id="divEditarProveedor" style="display: none;">
+	        <!-- Editar Cliente -->
+	        <div id="divEditarCliente" style="display: none;">
 	        	
 	        	<div class="row mt-5">
 	                
 	                <!-- Título -->
 	                <div class="col-md-6">
 	                    <h1 class="font-weight-normal">
-	                        Editar Proveedor
+	                        Editar Cliente
 	                    </h1>
 	                </div>
 	                
@@ -231,6 +242,14 @@
 	                            CUIT
 	                        </label>
 	                        <input type="number" id="campoCuitEditar" class="form-control" name="cuit" required>
+	                    </div>
+
+	                    <!-- Tipo Cliente -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                            Tipo Cliente
+	                        </label>
+	                        <select class="form-control" name="cuit" required> </select>
 	                    </div>
 
 	                </div>
