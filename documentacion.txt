@@ -1,0 +1,147 @@
+Documentación
+
+Primero: Revisar qué hay hecho. (Como usuarios por ejemplo)
+
+TABLAS SQL
+
+Usuarios
+- id
+- id_tipo_usuario
+- usuario
+- clave
+- fecha_registro
+- habilitado
+
+Perfiles
+- id
+- descripcion
+- habilitado
+
+Permisos
+- id
+- descripcion
+- habilitado
+
+Perfiles_Permisos
+- id
+- id_perfil
+- id_permiso
+- habilitado
+
+Productos
+- id
+- id_tipo_producto
+- descripcion
+- precio_unitario
+- cantidad
+- fecha_registro
+- habilitado
+
+Tipo_Producto
+- id
+- descripcion
+
+---------------------------------------
+
+Casos de Uso
+
+Usuarios
+- Ingresar
+- Salir
+- Consultar Listado
+- Consultar Detalles
+- Crear Usuario
+- Editar Usuario
+- Eliminar Usuario
+- Deshabilitar Usuario
+- Habilitar Usuario
+
+Productos
+- Consultar Listado
+- Consultar Detalles
+- Crear Producto
+- Editar Producto
+- Eliminar Producto
+- Deshabilitar Producto
+- Habilitar Producto
+
+Caja
+- Consultar Caja
+- Registrar Venta
+- Imprimir Factura
+- Cierre de Caja
+
+Stock Playa
+- Consultar Stock
+- Consultar Pedidos a Proveedor
+- Consultar Entrada de Stock
+- Consultar Movimientos
+
+Stock Mercado
+- Consultar Stock
+- Consultar Pedidos a Proveedor
+- Consultar Entrada de Stock
+- Consultar Movimientos
+
+
+Al momento de vender
+Codigo
+Descripcion
+Precio Unitario
+Cantidad
+IVA
+Subtotal
+
+---------------------------------------
+
+Perfiles
+
+- Administrador
+- Coordinador Playa
+- Coordinador Mercado
+- Playero
+- Vendedor
+
+---------------------------------------
+
+Permisos
+
+Administrador: TODOS los permisos.
+
+Usuarios 								Coord. Playa 	Coord. Mercado 	  Playero	 Vendedor
+- Consultar Listado Usuarios				Si 				Si 				No			No
+- Consultar Detalles Usuario 				Si 				Si 				No			No
+- Crear Usuario 							Si 				Si 				No			No
+- Editar Usuario 							Si 				Si 				No			No
+- Eliminar Usuario 							No 				No 				No			No
+- Deshabilitar Usuario 						No 				No 				No			No
+- Habilitar Usuario 						No 				No 				No			No
+
+Productos
+- Consultar Listado Productos 				Si 				Si 				No 			No
+- Consultar Detalles Producto 				Si 				Si 				No 			No
+- Crear Producto 							Si 				Si 				No 			No
+- Editar Producto 							Si 				Si 				No 			No
+- Eliminar Producto 						No 				No 				No 			No
+- Deshabilitar Producto 					No 				No 				No 			No
+- Habilitar Producto 						No 				No 				No 			No
+
+Caja
+- Consultar Caja 							No 				No				Si			Si
+- Registrar Venta 							No 				No				Si			Si
+- Imprimir Factura 							No 				No				Si			Si
+- Cerrar Caja 								No 				No 				Si 			Si
+
+Stock Playa
+- Consultar Stock Playa  					Si 				No	 			No			No
+- Consultar Pedidos a Proveedor Playa 		Si 				No	 			No			No
+- Consultar Entrada de Stock Playa 			Si 				No	 			No			No
+- Consultar Movimientos Playa 				Si 				No	 			No			No
+
+Stock Mercado
+- Consultar Stock Mercado 					No				Si				No			No
+- Consultar Pedidos a Proveedor Mercado		No				Si				No			No
+- Consultar Entrada de Stock Mercado 		No				Si				No			No
+- Consultar Movimientos Mercado 			No				Si				No			No
+
+---------------------------------------
