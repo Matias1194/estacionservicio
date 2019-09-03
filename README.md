@@ -11,21 +11,22 @@ IFTS21 - Taller 3 - Gestión de estaciones de servicio
 - ¿Y qué más?
 - Nada más, ya podés abrir tu carpeta local del xampp (c/xampp/htdocs/estacionservicio) en tu Sublime Text.
 
-Los cambios que hagas, ya sean editar/agregar/borrar archivos, tienen que impactar en el repositorio GIT para que el proyecto se mantenga actualizado, para eso es necesario usar Git Bash y conocer algunos comandos como: CONFIG, ADD, COMMIT, STATUS, PULL, LOG. 
+Los cambios que hagas, ya sean editar/agregar/borrar archivos o carpetas, tienen que impactar en el repositorio GIT para que el proyecto se mantenga actualizado, para eso es necesario usar Git Bash y conocer algunos comandos como: CONFIG, ADD, COMMIT, STATUS, PULL, LOG.
 
-> Es importante que los comandos se usen en la carpeta del repositorio (para saber en qué carpeta estás tipeá este comando: pwd). Si no estás en la carpeta "estacionservicio" tendrás que tipear: cd /c/xampp/htdocs/estacionservicio
+> Es importante que los comandos que escribas sean estando en el directorio que apunte a la carpeta del proyecto (para saber en qué carpeta estás, tipeá este comando: pwd). Si no estás en la carpeta "estacionservicio" tendrás que tipear: cd /c/xampp/htdocs/estacionservicio
 
-- ¿Cómo empiezo?
-- Primero te recomiendo que te identifiques con tu nombre (esto ayuda para saber quién realizó cambios en el repositorio) utilizando este comando: git config --global user.name "Escribí TU Nombre"
+- Listo, ya estoy parado sobre el directorio de mi proyecto ¿Cómo empiezo?
+- Primero te recomiendo que te identifiques con tu nombre (esto ayuda para saber quién realizó cambios en el repositorio) utilizando este comando: git config --global user.name "TuNombre"
 
-- Acabo de editar un archivo existente ¿Cómo subo estos cambios al repositorio?
-- Muy fácil, en la consola Git Bash vas a escribir: git commit -m "Y acá tu comentario (recomendable) de qué modificaste"
+- Perfecto, recién creé un nuevo archivo llamado "inicio.php", ¿Cómo lo subo al repositorio?
+- Este archivo es nuevo y no lo reconoce el repositorio, hay que usar el comando ADD para confirmar que este archivo se va a commitear. Y luego usar el comando COMMIT para subir el archivo.
+En la consola Git Bash vas a escribir: git add inicio.php  y luego: git commit -m "Algún comentario al respecto"
 
-- Perfecto, y ahora también creé un nuevo archivo llamado "asd.php", ¿uso el mismo comando de recién para confirmar los cambios?
-- Si, PERO antes de hacer commit hay que agregarlo al repositorio: git add asd.php
+- Aah, primero agregar los cambios y luego commitearlo, claro. ¿Funciona igual para cuando modifique un archivo ya existente?
+- Exactamente, idéntico al caso anterior.
 
-- Entiendo, y ¿cómo sé qué si edité archivos y no los subí al repositorio?
-- Con este comando vas a saber qué archivos editaste: git status
+- Entiendo, y ¿cómo sé qué si edité archivos y no me di cuenta de subirlos al repositorio?
+- Con este comando vas a saber si editaste archivos y no los subiste: git status
 
 - Buenísimo, ahora me faltaría obtener los últimos cambios que se hicieron en el repositorio, ¿Se puede?
 - Si, para actualizar el proyecto hay que utilizar este comando: git pull
@@ -39,17 +40,17 @@ Los cambios que hagas, ya sean editar/agregar/borrar archivos, tienen que impact
 
 Comandos para GIT Bash:
 
-• pwd			Muestra la ruta actual.
+• pwd			Muestra la ruta del directorio actual.
 
-• cd 			Para entrar en una carpeta en la ruta.
+• cd 			Para navegar entre las carpetas del directorio.
 
-• ls 			Lista los archivos en la carpeta.
+• ls 			Lista los archivos que hay en la carpeta actual.
 
 • git init		Para inicializar un proyecto nuevo.
 
 • git add 		Para agregar un archivo al staging area.
     ejemplos:
-	    git add index.html
+	    git add inicio.php
 	    git add .   (todos)
 
 • git commit	Para crear una versión del archivo.
@@ -69,11 +70,11 @@ Comandos para GIT Bash:
 
 • git checkout 	Para revertir los cambios de los archivos.
 	ejemplos:
-    git checkout-- index.html
+    git checkout-- inicio.php
 
 • git diff 		Para ver las diferencias hechas entre archivos.
 	ejemplos:
-    git diff index.html
+    git diff inicio.php
 
 • git branch	Para listar las ramas del proyecto.
 	ejemplos:
@@ -87,11 +88,11 @@ Comandos para GIT Bash:
 
 ---------------------------
 
-Nota: Cómo ignorar carpetas y/o archivos, para que no se versionen.
+Nota: Cómo ignorar carpetas y/o archivos para que no se versionen en el repositorio al commitear.
 
 1. Crear un archivo llamado .gitignore (texto plano).
-2. Dentro del archivo escribir los nombres de los archivos.
-3. Agregar el archivo .gitignore (git add .gitignore).
+2. Dentro del archivo escribir los nombres de los archivos (uno debajo del otro separados con enter).
+3. Agregar el archivo .gitignore al repositorio por medio de GIT Bash: git add .gitignore.
 
 
 Fuente: https://www.youtube.com/watch?v=HiXLkL42tMU
