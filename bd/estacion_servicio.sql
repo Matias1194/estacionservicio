@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 31-08-2019 a las 00:24:23
+-- Tiempo de generación: 04-09-2019 a las 00:53:02
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.4
 
@@ -21,6 +21,24 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `estacion_servicio`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clientes`
+--
+
+CREATE TABLE `clientes` (
+  `id` bigint(20) NOT NULL,
+  `id_tipo_cliente` int(11) NOT NULL,
+  `razon_social` varchar(50) NOT NULL,
+  `cuit` bigint(20) NOT NULL,
+  `domicilio` varchar(50) NOT NULL,
+  `telefono` varchar(12) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -225,6 +243,26 @@ INSERT INTO `proveedores` (`id`, `razon_social`, `domicilio`, `telefono`, `email
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tipos_clientes`
+--
+
+CREATE TABLE `tipos_clientes` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tipos_clientes`
+--
+
+INSERT INTO `tipos_clientes` (`id`, `descripcion`) VALUES
+(1, 'Consumidor Final'),
+(2, 'Responsable Inscripto'),
+(3, 'Monotributista');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tipos_pagos`
 --
 
@@ -298,6 +336,12 @@ INSERT INTO `usuarios` (`id`, `id_perfil`, `usuario`, `clave`, `nombres`, `apell
 --
 
 --
+-- Indices de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `perfiles`
 --
 ALTER TABLE `perfiles`
@@ -328,6 +372,12 @@ ALTER TABLE `proveedores`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `tipos_clientes`
+--
+ALTER TABLE `tipos_clientes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `tipos_pagos`
 --
 ALTER TABLE `tipos_pagos`
@@ -348,6 +398,12 @@ ALTER TABLE `usuarios`
 --
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `clientes`
+--
+ALTER TABLE `clientes`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -371,6 +427,12 @@ ALTER TABLE `productos`
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `tipos_clientes`
+--
+ALTER TABLE `tipos_clientes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
