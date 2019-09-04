@@ -131,7 +131,7 @@
 	                        <label>
 	                           Razon social
 	                        </label>
-	                         <input type="text" class="form-control" name="razon_social" required>
+	                         <input type="text" class="form-control" name="razon_social">
 	                    </div>
 	                    
 	                    <!-- CUIT -->
@@ -139,7 +139,7 @@
 	                        <label>
 	                            CUIT
 	                        </label>
-	                        <input type="number" class="form-control" name="cuit" required>
+	                        <input type="number" class="form-control" name="cuit">
 	                    </div>
 
 	                </div>
@@ -152,7 +152,7 @@
 	                        <label>
 	                            Domicilio
 	                        </label>
-	                        <input type="text" class="form-control" name="domicilio" required>
+	                        <input type="text" class="form-control" name="domicilio">
 	                    </div>
 
 	                </div>
@@ -165,7 +165,7 @@
 	                        <label>
 	                            E-mail
 	                        </label>
-	                        <input type="text" class="form-control" name="email" required>
+	                        <input type="text" class="form-control" name="email">
 	                    </div>
                     	
                     	<!-- Telefono-->
@@ -173,7 +173,7 @@
 	                        <label>
 	                            Telefono
 	                        </label>
-	                        <input type="text" class="form-control" name="telefono" required>
+	                        <input type="text" class="form-control" name="telefono">
 	                    </div>
 
 	                </div>
@@ -222,7 +222,7 @@
 	                        <label>
 	                            Razon Social
 	                        </label>
-	                        <input type="text" id="campoRazonSocialEditar" class="form-control" name="razon_social" required>
+	                        <input type="text" id="campoRazonSocialEditar" class="form-control" name="razon_social">
 	                    </div>
 	                    
 	                    <!-- CUIT -->
@@ -230,7 +230,7 @@
 	                        <label>
 	                            CUIT
 	                        </label>
-	                        <input type="number" id="campoCuitEditar" class="form-control" name="cuit" required>
+	                        <input type="number" id="campoCuitEditar" class="form-control" name="cuit">
 	                    </div>
 
 	                </div>
@@ -243,7 +243,7 @@
 	                        <label>
 	                            Domicilio
 	                        </label>
-	                        <input type="text" id="campoDomicilioEditar" class="form-control" name="domicilio" required>
+	                        <input type="text" id="campoDomicilioEditar" class="form-control" name="domicilio">
 	                    </div>
 	                </div>
 
@@ -255,7 +255,7 @@
 	                        <label>
 	                            E-mail
 	                        </label>
-	                        <input type="text" id="campoEmailEditar" class="form-control" name="email" required>
+	                        <input type="text" id="campoEmailEditar" class="form-control" name="email">
 	                    </div>
 
 	                    <!-- Telefono-->
@@ -263,7 +263,7 @@
 	                        <label>
 	                            Telefono
 	                        </label>
-	                        <input type="text" id="campoTelefonoEditar" class="form-control" name="telefono" required>
+	                        <input type="text" id="campoTelefonoEditar" class="form-control" name="telefono">
 	                    </div>
 
 	                </div>

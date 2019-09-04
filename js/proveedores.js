@@ -5,7 +5,7 @@ $(function()
 
 var proveedores =
 {
-    tabla : 'proveedores',
+    modulo : 'proveedores',
 
 	asignarEventos : function() 
 	{
@@ -83,7 +83,7 @@ var proveedores =
                 accion : 'buscar_listado'
             };
 
-            bd.enviar(datos, proveedores.tabla, proveedores.buscar.listadoExito);
+            bd.enviar(datos, proveedores.modulo, proveedores.buscar.listadoExito);
         },
 
         listadoExito : function(respuesta)
@@ -226,7 +226,7 @@ var proveedores =
             };
 
             proveedores.mostrarNuevo();
-            //bd.enviar(datos, proveedores.tabla, proveedores.nuevo.buscarExito);
+            //bd.enviar(datos, proveedores.modulo, proveedores.nuevo.buscarExito);
         },
 
         buscarExito : function(respuesta)
@@ -284,7 +284,7 @@ var proveedores =
                 return;
             }
 
-            bd.enviar(datos, proveedores.tabla, proveedores.nuevo.confirmarExito);
+            bd.enviar(datos, proveedores.modulo, proveedores.nuevo.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -305,7 +305,7 @@ var proveedores =
                 id : id
             };
             
-            bd.enviar(datos, proveedores.tabla, proveedores.editar.buscarExito);
+            bd.enviar(datos, proveedores.modulo, proveedores.editar.buscarExito);
         },
 
         buscarExito : function(respuesta)
@@ -363,7 +363,7 @@ var proveedores =
                 return;
             }
 
-            bd.enviar(datos, proveedores.tabla, proveedores.editar.confirmarExito);
+            bd.enviar(datos, proveedores.modulo, proveedores.editar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -383,7 +383,7 @@ var proveedores =
                 id : id
             };
             
-            bd.enviar(datos, proveedores.tabla, proveedores.eliminar.confirmarExito);
+            bd.enviar(datos, proveedores.modulo, proveedores.eliminar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -414,7 +414,7 @@ var proveedores =
                 id : id
             };
             
-            bd.enviar(datos, proveedores.tabla, proveedores.deshabilitar.confirmarExito);
+            bd.enviar(datos, proveedores.modulo, proveedores.deshabilitar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -447,7 +447,7 @@ var proveedores =
                 id : id
             };
             
-            bd.enviar(datos, proveedores.tabla, proveedores.habilitar.confirmarExito);
+            bd.enviar(datos, proveedores.modulo, proveedores.habilitar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
