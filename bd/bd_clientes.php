@@ -24,9 +24,11 @@
             //validarPermiso($conexion, $tabla, $accion, $respuesta, true);
 
             // Prepara la consulta.
-            $query = "SELECT * 
+            $query = "SELECT clientes.id, tipos_clientes.descripcion as 'tipo', razon_social, cuit, domicilio, telefono, email, habilitado
                       FROM clientes
-                      WHERE eliminado = 0";
+                      INNER JOIN tipos_clientes
+                        ON clientes.id_tipo_cliente = tipos_clientes.id
+                      WHERE clientes.eliminado = 0";
 
             // Consulta el listado de clientes.
             $clientes = consultar_listado($conexion, $query);
@@ -197,8 +199,25 @@
             // Si la consulta fue exitosa y existe el cliente.
             else
             {
-                $respuesta['exito'] = true;
-                $respuesta['cliente'] = $cliente;
+                // Prepara la consulta.
+                $query = "SELECT id, descripcion 
+                          FROM tipos_clientes";
+
+                // Consulta los tipos de clientes habilitados.
+                $tipos_clientes = consultar_listado($conexion, $query);
+
+                // Si hubo error ejecutando la consulta.
+                if($tipos_clientes === false)
+                {
+                    $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de clientes (L 212).";
+                }
+                // Si la consulta fue exitosa.
+                else
+                {
+                    $respuesta['exito'] = true;
+                    $respuesta['cliente'] = $cliente;
+                    $respuesta['tipos_clientes'] = $tipos_clientes;
+                }
             }
         }
 
@@ -233,7 +252,8 @@
             {
                 // Prepara la consulta.
                 $query = "UPDATE clientes 
-                          SET razon_social = '" . $cliente['razon_social'] . "', 
+                          SET id_tipo_cliente = " . $cliente['id_tipo_cliente'] . ", 
+                          razon_social = '" . $cliente['razon_social'] . "', 
                           domicilio = '" . $cliente["domicilio"] . "', 
                           telefono = " . $cliente['telefono'] . ",  
                           email = '" . $cliente['email'] . "', 

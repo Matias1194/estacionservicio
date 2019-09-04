@@ -134,7 +134,7 @@
 	                        <label>
 	                           Razon social
 	                        </label>
-	                         <input type="text" class="form-control" name="razon_social" required>
+	                         <input type="text" class="form-control" name="razon_social">
 	                    </div>
 	                    
 	                    <!-- CUIT -->
@@ -142,7 +142,7 @@
 	                        <label>
 	                            CUIT
 	                        </label>
-	                        <input type="number" class="form-control" name="cuit" required>
+	                        <input type="number" class="form-control" name="cuit">
 	                    </div>
 
 	                    <!-- Tipo Cliente -->
@@ -150,7 +150,7 @@
 	                        <label>
 	                            Tipo Cliente
 	                        </label>
-	                        <select id="comboTipoCliente" class="form-control" name="id_tipo_cliente" required> </select>
+	                        <select id="comboTipoClienteNuevo" class="form-control" name="id_tipo_cliente"> </select>
 	                    </div>
 
 	                </div>
@@ -163,7 +163,7 @@
 	                        <label>
 	                            Domicilio
 	                        </label>
-	                        <input type="text" class="form-control" name="domicilio" required>
+	                        <input type="text" class="form-control" name="domicilio">
 	                    </div>
 
 	                </div>
@@ -176,7 +176,7 @@
 	                        <label>
 	                            E-mail
 	                        </label>
-	                        <input type="text" class="form-control" name="email" required>
+	                        <input type="text" class="form-control" name="email">
 	                    </div>
                     	
                     	<!-- Telefono-->
@@ -184,7 +184,7 @@
 	                        <label>
 	                            Telefono
 	                        </label>
-	                        <input type="text" class="form-control" name="telefono" required>
+	                        <input type="text" class="form-control" name="telefono">
 	                    </div>
 
 	                </div>
@@ -233,7 +233,7 @@
 	                        <label>
 	                            Razon Social
 	                        </label>
-	                        <input type="text" id="campoRazonSocialEditar" class="form-control" name="razon_social" required>
+	                        <input type="text" class="form-control" name="razon_social">
 	                    </div>
 	                    
 	                    <!-- CUIT -->
@@ -241,15 +241,15 @@
 	                        <label>
 	                            CUIT
 	                        </label>
-	                        <input type="number" id="campoCuitEditar" class="form-control" name="cuit" required>
+	                        <input type="number" class="form-control" name="cuit">
 	                    </div>
 
 	                    <!-- Tipo Cliente -->
-	                    <div class="form-group col-md-2">
+	                    <div class="form-group col-md-3">
 	                        <label>
 	                            Tipo Cliente
 	                        </label>
-	                        <select class="form-control" name="cuit" required> </select>
+	                        <select id="comboTipoClienteEditar" class="form-control" name="id_tipo_cliente"> </select>
 	                    </div>
 
 	                </div>
@@ -262,7 +262,7 @@
 	                        <label>
 	                            Domicilio
 	                        </label>
-	                        <input type="text" id="campoDomicilioEditar" class="form-control" name="domicilio" required>
+	                        <input type="text" class="form-control" name="domicilio">
 	                    </div>
 	                </div>
 
@@ -274,7 +274,7 @@
 	                        <label>
 	                            E-mail
 	                        </label>
-	                        <input type="text" id="campoEmailEditar" class="form-control" name="email" required>
+	                        <input type="text" class="form-control" name="email">
 	                    </div>
 
 	                    <!-- Telefono-->
@@ -282,7 +282,7 @@
 	                        <label>
 	                            Telefono
 	                        </label>
-	                        <input type="text" id="campoTelefonoEditar" class="form-control" name="telefono" required>
+	                        <input type="text" class="form-control" name="telefono">
 	                    </div>
 
 	                </div>

@@ -5,7 +5,7 @@ $(function()
 
 var clientes =
 {
-    tabla : 'clientes',
+    modulo : 'clientes',
 
 	asignarEventos : function() 
 	{
@@ -83,7 +83,7 @@ var clientes =
                 accion : 'buscar_listado'
             };
 
-            bd.enviar(datos, clientes.tabla, clientes.buscar.listadoExito);
+            bd.enviar(datos, clientes.modulo, clientes.buscar.listadoExito);
         },
 
         listadoExito : function(respuesta)
@@ -228,14 +228,13 @@ var clientes =
                 accion : 'nuevo_buscar'
             };
 
-            clientes.mostrarNuevo();
-            bd.enviar(datos, clientes.tabla, clientes.nuevo.buscarExito);
+            bd.enviar(datos, clientes.modulo, clientes.nuevo.buscarExito);
         },
 
         buscarExito : function(respuesta)
         {
             // lLeno combo Tipo Cliente.
-            var comboTipoCliente = $('#comboTipoCliente').html("");
+            var comboTipoCliente = $('#comboTipoClienteNuevo').html("");
             $(comboTipoCliente).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
             $.each(respuesta.tipos_clientes, function(i, tipo_cliente)
             {
@@ -287,7 +286,7 @@ var clientes =
                 return;
             }
 
-            bd.enviar(datos, clientes.tabla, clientes.nuevo.confirmarExito);
+            bd.enviar(datos, clientes.modulo, clientes.nuevo.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -308,7 +307,7 @@ var clientes =
                 id : id
             };
             
-            bd.enviar(datos, clientes.tabla, clientes.editar.buscarExito);
+            bd.enviar(datos, clientes.modulo, clientes.editar.buscarExito);
         },
 
         buscarExito : function(respuesta)
@@ -366,7 +365,7 @@ var clientes =
                 return;
             }
 
-            bd.enviar(datos, clientes.tabla, clientes.editar.confirmarExito);
+            bd.enviar(datos, clientes.modulo, clientes.editar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -386,7 +385,7 @@ var clientes =
                 id : id
             };
             
-            bd.enviar(datos, clientes.tabla, clientes.eliminar.confirmarExito);
+            bd.enviar(datos, clientes.modulo, clientes.eliminar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -417,7 +416,7 @@ var clientes =
                 id : id
             };
             
-            bd.enviar(datos, clientes.tabla, clientes.deshabilitar.confirmarExito);
+            bd.enviar(datos, clientes.modulo, clientes.deshabilitar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -450,7 +449,7 @@ var clientes =
                 id : id
             };
             
-            bd.enviar(datos, clientes.tabla, clientes.habilitar.confirmarExito);
+            bd.enviar(datos, clientes.modulo, clientes.habilitar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -466,6 +465,7 @@ var clientes =
                     + '<span class="fa fa-ban"></span>'
                 + ' </button>'
             );
+            
             clientes.asignarEventos();
 
             alertas.exito(respuesta.descripcion);
