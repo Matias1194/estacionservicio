@@ -92,55 +92,22 @@
 
             // Prepara la consulta.
             $query = "SELECT id, descripcion 
-                      FROM tipo_nacionalidad";
+                      FROM tipos_documentos
+                      WHERE habilitado = 1";
 
-            // Consulta los tipos de nacionalidades habilitados.
-            $tipos_nacionalidades = consultar_listado($conexion, $query);
+            // Consulta los tipos de documentos habilitados.
+            $tipos_documentos = consultar_listado($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
-            if($tipos_nacionalidades === false)
+            if($tipos_documentos === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de nacionalidades (L 151).";
+                $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de documentos (L 104).";
             }
             // Si la consulta fue exitosa.
             else
             {
-                // Prepara la consulta.
-                $query = "SELECT id, descripcion 
-                          FROM tipo_estado_civil";
-
-                // Consulta los tipos de estados civiles habilitados.
-                $tipos_estados_civiles = consultar_listado($conexion, $query);
-
-                // Si hubo error ejecutando la consulta.
-                if($tipos_estados_civiles === false)
-                {
-                    $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de estados civiles (L 166).";
-                }
-                // Si la consulta fue exitosa.
-                else
-                {
-                    // Prepara la consulta.
-                    $query = "SELECT id, descripcion 
-                              FROM tipo_documento";
-
-                    // Consulta los tipos de documentos habilitados.
-                    $tipos_documentos = consultar_listado($conexion, $query);
-
-                    // Si hubo error ejecutando la consulta.
-                    if($tipos_documentos === false)
-                    {
-                        $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de documentos (L 181).";
-                    }
-                    // Si la consulta fue exitosa.
-                    else
-                    {
-                        $respuesta['exito'] = true;
-                        $respuesta['tipos_nacionalidades'] = $tipos_nacionalidades;
-                        $respuesta['tipos_estados_civiles'] = $tipos_estados_civiles;
-                        $respuesta['tipos_documentos'] = $tipos_documentos;
-                    }
-                }
+                $respuesta['exito'] = true;
+                $respuesta['tipos_documentos'] = $tipos_documentos;
             }
         }
 
@@ -155,7 +122,7 @@
             // Prepara la consulta.
             $query = "SELECT * 
                       FROM proveedores 
-                      WHERE cuit = " .$proveedor["cuit"];
+                      WHERE documento = " .$proveedor["documento"];
 
             // Consulta si existe un proveedor con mismo número de cuit antes de insertarlo.
             $proveedorDB = consultar_registro($conexion, $query);
@@ -174,16 +141,21 @@
             else
             {
                 // Prepara la consulta.
-                $query = "INSERT INTO proveedores (razon_social, domicilio, telefono, email, cuit) "
+                $query = "INSERT INTO proveedores (razon_social, id_tipo_documento, documento, sucursal, pais, provincia, localidad, calle, email, telefono) "
                        . "VALUES"
                        . "("
                             . "'" . $proveedor['razon_social'] . "', "
-                            . "'" . $proveedor["domicilio"] . "', "
-                                  . $proveedor["telefono"] . ", "
+                                  . $proveedor["id_tipo_documento"] . ", "
+                                  . $proveedor["documento"] . ", "
+                            . "'" . $proveedor["sucursal"] . "', "
+                            . "'" . $proveedor["pais"] . "', "
+                            . "'" . $proveedor["provincia"] . "', "
+                            . "'" . $proveedor["localidad"] . "', "
+                            . "'" . $proveedor["calle"] . "', "
                             . "'" . $proveedor["email"] . "', "
-                                  . $proveedor["cuit"]
+                                  . $proveedor["telefono"]
                        . ")";
-
+                
                 // Inserta un nuevo proveedor.
                 $resultado = ejecutar($conexion, $query);
 
@@ -230,8 +202,26 @@
             // Si la consulta fue exitosa y existe el proveedor.
             else
             {
-                $respuesta['exito'] = true;
-                $respuesta['proveedor'] = $proveedor;
+                // Prepara la consulta.
+                $query = "SELECT id, descripcion 
+                          FROM tipos_documentos
+                          WHERE habilitado = 1";
+
+                // Consulta los tipos de documentos habilitados.
+                $tipos_documentos = consultar_listado($conexion, $query);
+
+                // Si hubo error ejecutando la consulta.
+                if($tipos_documentos === false)
+                {
+                    $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de documentos (L 104).";
+                }
+                // Si la consulta fue exitosa.
+                else
+                {
+                    $respuesta['exito'] = true;
+                    $respuesta['proveedor'] = $proveedor;
+                    $respuesta['tipos_documentos'] = $tipos_documentos;
+                }
             }
         }
 
@@ -267,10 +257,15 @@
                 // Prepara la consulta.
                 $query = "UPDATE proveedores 
                           SET razon_social = '" . $proveedor['razon_social'] . "', 
-                          domicilio = '" . $proveedor["domicilio"] . "', 
-                          telefono = " . $proveedor['telefono'] . ",  
+                          id_tipo_documento = " . $proveedor['id_tipo_documento'] . ", 
+                          documento = " . $proveedor['documento'] . ", 
+                          sucursal = '" . $proveedor["sucursal"] . "', 
+                          pais = '" . $proveedor["pais"] . "', 
+                          provincia = '" . $proveedor["provincia"] . "', 
+                          localidad = '" . $proveedor["localidad"] . "', 
+                          calle = '" . $proveedor["calle"] . "', 
                           email = '" . $proveedor['email'] . "', 
-                          cuit = " . $proveedor['cuit'] . " 
+                          telefono = " . $proveedor['telefono'] . "  
                           WHERE id = " . $proveedor['id'];
                 
                 // Actualizo la información del proveedor.

@@ -73,7 +73,7 @@
 	                                    CUIT
 	                                </th>
 	                                <th scope="col">
-	                                    Domicilio
+	                                    Calle
 	                                </th>
 	                                <th scope="col">
 	                                    Email
@@ -127,32 +127,64 @@
 	                <div class="form-row">
 	                    
 	                    <!-- Razon Social -->
-	                    <div class="form-group col-md-3">
+	                    <div class="form-group col-md-4">
 	                        <label>
 	                           Razon social
 	                        </label>
 	                         <input type="text" class="form-control" name="razon_social">
 	                    </div>
-	                    
-	                    <!-- CUIT -->
+
+	                    <!-- Tipo Documento -->
 	                    <div class="form-group col-md-2">
 	                        <label>
-	                            CUIT
+	                            Tipo Documento
 	                        </label>
-	                        <input type="number" class="form-control" name="cuit">
+	                        <select id="comboTipoDocumentoNuevo" class="form-control" name="id_tipo_documento"> </select>
+	                    </div>
+	                    
+	                    <!-- Documento -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            Documento
+	                        </label>
+	                        <input type="number" class="form-control" name="documento">
 	                    </div>
 
 	                </div>
 
 	                <!-- Segunda fila -->
 	                <div class="form-row">
-	                    
-	                    <!-- Domicilio -->
-	                    <div class="form-group col-md-5">
+
+	                	<!-- País -->
+	                    <div class="form-group col-md-2">
 	                        <label>
-	                            Domicilio
+	                            País
 	                        </label>
-	                        <input type="text" class="form-control" name="domicilio">
+	                        <input type="text" class="form-control" name="pais">
+	                    </div>
+
+	                	<!-- Provincia -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                            Provincia
+	                        </label>
+	                        <input type="text" class="form-control" name="provincia">
+	                    </div>
+
+	                    <!-- Localicad -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                            Localidad
+	                        </label>
+	                        <input type="text" class="form-control" name="localidad">
+	                    </div>
+	                    
+	                    <!-- Calle -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            Calle
+	                        </label>
+	                        <input type="text" class="form-control" name="calle">
 	                    </div>
 
 	                </div>
@@ -160,6 +192,14 @@
 	                <!-- Tercera fila -->
 	                <div class="form-row">
 	                    
+						<!-- Sucursal -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            Sucursal
+	                        </label>
+	                        <input type="text" class="form-control" name="sucursal">
+	                    </div>
+
 	                    <!-- E-mail -->
 	                    <div class="form-group col-md-3">
 	                        <label>
@@ -168,10 +208,10 @@
 	                        <input type="text" class="form-control" name="email">
 	                    </div>
                     	
-                    	<!-- Telefono-->
+                    	<!-- Teléfono-->
 	                    <div class="form-group col-md-2">
 	                        <label>
-	                            Telefono
+	                            Teléfono
 	                        </label>
 	                        <input type="text" class="form-control" name="telefono">
 	                    </div>
@@ -218,52 +258,93 @@
 	                <div class="form-row">
 	                    
 	                    <!-- Razon Social -->
-	                    <div class="form-group col-md-3">
+	                    <div class="form-group col-md-4">
 	                        <label>
-	                            Razon Social
+	                           Razon social
 	                        </label>
-	                        <input type="text" id="campoRazonSocialEditar" class="form-control" name="razon_social">
+	                         <input type="text" class="form-control" name="razon_social">
 	                    </div>
-	                    
-	                    <!-- CUIT -->
+
+	                    <!-- Tipo Documento -->
 	                    <div class="form-group col-md-2">
 	                        <label>
-	                            CUIT
+	                            Tipo Documento
 	                        </label>
-	                        <input type="number" id="campoCuitEditar" class="form-control" name="cuit">
+	                        <select id="comboTipoDocumentoEditar" class="form-control" name="id_tipo_documento"> </select>
 	                    </div>
-
-	                </div>
-	                
-	                <!-- Segunda fila -->
-	                <div class="form-row">
 	                    
-	                    <!-- Domicilio -->
-	                    <div class="form-group col-md-5">
+	                    <!-- Documento -->
+	                    <div class="form-group col-md-3">
 	                        <label>
-	                            Domicilio
+	                            Documento
 	                        </label>
-	                        <input type="text" id="campoDomicilioEditar" class="form-control" name="domicilio">
+	                        <input type="number" class="form-control" name="documento">
 	                    </div>
+
 	                </div>
 
 	                <!-- Segunda fila -->
 	                <div class="form-row">
+
+	                	<!-- País -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                            País
+	                        </label>
+	                        <input type="text" class="form-control" name="pais">
+	                    </div>
+
+	                	<!-- Provincia -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                            Provincia
+	                        </label>
+	                        <input type="text" class="form-control" name="provincia">
+	                    </div>
+
+	                    <!-- Localicad -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                            Localidad
+	                        </label>
+	                        <input type="text" class="form-control" name="localidad">
+	                    </div>
 	                    
+	                    <!-- Calle -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            Calle
+	                        </label>
+	                        <input type="text" class="form-control" name="calle">
+	                    </div>
+
+	                </div>
+
+	                <!-- Tercera fila -->
+	                <div class="form-row">
+	                    
+						<!-- Sucursal -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            Sucursal
+	                        </label>
+	                        <input type="text" class="form-control" name="sucursal">
+	                    </div>
+
 	                    <!-- E-mail -->
 	                    <div class="form-group col-md-3">
 	                        <label>
 	                            E-mail
 	                        </label>
-	                        <input type="text" id="campoEmailEditar" class="form-control" name="email">
+	                        <input type="text" class="form-control" name="email">
 	                    </div>
-
-	                    <!-- Telefono-->
+                    	
+                    	<!-- Teléfono-->
 	                    <div class="form-group col-md-2">
 	                        <label>
-	                            Telefono
+	                            Teléfono
 	                        </label>
-	                        <input type="text" id="campoTelefonoEditar" class="form-control" name="telefono">
+	                        <input type="text" class="form-control" name="telefono">
 	                    </div>
 
 	                </div>

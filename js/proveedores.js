@@ -115,10 +115,10 @@ var proveedores =
                                 .append(proveedor.razon_social)
                             )
                             .append($('<td>')
-                                .append(proveedor.cuit)
+                                .append(proveedor.documento)
                             )
                             .append($('<td>')
-                                .append(proveedor.domicilio)
+                                .append(proveedor.calle)
                             )
                             .append($('<td>')
                                 .append(proveedor.email)
@@ -225,18 +225,18 @@ var proveedores =
                 accion : 'nuevo_buscar'
             };
 
-            proveedores.mostrarNuevo();
-            //bd.enviar(datos, proveedores.modulo, proveedores.nuevo.buscarExito);
+            bd.enviar(datos, proveedores.modulo, proveedores.nuevo.buscarExito);
         },
 
         buscarExito : function(respuesta)
         {
             // lLeno combo Tipo Perfil.
-            var comboTipoPerfil = $('#comboTipoPerfilNuevo').html("");
-            $(comboTipoPerfil).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
-            $.each(respuesta.tipos_perfiles, function(i, tipo_perfil)
+            var comboTipoDocumento = $('#comboTipoDocumentoNuevo').html("");
+            $(comboTipoDocumento).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
+            
+            $.each(respuesta.tipos_documentos, function(i, tipo_documento)
             {
-                $(comboTipoPerfil).append($("<option>").val(tipo_perfil.id).html(tipo_perfil.descripcion));
+                $(comboTipoDocumento).append($("<option>").val(tipo_documento.id).html(tipo_documento.descripcion));
             });
 
             // Borro los datos en los campos.
@@ -310,11 +310,13 @@ var proveedores =
 
         buscarExito : function(respuesta)
         {
-            // lLeno combo Tipo Perfil.
-            var comboTipoPerfil = $('#comboTipoPerfilEditar').html("");
-            $.each(respuesta.tipos_perfiles, function(i, opcion)
+            // lLeno combo Tipo Documento.
+            var comboTipoDocumento = $('#comboTipoDocumentoEditar').html("");
+            $(comboTipoDocumento).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
+            
+            $.each(respuesta.tipos_documentos, function(i, opcion)
             {
-                $(comboTipoPerfil).append($("<option>").val(opcion.id).html(opcion.descripcion));
+                $(comboTipoDocumento).append($("<option>").val(opcion.id).html(opcion.descripcion));
             });
 
             // Lleno los campos.
