@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-09-2019 a las 00:53:02
--- Versión del servidor: 10.1.38-MariaDB
--- Versión de PHP: 7.3.4
+-- Tiempo de generación: 05-09-2019 a las 22:02:03
+-- Versión del servidor: 10.4.6-MariaDB
+-- Versión de PHP: 7.1.31
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -36,9 +36,16 @@ CREATE TABLE `clientes` (
   `domicilio` varchar(50) NOT NULL,
   `telefono` varchar(12) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
-  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
+  `habilitado` tinyint(1) NOT NULL DEFAULT 1,
+  `eliminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id`, `id_tipo_cliente`, `razon_social`, `cuit`, `domicilio`, `telefono`, `email`, `habilitado`, `eliminado`) VALUES
+(1, 2, 'Combustibles Uruguay', 30158593840, 'Las casas 123', '42424343', 'comburu@mail.com', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -49,7 +56,7 @@ CREATE TABLE `clientes` (
 CREATE TABLE `perfiles` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
+  `habilitado` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -72,7 +79,7 @@ INSERT INTO `perfiles` (`id`, `descripcion`, `habilitado`) VALUES
 CREATE TABLE `perfiles_permisos` (
   `id_perfil` int(11) NOT NULL,
   `id_permiso` int(11) NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
+  `habilitado` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -148,7 +155,7 @@ INSERT INTO `perfiles_permisos` (`id_perfil`, `id_permiso`, `habilitado`) VALUES
 CREATE TABLE `permisos` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
+  `habilitado` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -194,9 +201,9 @@ CREATE TABLE `productos` (
   `id_tipo_producto` int(11) NOT NULL,
   `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `precio` decimal(10,0) NOT NULL,
-  `fecha_registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
-  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
+  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
+  `habilitado` tinyint(1) NOT NULL DEFAULT 1,
+  `eliminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -223,22 +230,30 @@ INSERT INTO `productos` (`id`, `id_tipo_producto`, `descripcion`, `precio`, `fec
 CREATE TABLE `proveedores` (
   `id` int(11) NOT NULL,
   `razon_social` varchar(50) NOT NULL,
-  `domicilio` varchar(50) NOT NULL,
-  `telefono` int(11) NOT NULL,
+  `id_tipo_documento` int(11) NOT NULL,
+  `documento` bigint(11) NOT NULL,
+  `sucursal` varchar(50) NOT NULL,
+  `pais` varchar(50) NOT NULL,
+  `provincia` varchar(50) NOT NULL,
+  `localidad` varchar(50) NOT NULL,
+  `calle` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `cuit` bigint(11) NOT NULL,
-  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
-  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT '0'
+  `telefono` int(11) NOT NULL,
+  `fecha_modificacion` datetime DEFAULT NULL ON UPDATE current_timestamp(),
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
+  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `proveedores`
 --
 
-INSERT INTO `proveedores` (`id`, `razon_social`, `domicilio`, `telefono`, `email`, `cuit`, `habilitado`, `eliminado`) VALUES
-(1, 'IrKombustibles.sg', 'Corornel Chamizo 666', 42423322, 'irkombustibles@irko.com.ar', 3026555443, 1, 0),
-(2, 'Kyrabebidas', 'Donovan 3321', 42775445, 'kyrabebidas@yahoo.com', 20253445442, 1, 1),
-(3, 'bocaGolosinas', 'Santander 1324', 34236789, 'bombonera@hotmail.com', 256789868958, 1, 0);
+INSERT INTO `proveedores` (`id`, `razon_social`, `id_tipo_documento`, `documento`, `sucursal`, `pais`, `provincia`, `localidad`, `calle`, `email`, `telefono`, `fecha_modificacion`, `fecha_creacion`, `habilitado`, `eliminado`) VALUES
+(1, 'IrKombustibles.sg', 2, 3026555443, '23', 'Argentina', 'Buenos Aires', 'Zárate', 'Los muñones 3509', 'irkombustibles@irko.com', 42423322, '2019-09-05 16:58:52', '2019-09-05 16:22:51', 1, 0),
+(2, 'Kyrabebidas', 0, 20253445442, '', '', '', '', '', 'kyrabebidas@yahoo.com', 42775445, NULL, '2019-09-05 16:22:51', 1, 1),
+(3, 'Boca Golosinas', 2, 256789868958, '3', 'Argentina', 'Buenos Aires', 'CABA', 'Av. Lezama 2903', 'bombonera@hotmail.com', 34236789, '2019-09-05 17:00:16', '2019-09-05 16:22:51', 1, 0),
+(4, 'Energía Sustentable S.A.', 2, 30230938499, '110', 'Argentina', 'La Pampa', 'Rodriguez', 'Av. Dependencia 1058', 'enersust@mail.com', 55283940, '2019-09-05 16:57:44', '2019-09-05 16:55:03', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -263,13 +278,37 @@ INSERT INTO `tipos_clientes` (`id`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tipos_documentos`
+--
+
+CREATE TABLE `tipos_documentos` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `tipos_documentos`
+--
+
+INSERT INTO `tipos_documentos` (`id`, `descripcion`, `habilitado`) VALUES
+(1, 'CUIT', 1),
+(2, 'CUIL', 1),
+(3, 'LE', 1),
+(4, 'LC', 1),
+(5, 'DNI', 1),
+(6, 'Pasaporte', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tipos_pagos`
 --
 
 CREATE TABLE `tipos_pagos` (
   `id` int(10) UNSIGNED NOT NULL,
   `descripcion` varchar(50) NOT NULL,
-  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -315,9 +354,9 @@ CREATE TABLE `usuarios` (
   `clave` varchar(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '123',
   `nombres` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `apellidos` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `fecha_registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
-  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
+  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
+  `habilitado` tinyint(1) NOT NULL DEFAULT 1,
+  `eliminado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -378,6 +417,12 @@ ALTER TABLE `tipos_clientes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `tipos_documentos`
+--
+ALTER TABLE `tipos_documentos`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `tipos_pagos`
 --
 ALTER TABLE `tipos_pagos`
@@ -403,7 +448,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -427,13 +472,19 @@ ALTER TABLE `productos`
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `tipos_clientes`
 --
 ALTER TABLE `tipos_clientes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `tipos_documentos`
+--
+ALTER TABLE `tipos_documentos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `tipos_pagos`
