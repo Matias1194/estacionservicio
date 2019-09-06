@@ -21,13 +21,12 @@
         if($accion == "buscar_listado")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $tabla, $accion, $respuesta, true);
+            //validarPermiso($conexion, $tabla, $accion, $respuesta, true);
             
             // Prepara la consulta.
-            $query = "SELECT usuarios.id, perfil.descripcion as 'perfil_descripcion', usuarios.usuario, usuarios.nombres, usuarios.apellidos, DATE_FORMAT(usuarios.fecha_registro, '%d/%m/%Y') as 'fecha_registro', usuarios.habilitado 
+            $query = "SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.usuario, usuarios.email, usuarios.telefono, DATE_FORMAT(usuarios.fecha_registro, '%d/%m/%Y') as 'fecha_registro', usuarios.habilitado 
                       FROM usuarios 
-                      INNER JOIN perfiles 
-                        ON usuarios.id_perfil = perfil.id";
+                      WHERE usuarios.eliminado = 0";
 
             // Consulta el listado de usuarios.
             $usuarios = consultar_listado($conexion, $query);
@@ -42,7 +41,6 @@
             {
                 $respuesta['exito'] = true;
                 $respuesta['usuarios'] = $usuarios;
-                $respuesta['permisos'] = $_SESSION['usuario']->permisos;
             }
         }
 
@@ -50,7 +48,7 @@
         else if($accion == "buscar_detalles")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 
@@ -86,25 +84,25 @@
         else if($accion == "nuevo_buscar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
             // Prepara la consulta.
             $query = "SELECT id, descripcion 
-                      FROM perfiles";
+                      FROM tipos_documentos";
 
-            // Consulta los tipos de perfiles habilitados.
-            $tipos_perfiles = consultar_listado($conexion, $query);
+            // Consulta los tipos de documentos habilitados.
+            $tipos_documentos = consultar_listado($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
-            if($tipos_perfiles === false)
+            if($tipos_documentos === false)
             {
-                $respuesta['descripcion'] = 'Ocurrió un error al buscar los tipos de perfiles (L 101).';
+                $respuesta['descripcion'] = 'Ocurrió un error al buscar los tipos de tipos_documentos (L 101).';
             }
             // Si la consulta fue exitosa.
             else
             {
                 $respuesta['exito'] = true;
-                $respuesta['tipos_perfiles'] = $tipos_perfiles;
+                $respuesta['tipos_documentos'] = $tipos_documentos;
             }
         }
 
@@ -112,7 +110,7 @@
         else if($accion == "nuevo_confirmar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $tabla, "nuevo_buscar", $respuesta, false);
+            //validarPermiso($conexion, $tabla, "nuevo_buscar", $respuesta, false);
 
             $usuario = $_POST["usuario"];
 
@@ -138,16 +136,20 @@
             else
             {
                 // Prepara la consulta.
-                $query = "INSERT INTO usuarios (id_perfil, usuario, clave, nombres, apellidos) "
+                $query = "INSERT INTO usuarios (id_perfil, usuario, clave, nombres, apellidos, id_tipo_documento, documento, email, telefono) "
                            . "VALUES"
                            . "("
-                                      . $usuario['id_perfil'] . ", "
+                                      . 1 . ", "
                                 . "'" . $usuario['usuario'] . "', "
                                 . "'" . $usuario['clave'] . "', "
                                 . "'" . $usuario['nombres'] . "', "
-                                . "'" . $usuario['apellidos'] . "' "
+                                . "'" . $usuario['apellidos'] . "', "
+                                      . $usuario['id_tipo_documento'] . ", "
+                                      . $usuario['documento'] . ", "
+                                . "'" . $usuario['email'] . "', "
+                                . "'" . $usuario['telefono'] . "' "
                            . ")";
-                
+
                 // Inserta un nuevo usuario.
                 $resultado = ejecutar($conexion, $query);
 
@@ -169,12 +171,12 @@
         else if($accion == "editar_buscar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 
             // Prepara la consulta.
-            $query = "SELECT usuarios.id, usuarios.id_perfil, usuarios.usuario, usuarios.nombres, usuarios.apellidos, DATE_FORMAT(usuarios.fecha_registro, '%d/%m/%Y') as 'fecha_registro' 
+            $query = "SELECT usuarios.id, usuarios.id_perfil, usuarios.usuario, usuarios.clave, usuarios.nombres, usuarios.apellidos, usuarios.id_tipo_documento, usuarios.documento, usuarios.email, usuarios.telefono, DATE_FORMAT(usuarios.fecha_registro, '%d/%m/%Y') as 'fecha_registro' 
                       FROM usuarios 
                       WHERE usuarios.id = $id LIMIT 1";
 
@@ -196,22 +198,22 @@
             {
                 // Prepara la consulta.
                 $query = "SELECT id, descripcion 
-                          FROM perfiles";
+                          FROM tipos_documentos";
 
-                // Consulta los tipos de perfiles habilitados.
-                $tipos_perfiles = consultar_listado($conexion, $query);
+                // Consulta los tipos de documentos habilitados.
+                $tipos_documentos = consultar_listado($conexion, $query);
 
                 // Si hubo error ejecutando la consulta.
-                if($tipos_perfiles === false)
+                if($tipos_documentos === false)
                 {
-                    $respuesta['descripcion'] = 'Ocurrió un error al buscar los tipos de perfiles (L 207).';
+                    $respuesta['descripcion'] = 'Ocurrió un error al buscar los tipos de documentos (L 207).';
                 }
                 // Si la consulta fue exitosa.
                 else
                 {
                     $respuesta['exito'] = true;
                     $respuesta['usuario'] = $usuario;
-                    $respuesta['tipos_perfiles'] = $tipos_perfiles;
+                    $respuesta['tipos_documentos'] = $tipos_documentos;
                 }
             }
         }
@@ -220,7 +222,7 @@
         else if($accion == "editar_confirmar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $tabla, "editar_buscar", $respuesta, false);
+            //validarPermiso($conexion, $tabla, "editar_buscar", $respuesta, false);
 
             $usuario = $_POST["usuario"];
 
@@ -271,10 +273,14 @@
                     {
                         // Prepara la consulta.
                         $query = "UPDATE usuarios 
-                                  SET id_perfil = " . $usuario['id_perfil'] . ", 
+                                  SET id_perfil = " . 1 . ", 
                                   usuario = '" . $usuario['usuario'] . "', 
                                   nombres = '" . $usuario['nombres'] . "', 
-                                  apellidos = '" . $usuario['apellidos'] . "'
+                                  apellidos = '" . $usuario['apellidos'] . ", '
+                                  id_tipo_documento = '" . $usuario['id_tipo_documento'] . "', 
+                                  documento = '" . $usuario['documento'] . "
+                                  email = '" . $usuario['email'] . "', 
+                                  telefono = '" . $usuario['telefono'] . "'
                                   WHERE id = " . $usuario['id'];
                         
                         // Actualizo la información del usuario.
@@ -298,12 +304,16 @@
                 {
                     // Prepara la consulta.
                     $query = "UPDATE usuarios 
-                              SET id_perfil = " . $usuario['id_perfil'] . ", 
-                              usuario = '" . $usuario['usuario'] . "', 
-                              nombres = '" . $usuario['nombres'] . "', 
-                              apellidos = '" . $usuario['apellidos'] . "'
-                              WHERE id = " . $usuario['id'];
-                    
+                                  SET id_perfil = " . 1 . ", 
+                                  usuario = '" . $usuario['usuario'] . "', 
+                                  nombres = '" . $usuario['nombres'] . "', 
+                                  apellidos = '" . $usuario['apellidos'] . "' , 
+                                  id_tipo_documento = " . $usuario['id_tipo_documento'] . ", 
+                                  documento = " . $usuario['documento'] . ", 
+                                  email = '" . $usuario['email'] . "', 
+                                  telefono = '" . $usuario['telefono'] . "'
+                                  WHERE id = " . $usuario['id'];
+
                     // Actualizo la información del usuario.
                     $resultado = ejecutar($conexion, $query);
                     
@@ -326,7 +336,7 @@
         else if($accion == "eliminar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 
@@ -378,7 +388,7 @@
         else if($accion == "deshabilitar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 
@@ -430,7 +440,7 @@
         else if($accion == "habilitar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 

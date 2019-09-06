@@ -28,26 +28,26 @@ var usuarios =
 
     /* Detalles usuario*/
         // Carga la pantalla parar ver los detalles de usuario.
-        $('.botonDetallesUsuario').unbind('click').click((event) => usuarios.buscar.detalles($(event.currentTarget).closest('tr').data('codigo')));
+        $('.botonDetallesUsuario').unbind('click').click((event) => usuarios.buscar.detalles($(event.currentTarget).closest('tr').data('id')));
 
     /* Editar usuario */
         // Carga la pantalla para editar al usuario.
-        $('.botonEditarUsuario').unbind('click').click((event) => usuarios.editar.buscar($(event.currentTarget).closest('tr').data('codigo')));
+        $('.botonEditarUsuario').unbind('click').click((event) => usuarios.editar.buscar($(event.currentTarget).closest('tr').data('id')));
 
         // Confirmar editar usuario.
         $('#botonConfirmarEditar').unbind('click').click(() => alertas.confirmar('¿Está seguro?', 'Confirmar Edición', usuarios.editar.confirmar));
     
     /* Eliminar usuario */
         // Confirmar uliminar usuario.
-        $('.botonEliminarUsuario').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => usuarios.eliminar.confirmar($(event.currentTarget).closest('tr').data('codigo'))));
+        $('.botonEliminarUsuario').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => usuarios.eliminar.confirmar($(event.currentTarget).closest('tr').data('id'))));
     
     /* Deshabilitar usuario */
         // Confirmar deshabilitar usuario.
-        $('.botonDeshabilitarUsuario').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => usuarios.deshabilitar.confirmar($(event.currentTarget).closest('tr').data('codigo'))));
+        $('.botonDeshabilitarUsuario').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => usuarios.deshabilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
 
     /* Habilitar usuario */
         // Confirmar uabilitar usuario.
-        $('.botonHabilitarUsuario').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => usuarios.habilitar.confirmar($(event.currentTarget).closest('tr').data('codigo'))));
+        $('.botonHabilitarUsuario').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => usuarios.habilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
 
 	},
 	
@@ -106,22 +106,21 @@ var usuarios =
                         .append($('<td>')
                             .append("No se encontraron registros.")
                             .attr('class', 'text-center')
-                            .attr('colspan', 6)
+                            .attr('colspan', 7)
                         )
                     );
             }
             else
             {
+                var tablaUsuarios = $('#divListadoUsuarios table');
+                var barraCargando = $('#divListadoUsuarios .barraCargando');
+                $(tablaUsuarios).find('tbody').html("");
+
                 $.each(respuesta.usuarios, function(indice, usuario) 
                 {
-                    $('#tablaListadoUsuarios tbody')
+                    $(tablaUsuarios)
+                        .find('tbody')
                         .append($('<tr>')
-                            .append($('<td>')
-                                .append(usuario.usuario)
-                            )
-                            .append($('<td>')
-                                .append(usuario.perfil_descripcion)
-                            )
                             .append($('<td>')
                                 .append(usuario.nombres)
                             )
@@ -129,15 +128,25 @@ var usuarios =
                                 .append(usuario.apellidos)
                             )
                             .append($('<td>')
+                                .append(usuario.usuario)
+                            )
+                            .append($('<td>')
+                                .append(usuario.email)
+                            )
+                            .append($('<td>')
+                                .append(usuario.telefono)
+                            )
+                            .append($('<td>')
                                 .append(usuario.fecha_registro)
                             )
-                            .attr('data-codigo', usuario.codigo)
+                            .attr('data-id', usuario.id)
                         );
 
                     // Botón Detalles Usuario.
-                    if(utilidades.tienePermiso(respuesta.permisos, 2))
-                    {
-                        $('#tablaListadoUsuarios tbody tr:last')
+                    //if(utilidades.tienePermiso(respuesta.permisos, 2))
+                    //{
+                        $(tablaUsuarios)
+                            .find('tbody tr:last')
                             .append($('<td>')
                                 .append('<button type="button" class="botonDetallesUsuario btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Detalles">'
                                         + '<span class="fa fa-eye"></span>'
@@ -145,12 +154,13 @@ var usuarios =
                                 )
                                 .attr('class', 'text-center')
                             );
-                    }
+                    //}
                     
                     // Botón Editar Usuario.
-                    if(utilidades.tienePermiso(respuesta.permisos, 4))
-                    {
-                        $('#tablaListadoUsuarios tbody tr:last')
+                    //if(utilidades.tienePermiso(respuesta.permisos, 4))
+                    //{
+                        $(tablaUsuarios)
+                            .find('tbody tr:last')
                             .append($('<td>')
                                 .append('<button type="button" class="botonEditarUsuario btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar">'
                                         + '<span class="fa fa-pencil-alt"></span>'
@@ -158,12 +168,13 @@ var usuarios =
                                 )
                                 .attr('class', 'text-center')
                             );
-                    }
+                    //}
 
                     // Botón Eliminar Usuario.
-                    if(utilidades.tienePermiso(respuesta.permisos, 7))
-                    {
-                        $('#tablaListadoUsuarios tbody tr:last')
+                    //if(utilidades.tienePermiso(respuesta.permisos, 7))
+                    //{
+                        $(tablaUsuarios)
+                            .find('tbody tr:last')
                             .append($('<td>')
                                 .append('<button type="button" class="botonEliminarUsuario btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
                                         + '<span class="fa fa-trash"></span>'
@@ -171,12 +182,14 @@ var usuarios =
                                 )
                                 .attr('class', 'text-center')
                             );
-                    }
+                    //}
 
                     // Si el usuario está habilitado.
-                    if(utilidades.tienePermiso(respuesta.permisos, 6) && usuario.habilitado == "1")
+                    //if(utilidades.tienePermiso(respuesta.permisos, 6) && usuario.habilitado == "1")
+                    if(usuario.habilitado == "1")
                     {
-                        $('#tablaListadoUsuarios tbody tr:last') 
+                        $(tablaUsuarios)
+                            .find('tbody tr:last') 
                             .append($('<td>')
                                 // Botón Deshabilitar Usuario.
                                 .append('<button type="button" class="botonDeshabilitarUsuario btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
@@ -187,9 +200,11 @@ var usuarios =
                             );
                     }
                     // Si el usuario está deshabilitado.
-                    else if(utilidades.tienePermiso(respuesta.permisos, 5))
+                    //else if(utilidades.tienePermiso(respuesta.permisos, 5))
+                    if(usuario.habilitado == "0")
                     {
-                        $('#tablaListadoUsuarios tbody tr:last')
+                        $(tablaUsuarios)
+                            .find('tbody tr:last')
                             .append($('<td>')
                                 // Botón Habilitar Usuario.
                                 .append('<button type="button" class="botonHabilitarUsuario btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
@@ -204,17 +219,17 @@ var usuarios =
                 });
             }
 
-            $('#divCargando').slideUp();
-            $('#tablaListadoUsuarios').fadeIn();
+            $(barraCargando).slideUp();
+            $(tablaUsuarios).fadeIn();
             
             usuarios.asignarEventos();
         },
 
-        detalles : function(codigo)
+        detalles : function(id)
         {
             var datos = {
                 accion : 'buscar_detalles',
-                codigo : codigo
+                id : id
             };
             
             bd.enviar(datos, usuarios.tabla, usuarios.buscar.detallesExito);
@@ -254,11 +269,11 @@ var usuarios =
         buscarExito : function(respuesta)
         {
             // lLeno combo Tipo Perfil.
-            var comboTipoPerfil = $('#comboTipoPerfilNuevo').html("");
-            $(comboTipoPerfil).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
-            $.each(respuesta.tipos_perfiles, function(i, tipo_perfil)
+            var comboTipoDocumento = $('#comboTipoDocumentoNuevo').html("");
+            $(comboTipoDocumento).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
+            $.each(respuesta.tipos_documentos, function(i, tipo_documento)
             {
-                $(comboTipoPerfil).append($("<option>").val(tipo_perfil.codigo).html(tipo_perfil.descripcion));
+                $(comboTipoDocumento).append($("<option>").val(tipo_documento.id).html(tipo_documento.descripcion));
             });
 
             // Borro los datos en los campos.
@@ -317,11 +332,11 @@ var usuarios =
     editar :
     {
         // Buscar información para editar usuario.
-        buscar : function(codigo)
+        buscar : function(id)
         {
             var datos = {
                 accion : 'editar_buscar',
-                codigo : codigo
+                id : id
             };
             
             bd.enviar(datos, usuarios.tabla, usuarios.editar.buscarExito);
@@ -330,10 +345,10 @@ var usuarios =
         buscarExito : function(respuesta)
         {
             // lLeno combo Tipo Perfil.
-            var comboTipoPerfil = $('#comboTipoPerfilEditar').html("");
-            $.each(respuesta.tipos_perfiles, function(i, opcion)
+            var comboTipoDocumento = $('#comboTipoDocumentoEditar').html("");
+            $.each(respuesta.tipos_documentos, function(i, opcion)
             {
-                $(comboTipoPerfil).append($("<option>").val(opcion.codigo).html(opcion.descripcion));
+                $(comboTipoDocumento).append($("<option>").val(opcion.id).html(opcion.descripcion));
             });
 
             // Lleno los campos.
@@ -395,11 +410,11 @@ var usuarios =
     eliminar :
     {
         // Confirmar eliminación de usuario.
-        confirmar : function(codigo)
+        confirmar : function(id)
         {
             var datos = {
                 accion : 'eliminar',
-                codigo : codigo
+                id : id
             };
             
             bd.enviar(datos, usuarios.tabla, usuarios.eliminar.confirmarExito);
@@ -408,9 +423,9 @@ var usuarios =
         confirmarExito : function(respuesta)
         {
             // Actualizar fila.
-            var codigo = respuesta.codigo;
+            var id = respuesta.id;
 
-            $('#divListadoUsuarios tr[data-codigo="' + codigo + '"]')
+            $('#divListadoUsuarios tr[data-id="' + id + '"]')
                 .fadeOut(
                     function() 
                     {
@@ -426,11 +441,11 @@ var usuarios =
     deshabilitar :
     {
         // Confirmar deshabilitación de usuario.
-        confirmar : function(codigo)
+        confirmar : function(id)
         {
             var datos = {
                 accion : 'deshabilitar',
-                codigo : codigo
+                id : id
             };
             
             bd.enviar(datos, usuarios.tabla, usuarios.deshabilitar.confirmarExito);
@@ -439,8 +454,8 @@ var usuarios =
         confirmarExito : function(respuesta)
         {
             // Actualizar fila.
-            var codigo = respuesta.codigo;
-            var fila = $('#divListadoUsuarios tr[data-codigo="' + codigo + '"]');
+            var id = respuesta.id;
+            var fila = $('#divListadoUsuarios tr[data-id="' + id + '"]');
             
             $(fila).addClass("table-danger");
             $(fila).find('td:last').html
@@ -459,11 +474,11 @@ var usuarios =
     habilitar :
     {
         // Confirmar habilitación de usuario.
-        confirmar : function(codigo)
+        confirmar : function(id)
         {
             var datos = {
                 accion : 'habilitar',
-                codigo : codigo
+                id : id
             };
             
             bd.enviar(datos, usuarios.tabla, usuarios.habilitar.confirmarExito);
@@ -472,8 +487,8 @@ var usuarios =
         confirmarExito : function(respuesta)
         {
             // Actualizar fila.
-            var codigo = respuesta.codigo;
-            var fila = $('#divListadoUsuarios tr[data-codigo="' + codigo + '"]');
+            var id = respuesta.id;
+            var fila = $('#divListadoUsuarios tr[data-id="' + id + '"]');
             
             $(fila).removeClass();
             $(fila).find('td:last').html
