@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-09-2019 a las 22:02:03
--- Versión del servidor: 10.4.6-MariaDB
--- Versión de PHP: 7.1.31
+-- Tiempo de generación: 07-09-2019 a las 00:15:30
+-- Versión del servidor: 10.1.40-MariaDB
+-- Versión de PHP: 7.3.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -36,8 +36,8 @@ CREATE TABLE `clientes` (
   `domicilio` varchar(50) NOT NULL,
   `telefono` varchar(12) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1,
-  `eliminado` tinyint(1) NOT NULL DEFAULT 0
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -56,7 +56,7 @@ INSERT INTO `clientes` (`id`, `id_tipo_cliente`, `razon_social`, `cuit`, `domici
 CREATE TABLE `perfiles` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -79,7 +79,7 @@ INSERT INTO `perfiles` (`id`, `descripcion`, `habilitado`) VALUES
 CREATE TABLE `perfiles_permisos` (
   `id_perfil` int(11) NOT NULL,
   `id_permiso` int(11) NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -155,7 +155,7 @@ INSERT INTO `perfiles_permisos` (`id_perfil`, `id_permiso`, `habilitado`) VALUES
 CREATE TABLE `permisos` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -201,9 +201,9 @@ CREATE TABLE `productos` (
   `id_tipo_producto` int(11) NOT NULL,
   `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `precio` decimal(10,0) NOT NULL,
-  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1,
-  `eliminado` tinyint(1) NOT NULL DEFAULT 0
+  `fecha_registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -239,10 +239,10 @@ CREATE TABLE `proveedores` (
   `calle` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `telefono` int(11) NOT NULL,
-  `fecha_modificacion` datetime DEFAULT NULL ON UPDATE current_timestamp(),
-  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
-  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
-  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+  `fecha_modificacion` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
+  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -284,7 +284,7 @@ INSERT INTO `tipos_clientes` (`id`, `descripcion`) VALUES
 CREATE TABLE `tipos_documentos` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(50) NOT NULL,
-  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -308,7 +308,7 @@ INSERT INTO `tipos_documentos` (`id`, `descripcion`, `habilitado`) VALUES
 CREATE TABLE `tipos_pagos` (
   `id` int(10) UNSIGNED NOT NULL,
   `descripcion` varchar(50) NOT NULL,
-  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -350,25 +350,30 @@ INSERT INTO `tipos_productos` (`id`, `descripcion`) VALUES
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `id_perfil` int(11) NOT NULL,
+  `id_tipo_documento` int(11) NOT NULL,
+  `documento` bigint(20) NOT NULL,
   `usuario` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
   `clave` varchar(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '123',
   `nombres` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `apellidos` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1,
-  `eliminado` tinyint(1) NOT NULL DEFAULT 0
+  `email` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `telefono` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `fecha_registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `id_perfil`, `usuario`, `clave`, `nombres`, `apellidos`, `fecha_registro`, `habilitado`, `eliminado`) VALUES
-(1, 3, 'ruben', 'ruben', 'Ruben', 'Molina', '2019-06-08 14:40:06', 1, 0),
-(2, 2, 'david', 'david', 'David', 'Bustamante', '2019-06-08 14:40:41', 1, 0),
-(3, 5, 'mati', 'mati', 'Matias', 'Montiel', '2019-06-08 14:41:01', 1, 0),
-(4, 1, 'irko', 'irko', 'Irko', 'Cat', '2019-06-08 19:27:33', 1, 0),
-(5, 1, 'kyra', 'kyra', 'Kyra', 'Dog', '2019-06-08 19:27:57', 1, 0);
+INSERT INTO `usuarios` (`id`, `id_perfil`, `id_tipo_documento`, `documento`, `usuario`, `clave`, `nombres`, `apellidos`, `email`, `telefono`, `fecha_registro`, `habilitado`, `eliminado`) VALUES
+(1, 1, 5, 393721512, 'ruben', 'ruben', 'Ruben', 'Molina', 'rubenmolina_cabj@hotmail.com', '45291477', '2019-06-08 14:40:06', 1, 0),
+(2, 2, 0, 0, 'david', 'david', 'David', 'Bustamante', '', '', '2019-06-08 14:40:41', 1, 0),
+(3, 5, 0, 0, 'mati', 'mati', 'Matias', 'Montiel', '', '', '2019-06-08 14:41:01', 1, 0),
+(4, 1, 0, 0, 'irko', 'irko', 'Irko', 'Cat', '', '', '2019-06-08 19:27:33', 1, 0),
+(5, 1, 0, 0, 'kyra', 'kyra', 'Kyra', 'Dog', '', '', '2019-06-08 19:27:57', 1, 0),
+(6, 1, 2, 123123123, 'user', 'user', 'Usuario', 'Prueba', 'user@mail.com', '123123', '2019-09-06 19:03:30', 1, 1);
 
 --
 -- Índices para tablas volcadas
@@ -502,7 +507,7 @@ ALTER TABLE `tipos_productos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
