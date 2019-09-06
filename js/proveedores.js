@@ -230,7 +230,7 @@ var proveedores =
 
         buscarExito : function(respuesta)
         {
-            // lLeno combo Tipo Perfil.
+            // lLeno combo Tipo Documento.
             var comboTipoDocumento = $('#comboTipoDocumentoNuevo').html("");
             $(comboTipoDocumento).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
             
@@ -310,7 +310,7 @@ var proveedores =
 
         buscarExito : function(respuesta)
         {
-            // lLeno combo Tipo Documento.
+            // Lleno combo Tipo Documento.
             var comboTipoDocumento = $('#comboTipoDocumentoEditar').html("");
             $(comboTipoDocumento).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
             
