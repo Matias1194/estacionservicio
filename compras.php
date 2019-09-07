@@ -29,7 +29,7 @@
 		<main role="main" class="container">
 			
 			<!-- Inicio -->
-			<div id="divInicioCompras" style="display: block;">
+			<div id="divInicioCompras">
 				
 				<div class="row mt-5">
 	                
@@ -46,7 +46,7 @@
 	            
 	                <!-- Botón Consultar Compras -->
                     <div class="col-sm-3 text-center">
-                        <button type="button" id="botonConsultarCompras" class="btn btn-lg btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Consultar Compras">
+                        <button type="button" id="botonConsultarCompras" class="btn btn-lg btn-primary mt-2">
                             <span class="fa fa-search"></span>
                             Consultar
                         </button>
@@ -54,24 +54,18 @@
 
                     <!-- Botón Nueva Compra -->
                     <div class="col-sm-3 text-center">
-                        <button type="button" id="botonNuevaCompra" class="btn btn-lg btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Nueva Compra">
-                            <span class="fa fa-plus"></span>
-                            Nueva
+                        <button type="button" id="botonNuevaCompra" class="btn btn-lg btn-primary mt-2">
+                            <span class="fa fa-shopping-cart"></span>
+                            Nueva Compra
                         </button>
                     </div>
                 
                 </div>
 
-	            <hr>
-
-	            <div class="mt-4">
-
-	            </div>
-
 			</div>
 
 			<!-- Listado de Compras -->
-			<div id="divListadoCompras" style="display: block;">
+			<div id="divListadoCompras" style="display: none;">
 
 	            <div class="row mt-5">
 	                
@@ -82,15 +76,13 @@
 	                    </h1>
 	                </div>
 
-	                <?php //if(tienePermiso(10)) { ?>
-	                <!-- Nuevo curso -->
-                    <div class="col-sm-6 text-right">
-                        <button type="button" id="botonNuevoCompra" class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Nuevo Compra">
-                            <span class="fa fa-plus"></span>
-                            <span class="fa fa-user"></span>
+	                <!-- Volver al listado -->
+	                <div class="col-md-6 text-right">
+                        <button type="button" class="botonVolver btn btn-secondary mt-2" data-pantalla="Inicio">
+                            <span class="fa fa-chevron-left"></span> 
+                            Volver
                         </button>
                     </div>
-	            	<?php //} ?>
 
 	            </div>
 
@@ -112,7 +104,7 @@
 	                                    Codigo
 	                                </th>
 	                                <th scope="col">
-	                                    Descripcion
+	                                    Detalle
 	                                </th>
 	                                <th scope="col">
 	                                    Fecha de Registro
@@ -134,7 +126,7 @@
 	        </div>
 
 	        <!-- Nueva Compra -->
-	        <div id="divNuevaCompra" style="display: block;">
+	        <div id="divNuevaCompra" style="display: none;">
 	            
 	            <div class="row mt-5">
 
@@ -147,7 +139,7 @@
 	                
 	                <!-- Volver al listado -->
 	                <div class="col-md-6 text-right">
-                        <button type="button" class="botonVolver btn btn-secondary mt-2">
+                        <button type="button" class="botonVolver btn btn-secondary mt-2" data-pantalla="Inicio">
                             <span class="fa fa-chevron-left"></span> 
                             Volver
                         </button>
@@ -157,85 +149,171 @@
 
 	            <hr>
 
+	            <!-- Formulario -->
 	            <form class="mt-4">
 	                
+	            	<!-- Cabecera de la compra -->
+
 	                <!-- Primera fila -->
 	                <div class="form-row">
+
+	                	<!-- Proveedor -->
 	                	<div class="form-group col-md-3">
 	                        <label>
 	                            Proveedor
 	                        </label>
-	                        
-	                        <select class="form-control" name="nombres"></select> 
+	                        <select id="comboProveedoresNueva" class="form-control" name="id_proveedor"></select> 
 	                    </div>
 
+	                    <!-- Tipo Comprobante -->
 	                    <div class="form-group col-md-3">
 	                        <label>
 	                            Tipo Comprobante
 	                        </label>
-
-	                        <select class="form-control" name="nombres"></select> 
+	                        <select id="comboTipoComprobanteNueva" class="form-control" name="id_tipo_comprobante"></select> 
 	                    </div>
-	                    <!-- Nombres -->
+
+	                    <!-- N° de Factura -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                            Numero de Factura
+	                            N° de Factura
 	                        </label>
-	                        <input type="text" class="form-control" name="nombres">
+	                        <input type="number" class="form-control" name="numero_factura" min="0">
 	                    </div>
 
-	                </div>
-
-	                <div class="form-row">    
-
-	                    <!-- Apellidos -->
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                            Nº Orden de compra 
-	                        </label>
-	                        <input type="text" class="form-control" name="apellidos">
-	                    </div>
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                            Fecha Orden de compra 
-	                        </label>
-	                        <input type="text" class="form-control" name="apellidos">
-	                    </div>
-	                    
 	                </div>
 
 	                <!-- Segunda fila -->
 	                <div class="form-row">
 
-	                	<!-- Compra -->
+	                    <!-- N° Orden de compra -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                           Gatos de envio
+	                        	Nº Orden de compra
 	                        </label>
-	                         <input type="text" class="form-control" name="compra">
+	                        <input type="number" class="form-control" name="orden_compra_numero" min="0">
 	                    </div>
 
-                        <!-- Clave -->
+	                    <!-- Fecha Orden de compra -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                           IVA Gastos de envio
+	                        	Fecha Orden de compra
 	                        </label>
-	                         <input type="password" class="form-control" name="clave">
+	                        <input type="text" class="form-control" name="orden_compra_fecha">
 	                    </div>
+	                    
+	                </div>
+
+	                <!-- Tercera fila -->
+	                <div class="form-row">
+
+	                	<!-- Gastos de envío -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                           Impuestos Gatos de envio
+	                        	Gastos de envío
 	                        </label>
-	                         <input type="text" class="form-control" name="compra">
+	                         <input type="number" class="form-control" name="gastos_envio" min="0">
 	                    </div>
 
+                        <!-- % de IVA en gastos de envío-->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                        	% IVA Gastos de envio
+	                        </label>
+	                        <input type="number" class="form-control" name="gastos_envio_iva" min="0" max="100">
+	                    </div>
+
+	                    <!-- Impuestos en gastos de envío -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                        	Impuestos Gatos de envio
+	                        </label>
+	                        <input type="number" class="form-control" name="gastos_envio_impuestos" min="0">
+	                    </div>
+
+	                </div>
+
+	                <hr>
+
+	                <!-- Cuerpo de la compra -->
+
+	                <!-- Productos -->
+	                <div id="divAgregarProductoNueva" class="form-inline">
+
+	                    <form class="form-inline">
+							
+							<div class="form-group col-md-4 mb-2">
+								<select id="comboProductosNueva" class="form-control" name="id_producto"></select> 
+							</div>
+
+							<div class="form-group col-md-2 mb-2">
+								<input type="number" id="campoCantidadNueva" class="form-control-plaintext" name="cantidad" min="0" placeholder="Cantidad">
+							</div>
+
+							<div class="form-group col-md-2 mb-2">
+								<input type="number" id="campoPrecioNueva" class="form-control-plaintext" name="precio_unitario" min="0" placeholder="Precio unitario">
+							</div>
+							
+							<button type="button" id="botonAgregarProductoNueva" class="btn btn-primary mb-2" data-toggle="tooltip" data-placement="top" title="Agregar Producto">
+			                    <span class="fas fa-cart-plus"></span>
+			                </button>
+
+						</form>
+
+	                </div>
+
+	                <div id="divProductosAgregadosNueva">
+	                	
+	                    <div class="mt-4">
+
+			                <!-- Tabla Subtotales -->
+			                <div class="table-responsive-xl">
+			                    
+			                    <table class="table table-striped table-dark">
+			                        
+			                        <thead>
+			                            <tr>
+			                                <th scope="col">
+			                                    Codigo
+			                                </th>
+			                                <th scope="col">
+			                                    Descripción
+			                                </th>
+			                                <th scope="col">
+			                                    Cantidad
+			                                </th>
+			                                <th scope="col">
+			                                    Precio Unitario
+			                                </th>
+			                                <th scope="col">
+			                                    Precio Total
+			                                </th>
+			                                <th class="text-center" scope="col" colspan="4">
+			                                    Acciones
+			                                </th>
+			                            </tr>
+			                        </thead>
+
+			                        <tbody>
+			                        	<tr>
+			                        		<td class="text-center" colspan="6">
+			                        			No se ingresaron productos
+			                        		</td>
+			                        	</tr>
+			                        </tbody>
+			                    
+			                    </table>
+
+			                </div>
+
+			            </div>
 
 	                </div>
 
 	                <!-- Botón confirmar -->
-	                <button type="button" id="botonConfirmarNuevo" class="btn btn-primary mt-3">
+	                <button type="button" id="botonConfirmarNueva" class="btn btn-primary mt-3">
 	                    <span class="fa fa-check"></span> 
-	                    Confirmar
+	                    Confirmar Compra
 	                </button>
 
 	            </form>
@@ -256,7 +334,7 @@
 	                
 	                <!-- Volver al listado -->
 	                <div class="col-md-6 text-right">
-                        <button type="button" class="botonVolver btn btn-secondary mt-2">
+                        <button type="button" class="botonVolver btn btn-secondary mt-2" data-pantalla="Listado">
                             <span class="fa fa-chevron-left"></span> 
                             Volver
                         </button>
@@ -266,88 +344,84 @@
 
 	            <hr>
 
+	            <!-- Formulario -->
 	            <form class="mt-4">
 	                
 	                <!-- Primera fila -->
 	                <div class="form-row">
-	                    
-	                    <!-- Nombres -->
-	                    <div class="form-group col-md-3">
+
+	                	<!-- Proveedor -->
+	                	<div class="form-group col-md-3">
 	                        <label>
-	                            Nombres
+	                            Proveedor
 	                        </label>
-	                        <input type="text" class="form-control" name="nombres">
+	                        <select id="comboProveedoresEditar" class="form-control" name="id_proveedor"></select> 
 	                    </div>
 
-	                    <!-- Apellidos -->
+	                    <!-- Tipo Comprobante -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                            Apellidos
+	                            Tipo Comprobante
 	                        </label>
-	                        <input type="text" class="form-control" name="apellidos">
+	                        <select id="comboTipoComprobanteEditar" class="form-control" name="id_tipo_comprobante"></select> 
 	                    </div>
-	                    
+
+	                    <!-- N° de Factura -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            N° de Factura
+	                        </label>
+	                        <input type="text" class="form-control" name="numero_factura">
+	                    </div>
+
 	                </div>
 
 	                <!-- Segunda fila -->
 	                <div class="form-row">
 
-	                	<!-- Compra -->
+	                    <!-- N° Orden de compra -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                           Compra
+	                        	Nº Orden de compra
 	                        </label>
-	                         <input type="text" class="form-control" name="compra">
+	                        <input type="text" class="form-control" name="orden_compra_numero">
 	                    </div>
 
-                        <!-- Clave -->
+	                    <!-- Fecha Orden de compra -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                           Clave
+	                        	Fecha Orden de compra
 	                        </label>
-	                         <input type="password" class="form-control" name="clave">
+	                        <input type="text" class="form-control" name="orden_compra_fecha">
 	                    </div>
-
+	                    
 	                </div>
-	                
+
 	                <!-- Tercera fila -->
 	                <div class="form-row">
 
-	                    <!-- Tipo Documento -->
-	                    <div class="form-group col-md-2">
-	                        <label>
-	                            Tipo Documento
-	                        </label>
-	                        <select id="comboTipoDocumentoEditar" class="form-control" name="id_tipo_documento"> </select>
-	                    </div>
-	                    
-	                    <!-- Documento -->
+	                	<!-- Gastos de envío -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                            Documento
+	                        	Gastos de envío
 	                        </label>
-	                        <input type="number" class="form-control" name="documento">
+	                         <input type="text" class="form-control" name="gastos_envio">
 	                    </div>
 
-	                </div>
-
-	                <!-- Cuarta fila -->
-	                <div class="form-row">
-
-	                    <!-- E-mail -->
+                        <!-- % de IVA en gastos de envío-->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                            E-mail
+	                        	% IVA Gastos de envio
 	                        </label>
-	                        <input type="text" class="form-control" name="email">
+	                        <input type="password" class="form-control" name="gastos_envio_iva">
 	                    </div>
-                    	
-                    	<!-- Teléfono-->
-	                    <div class="form-group col-md-2">
+
+	                    <!-- Impuestos en gastos de envío -->
+	                    <div class="form-group col-md-3">
 	                        <label>
-	                            Teléfono
+	                        	Impuestos Gatos de envio
 	                        </label>
-	                        <input type="text" class="form-control" name="telefono">
+	                        <input type="text" class="form-control" name="gastos_envio_impuestos">
 	                    </div>
 
 	                </div>
