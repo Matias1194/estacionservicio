@@ -35,7 +35,7 @@ var alertas =
 		// Función antes cerrar.
 		if(funcionCerrar) 
 		{
-			$('#botonCerrarAlerta').unbind('click').click(funcionCerrar);
+			$('#botonCerrarAlerta').click(funcionCerrar);
 		}
 		
 		// Cerrar alerta.
@@ -61,7 +61,7 @@ var alertas =
 
 		$('#botonCerrarAlerta').unbind('click');
 
-		// Función antes cerrar.
+		// Función al cerrar alerta.
 		if(funcionCerrar) 
 		{
 			$('#botonCerrarAlerta').unbind('click').click(funcionCerrar);
@@ -90,10 +90,10 @@ var alertas =
 
 		$('#botonCerrarAlerta').unbind('click');
 
-		// Función antes cerrar.
+		// Función al cerrar alerta.
 		if(funcionCerrar) 
 		{
-			$('#botonCerrarAlerta').unbind('click').click(funcionCerrar);
+			$('#botonCerrarAlerta').click(funcionCerrar);
 		}
 		
 		// Cerrar alerta.
@@ -117,18 +117,23 @@ var alertas =
 			titulo = "Confirmar";
 		}
 
+		$('#botonConfirmarAlerta').unbind('click');
+
 		// Confirmar Alerta.
 		if(funcionConfirmar)
 		{
 			$('#botonConfirmarAlerta').unbind('click').click(funcionConfirmar);
 		}
+
+		// Cerrar alerta.
+		$('#botonConfirmarAlerta').click(() => $('#alerta').modal('hide'));
 		
+		// Función al cerrar alerta.
 		$('#botonCerrarAlerta').unbind('click');
 
-		// Función antes cerrar.
 		if(funcionCerrar) 
 		{
-			$('#botonCerrarAlerta').unbind('click').click(funcionCerrar);
+			$('#botonCerrarAlerta').click(funcionCerrar);
 		}
 		
 		// Cerrar alerta.
