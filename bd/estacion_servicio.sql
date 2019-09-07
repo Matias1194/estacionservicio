@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-09-2019 a las 00:15:30
+-- Tiempo de generación: 07-09-2019 a las 02:42:16
 -- Versión del servidor: 10.1.40-MariaDB
 -- Versión de PHP: 7.3.5
 
@@ -46,6 +46,53 @@ CREATE TABLE `clientes` (
 
 INSERT INTO `clientes` (`id`, `id_tipo_cliente`, `razon_social`, `cuit`, `domicilio`, `telefono`, `email`, `habilitado`, `eliminado`) VALUES
 (1, 2, 'Combustibles Uruguay', 30158593840, 'Las casas 123', '42424343', 'comburu@mail.com', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `compras`
+--
+
+CREATE TABLE `compras` (
+  `id` bigint(20) NOT NULL,
+  `id_factura_cabecera` bigint(20) NOT NULL,
+  `detalle` varchar(200) NOT NULL,
+  `fecha_compra` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `compras_facturas_cabecera`
+--
+
+CREATE TABLE `compras_facturas_cabecera` (
+  `id` bigint(20) NOT NULL,
+  `id_compra` bigint(20) NOT NULL,
+  `id_proveedor` int(11) NOT NULL,
+  `id_tipo_comprobante` int(11) NOT NULL,
+  `numero_factura` bigint(20) NOT NULL,
+  `orden_compra_numero` bigint(20) NOT NULL,
+  `orden_compra_fecha` datetime NOT NULL,
+  `gastos_envio` int(11) NOT NULL,
+  `gastos_envio_iva` int(11) NOT NULL,
+  `gastos envio_impuestos` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `compras_facturas_cuerpo`
+--
+
+CREATE TABLE `compras_facturas_cuerpo` (
+  `id` int(11) NOT NULL,
+  `id_factura_cabecera` bigint(20) NOT NULL,
+  `id_producto` bigint(20) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio_unitario` decimal(8,2) NOT NULL,
+  `precio_total` decimal(8,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -278,6 +325,17 @@ INSERT INTO `tipos_clientes` (`id`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tipos_comprobantes`
+--
+
+CREATE TABLE `tipos_comprobantes` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tipos_documentos`
 --
 
@@ -375,6 +433,18 @@ INSERT INTO `usuarios` (`id`, `id_perfil`, `id_tipo_documento`, `documento`, `us
 (5, 1, 0, 0, 'kyra', 'kyra', 'Kyra', 'Dog', '', '', '2019-06-08 19:27:57', 1, 0),
 (6, 1, 2, 123123123, 'user', 'user', 'Usuario', 'Prueba', 'user@mail.com', '123123', '2019-09-06 19:03:30', 1, 1);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventas`
+--
+
+CREATE TABLE `ventas` (
+  `id` int(11) NOT NULL,
+  `id_factura` bigint(20) NOT NULL,
+  `fecha_venta` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --
 -- Índices para tablas volcadas
 --
@@ -383,6 +453,24 @@ INSERT INTO `usuarios` (`id`, `id_perfil`, `id_tipo_documento`, `documento`, `us
 -- Indices de la tabla `clientes`
 --
 ALTER TABLE `clientes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `compras`
+--
+ALTER TABLE `compras`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `compras_facturas_cabecera`
+--
+ALTER TABLE `compras_facturas_cabecera`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `compras_facturas_cuerpo`
+--
+ALTER TABLE `compras_facturas_cuerpo`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -422,6 +510,12 @@ ALTER TABLE `tipos_clientes`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `tipos_comprobantes`
+--
+ALTER TABLE `tipos_comprobantes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `tipos_documentos`
 --
 ALTER TABLE `tipos_documentos`
@@ -446,6 +540,12 @@ ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -454,6 +554,24 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `clientes`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de la tabla `compras`
+--
+ALTER TABLE `compras`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `compras_facturas_cabecera`
+--
+ALTER TABLE `compras_facturas_cabecera`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `compras_facturas_cuerpo`
+--
+ALTER TABLE `compras_facturas_cuerpo`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -486,6 +604,12 @@ ALTER TABLE `tipos_clientes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT de la tabla `tipos_comprobantes`
+--
+ALTER TABLE `tipos_comprobantes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `tipos_documentos`
 --
 ALTER TABLE `tipos_documentos`
@@ -508,6 +632,12 @@ ALTER TABLE `tipos_productos`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
