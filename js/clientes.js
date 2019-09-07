@@ -12,8 +12,8 @@ var clientes =
         // Asigna los eventos de los tooltip.
         $('[data-toggle="tooltip"]').tooltip();
 
-        // Vuelve al listado de clientes.
-        $('.botonVolver').unbind('click').click(clientes.mostrarListado);
+        // Vuelve a la pantalla anterior.
+        $('.botonVolver').unbind('click').click((event) => clientes.mostrar($(event.currentTarget).data('pantalla')));
         
     /* Nuevo cliente */
         // Carga la pantalla para crear un nuevo cliente.
@@ -54,6 +54,12 @@ var clientes =
         $('#divListadoClientes').hide();
         $('#divNuevoCliente').hide();
         $('#divEditarCliente').hide();
+    },
+
+    mostrar : function(pantalla)
+    {
+        clientes.ocultarDivs();
+        $('#div' + pantalla + 'Clientes').fadeIn();
     },
 
     mostrarListado : function() 

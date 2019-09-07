@@ -12,8 +12,8 @@ var proveedores =
         // Asigna los eventos de los tooltip.
         $('[data-toggle="tooltip"]').tooltip();
 
-        // Vuelve al listado de proveedores.
-        $('.botonVolver').unbind('click').click(proveedores.mostrarListado);
+        // Vuelve a la pantalla anterior.
+        $('.botonVolver').unbind('click').click((event) => proveedores.mostrar($(event.currentTarget).data('pantalla')));
         
     /* Nuevo proveedor */
         // Carga la pantalla para crear un nuevo proveedor.
@@ -54,6 +54,12 @@ var proveedores =
         $('#divListadoProveedores').hide();
         $('#divNuevoProveedor').hide();
         $('#divEditarProveedor').hide();
+    },
+
+    mostrar : function(pantalla)
+    {
+        proveedores.ocultarDivs();
+        $('#div' + pantalla + 'Proveedores').fadeIn();
     },
 
     mostrarListado : function() 

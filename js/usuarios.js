@@ -12,8 +12,8 @@ var usuarios =
         // Asigna los eventos de los tooltip.
         $('[data-toggle="tooltip"]').tooltip();
 
-        // Vuelve al listado de usuarios.
-        $('.botonVolver').unbind('click').click(usuarios.mostrarListado);
+        // Vuelve a la pantalla anterior.
+        $('.botonVolver').unbind('click').click((event) => usuarios.mostrar($(event.currentTarget).data('pantalla')));
         
     /* Nuevo usuario */
         // Carga la pantalla para crear un nuevo usuario.
@@ -59,6 +59,12 @@ var usuarios =
         $('#divNuevoUsuario').hide();
         $('#divDetallesUsuario').hide();
         $('#divEditarUsuario').hide();
+    },
+
+    mostrar : function(pantalla)
+    {
+        usuarios.ocultarDivs();
+        $('#div' + pantalla + 'Usuarios').fadeIn();
     },
 
     mostrarListado : function() 

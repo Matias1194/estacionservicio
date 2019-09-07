@@ -114,7 +114,7 @@
 	                
 	                <!-- Volver al listado -->
 	                <div class="col-md-6 text-right">
-                        <button type="button" class="botonVolver btn btn-secondary mt-2">
+                        <button type="button" class="botonVolver btn btn-secondary mt-2" data-pantalla="Listado">
                             <span class="fa fa-chevron-left"></span> 
                             Volver
                         </button>
@@ -234,7 +234,7 @@
 	                
 	                <!-- Volver al listado -->
 	                <div class="col-md-6 text-right">
-                        <button type="button" class="botonVolver btn btn-secondary mt-2">
+                        <button type="button" class="botonVolver btn btn-secondary mt-2" data-pantalla="Listado">
                             <span class="fa fa-chevron-left"></span> 
                             Volver
                         </button>
