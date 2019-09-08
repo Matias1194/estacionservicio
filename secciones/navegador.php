@@ -45,12 +45,12 @@
             <?php if (isset($_SESSION['usuario'])) { ?>
                 <li class="nav-item dropdown">
                 <a href="javascript:void(0)" id="menuUsuario" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    <span class="fas fa-star"></span>
+                    <span class="fas fa-user-circle fa-lg"></span>
                     <?php echo $_SESSION['usuario']->usuario ?>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="menuUsuario">
                     <a href="javascript:void(0)" id="botonCerrarSesion" class="dropdown-item">
-                        Cerrar Sesión
+                        Salir
                         <span class="fas fa-sign-out-alt"></span>
                     </a>
                 </div>
@@ -59,7 +59,7 @@
             <li class="nav-item">
                 <a href="javascript:void(0)" class="nav-link" data-url="ingreso">
                     <span class="fas fa-sign-in-alt"></span>
-                    Iniciar Sesión
+                    Ingresar
                 </a>
             </li>
             <?php } ?>
