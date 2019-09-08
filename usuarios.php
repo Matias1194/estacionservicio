@@ -67,22 +67,19 @@
 	                        <thead>
 	                            <tr>
 	                                <th scope="col">
+	                                    Usuario
+	                                </th>
+	                                <th scope="col">
+	                                    Perfíl
+	                                </th>
+	                                <th scope="col">
 	                                    Nombres
 	                                </th>
 	                                <th scope="col">
 	                                    Apellidos
 	                                </th>
 	                                <th scope="col">
-	                                    Usuario
-	                                </th>
-	                                <th scope="col">
-	                                    Email
-	                                </th>
-	                                <th scope="col">
-	                                    Teléfono
-	                                </th>
-	                                <th scope="col">
-	                                    Fecha de Registro
+	                                    Registro
 	                                </th>
 	                                <th class="text-center" scope="col" colspan="4">
 	                                    Acciones
@@ -129,6 +126,35 @@
 	                <!-- Primera fila -->
 	                <div class="form-row">
 	                    
+	                    <!-- Perfíl -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                            Perfíl
+	                        </label>
+	                        <select id="comboTipoPerfilNuevo" class="form-control" name="id_perfil"> </select>
+	                    </div>
+
+	                	<!-- Usuario -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                           Usuario
+	                        </label>
+	                         <input type="text" class="form-control" name="usuario">
+	                    </div>
+
+                        <!-- Clave -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                           Clave
+	                        </label>
+	                         <input type="password" class="form-control" name="clave">
+	                    </div>
+	                    
+	                </div>
+
+	                <!-- Segunda fila -->
+	                <div class="form-row">
+
 	                    <!-- Nombres -->
 	                    <div class="form-group col-md-3">
 	                        <label>
@@ -143,27 +169,6 @@
 	                            Apellidos
 	                        </label>
 	                        <input type="text" class="form-control" name="apellidos">
-	                    </div>
-	                    
-	                </div>
-
-	                <!-- Segunda fila -->
-	                <div class="form-row">
-
-	                	<!-- Usuario -->
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                           Usuario
-	                        </label>
-	                         <input type="text" class="form-control" name="usuario">
-	                    </div>
-
-                        <!-- Clave -->
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                           Clave
-	                        </label>
-	                         <input type="password" class="form-control" name="clave">
 	                    </div>
 
 	                </div>
@@ -192,20 +197,20 @@
 	                <!-- Cuarta fila -->
 	                <div class="form-row">
 
-	                    <!-- E-mail -->
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                            E-mail
-	                        </label>
-	                        <input type="text" class="form-control" name="email">
-	                    </div>
-                    	
                     	<!-- Teléfono-->
 	                    <div class="form-group col-md-2">
 	                        <label>
 	                            Teléfono
 	                        </label>
 	                        <input type="text" class="form-control" name="telefono">
+	                    </div>
+                    	
+	                    <!-- E-mail -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            E-mail
+	                        </label>
+	                        <input type="text" class="form-control" name="email">
 	                    </div>
 
 	                </div>
@@ -249,6 +254,35 @@
 	                <!-- Primera fila -->
 	                <div class="form-row">
 	                    
+	                    <!-- Perfíl -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                            Perfíl
+	                        </label>
+	                        <select id="comboTipoPerfilEditar" class="form-control" name="id_perfil"> </select>
+	                    </div>
+
+	                	<!-- Usuario -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                           Usuario
+	                        </label>
+	                         <input type="text" class="form-control" name="usuario">
+	                    </div>
+
+                        <!-- Clave -->
+	                    <div class="form-group col-md-2">
+	                        <label>
+	                           Clave
+	                        </label>
+	                         <input type="password" class="form-control" name="clave">
+	                    </div>
+	                    
+	                </div>
+
+	                <!-- Segunda fila -->
+	                <div class="form-row">
+
 	                    <!-- Nombres -->
 	                    <div class="form-group col-md-3">
 	                        <label>
@@ -263,27 +297,6 @@
 	                            Apellidos
 	                        </label>
 	                        <input type="text" class="form-control" name="apellidos">
-	                    </div>
-	                    
-	                </div>
-
-	                <!-- Segunda fila -->
-	                <div class="form-row">
-
-	                	<!-- Usuario -->
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                           Usuario
-	                        </label>
-	                         <input type="text" class="form-control" name="usuario">
-	                    </div>
-
-                        <!-- Clave -->
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                           Clave
-	                        </label>
-	                         <input type="password" class="form-control" name="clave">
 	                    </div>
 
 	                </div>
@@ -312,20 +325,20 @@
 	                <!-- Cuarta fila -->
 	                <div class="form-row">
 
-	                    <!-- E-mail -->
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                            E-mail
-	                        </label>
-	                        <input type="text" class="form-control" name="email">
-	                    </div>
-                    	
                     	<!-- Teléfono-->
 	                    <div class="form-group col-md-2">
 	                        <label>
 	                            Teléfono
 	                        </label>
 	                        <input type="text" class="form-control" name="telefono">
+	                    </div>
+                    	
+	                    <!-- E-mail -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            E-mail
+	                        </label>
+	                        <input type="text" class="form-control" name="email">
 	                    </div>
 
 	                </div>

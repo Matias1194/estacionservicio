@@ -24,8 +24,10 @@
             //validarPermiso($conexion, $tabla, $accion, $respuesta, true);
             
             // Prepara la consulta.
-            $query = "SELECT usuarios.id, usuarios.nombres, usuarios.apellidos, usuarios.usuario, usuarios.email, usuarios.telefono, DATE_FORMAT(usuarios.fecha_registro, '%d/%m/%Y') as 'fecha_registro', usuarios.habilitado 
+            $query = "SELECT usuarios.id, usuarios.usuario, perfiles.descripcion as 'perfil', usuarios.nombres, usuarios.apellidos, DATE_FORMAT(usuarios.fecha_registro, '%d/%m/%Y') as 'fecha_registro', usuarios.habilitado 
                       FROM usuarios 
+                      INNER JOIN perfiles
+                        ON usuarios.id_perfil = perfiles.id
                       WHERE usuarios.eliminado = 0";
 
             // Consulta el listado de usuarios.
@@ -34,7 +36,7 @@
             // Si hubo error ejecutando la consulta.
             if($usuarios === false)
             {
-                $respuesta['descripcion'] = 'Ocurrió un error al buscar el listado de usuarios (L 38).';
+                $respuesta['descripcion'] = 'Ocurrió un error al buscar el listado de usuarios (L 39).';
             }
             // Si la consulta fue exitosa.
             else
@@ -88,21 +90,40 @@
 
             // Prepara la consulta.
             $query = "SELECT id, descripcion 
-                      FROM tipos_documentos";
+                      FROM perfiles
+                      WHERE habilitado = 1";
 
-            // Consulta los tipos de documentos habilitados.
-            $tipos_documentos = consultar_listado($conexion, $query);
+            // Consulta los perfiles habilitados.
+            $tipos_perfiles = consultar_listado($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
-            if($tipos_documentos === false)
+            if($tipos_perfiles === false)
             {
-                $respuesta['descripcion'] = 'Ocurrió un error al buscar los tipos de tipos_documentos (L 101).';
+                $respuesta['descripcion'] = 'Ocurrió un error al buscar los perfiles (L 101).';
             }
             // Si la consulta fue exitosa.
             else
             {
-                $respuesta['exito'] = true;
-                $respuesta['tipos_documentos'] = $tipos_documentos;
+                // Prepara la consulta.
+                $query = "SELECT id, descripcion 
+                          FROM tipos_documentos
+                          WHERE habilitado = 1";
+
+                // Consulta los tipos de documentos habilitados.
+                $tipos_documentos = consultar_listado($conexion, $query);
+
+                // Si hubo error ejecutando la consulta.
+                if($tipos_documentos === false)
+                {
+                    $respuesta['descripcion'] = 'Ocurrió un error al buscar los tipos de tipos_documentos (L 116).';
+                }
+                // Si la consulta fue exitosa.
+                else
+                {
+                    $respuesta['exito'] = true;
+                    $respuesta['tipos_perfiles'] = $tipos_perfiles;
+                    $respuesta['tipos_documentos'] = $tipos_documentos;
+                }
             }
         }
 
@@ -139,7 +160,7 @@
                 $query = "INSERT INTO usuarios (id_perfil, usuario, clave, nombres, apellidos, id_tipo_documento, documento, email, telefono) "
                            . "VALUES"
                            . "("
-                                      . 1 . ", "
+                                      . $usuario['id_perfil'] . ", "
                                 . "'" . $usuario['usuario'] . "', "
                                 . "'" . $usuario['clave'] . "', "
                                 . "'" . $usuario['nombres'] . "', "
@@ -198,22 +219,41 @@
             {
                 // Prepara la consulta.
                 $query = "SELECT id, descripcion 
-                          FROM tipos_documentos";
+                          FROM perfiles
+                          WHERE habilitado = 1";
 
-                // Consulta los tipos de documentos habilitados.
-                $tipos_documentos = consultar_listado($conexion, $query);
+                // Consulta los perfiles habilitados.
+                $tipos_perfiles = consultar_listado($conexion, $query);
 
                 // Si hubo error ejecutando la consulta.
-                if($tipos_documentos === false)
+                if($tipos_perfiles === false)
                 {
-                    $respuesta['descripcion'] = 'Ocurrió un error al buscar los tipos de documentos (L 207).';
+                    $respuesta['descripcion'] = 'Ocurrió un error al buscar los perfiles (L 231).';
                 }
                 // Si la consulta fue exitosa.
                 else
                 {
-                    $respuesta['exito'] = true;
-                    $respuesta['usuario'] = $usuario;
-                    $respuesta['tipos_documentos'] = $tipos_documentos;
+                    // Prepara la consulta.
+                    $query = "SELECT id, descripcion 
+                              FROM tipos_documentos
+                              WHERE habilitado = 1";
+
+                    // Consulta los tipos de documentos habilitados.
+                    $tipos_documentos = consultar_listado($conexion, $query);
+
+                    // Si hubo error ejecutando la consulta.
+                    if($tipos_documentos === false)
+                    {
+                        $respuesta['descripcion'] = 'Ocurrió un error al buscar los tipos de documentos (L 207).';
+                    }
+                    // Si la consulta fue exitosa.
+                    else
+                    {
+                        $respuesta['exito'] = true;
+                        $respuesta['usuario'] = $usuario;
+                        $respuesta['tipos_perfiles'] = $tipos_perfiles;
+                        $respuesta['tipos_documentos'] = $tipos_documentos;
+                    }
                 }
             }
         }
@@ -273,7 +313,7 @@
                     {
                         // Prepara la consulta.
                         $query = "UPDATE usuarios 
-                                  SET id_perfil = " . 1 . ", 
+                                  SET id_perfil = " . $usuario['id_perfil'] . ", 
                                   usuario = '" . $usuario['usuario'] . "', 
                                   nombres = '" . $usuario['nombres'] . "', 
                                   apellidos = '" . $usuario['apellidos'] . ", '
@@ -289,7 +329,7 @@
                         // Si hubo error ejecutando la consulta.
                         if($resultado === false)
                         {
-                            $respuesta['descripcion'] = 'Ocrrió un error al editar usuario (L 286).';
+                            $respuesta['descripcion'] = 'Ocrrió un error al editar usuario (L 332).';
                         }
                         // Si la consulta fue exitosa.
                         else
@@ -304,7 +344,7 @@
                 {
                     // Prepara la consulta.
                     $query = "UPDATE usuarios 
-                                  SET id_perfil = " . 1 . ", 
+                                  SET id_perfil = " . $usuario['id_perfil'] . ", 
                                   usuario = '" . $usuario['usuario'] . "', 
                                   nombres = '" . $usuario['nombres'] . "', 
                                   apellidos = '" . $usuario['apellidos'] . "' , 
@@ -320,7 +360,7 @@
                     // Si hubo error ejecutando la consulta.
                     if($resultado === false)
                     {
-                        $respuesta['descripcion'] = 'Ocrrió un error al editar usuario (L 313).';
+                        $respuesta['descripcion'] = 'Ocrrió un error al editar usuario (L 363).';
                     }
                     // Si la consulta fue exitosa.
                     else

@@ -112,7 +112,7 @@ var usuarios =
                         .append($('<td>')
                             .append("No se encontraron registros.")
                             .attr('class', 'text-center')
-                            .attr('colspan', 7)
+                            .attr('colspan', 6)
                         )
                     );
             }
@@ -128,19 +128,16 @@ var usuarios =
                         .find('tbody')
                         .append($('<tr>')
                             .append($('<td>')
+                                .append(usuario.usuario)
+                            )
+                            .append($('<td>')
+                                .append(usuario.perfil)
+                            )
+                            .append($('<td>')
                                 .append(usuario.nombres)
                             )
                             .append($('<td>')
                                 .append(usuario.apellidos)
-                            )
-                            .append($('<td>')
-                                .append(usuario.usuario)
-                            )
-                            .append($('<td>')
-                                .append(usuario.email)
-                            )
-                            .append($('<td>')
-                                .append(usuario.telefono)
                             )
                             .append($('<td>')
                                 .append(usuario.fecha_registro)
@@ -238,7 +235,8 @@ var usuarios =
                 id : id
             };
             
-            bd.enviar(datos, usuarios.tabla, usuarios.buscar.detallesExito);
+            alertas.advertencia("En desarrollo");
+            //bd.enviar(datos, usuarios.tabla, usuarios.buscar.detallesExito);
         },
 
         detallesExito : function(respuesta)
@@ -275,11 +273,19 @@ var usuarios =
         buscarExito : function(respuesta)
         {
             // lLeno combo Tipo Perfil.
+            var comboTipoPerfil = $('#comboTipoPerfilNuevo').html("");
+            $(comboTipoPerfil).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
+            $.each(respuesta.tipos_perfiles, function(i, opcion)
+            {
+                $(comboTipoPerfil).append($("<option>").val(opcion.id).html(opcion.descripcion));
+            });
+
+            // lLeno combo Tipo Documento.
             var comboTipoDocumento = $('#comboTipoDocumentoNuevo').html("");
             $(comboTipoDocumento).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
-            $.each(respuesta.tipos_documentos, function(i, tipo_documento)
+            $.each(respuesta.tipos_documentos, function(i, opcion)
             {
-                $(comboTipoDocumento).append($("<option>").val(tipo_documento.id).html(tipo_documento.descripcion));
+                $(comboTipoDocumento).append($("<option>").val(opcion.id).html(opcion.descripcion));
             });
 
             // Borro los datos en los campos.
@@ -351,6 +357,13 @@ var usuarios =
         buscarExito : function(respuesta)
         {
             // lLeno combo Tipo Perfil.
+            var comboTipoPerfil = $('#comboTipoPerfilEditar').html("");
+            $.each(respuesta.tipos_perfiles, function(i, opcion)
+            {
+                $(comboTipoPerfil).append($("<option>").val(opcion.id).html(opcion.descripcion));
+            });
+
+            // lLeno combo Tipo Documento.
             var comboTipoDocumento = $('#comboTipoDocumentoEditar').html("");
             $.each(respuesta.tipos_documentos, function(i, opcion)
             {
