@@ -45,7 +45,7 @@
                     <div class="col-sm-6 text-right">
                         <button type="button" id="botonNuevoUsuario" class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Nuevo Usuario">
                             <span class="fa fa-plus"></span>
-                            <span class="fa fa-user"></span>
+                            <span class="fa fa-user fa-lg"></span>
                         </button>
                     </div>
 	            	<?php //} ?>

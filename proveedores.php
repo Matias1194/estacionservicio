@@ -45,7 +45,7 @@
                     <div class="col-sm-6 text-right">
                         <button type="button" id="botonNuevoProveedor" class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Nuevo Proveedor">
                             <span class="fa fa-plus"></span>
-                            <span class="fa fa-parachute-box"></span>
+                            <span class="fa fa-parachute-box fa-lg"></span>
                         </button>
                     </div>
 	            	<?php //} ?>

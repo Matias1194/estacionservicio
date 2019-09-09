@@ -242,19 +242,19 @@
 
 	                    <form class="form-inline">
 							
-							<div class="form-group col-md-4 mb-2">
+							<div class="form-group mb-2">
 								<select id="comboProductosNueva" class="form-control" name="id_producto"></select> 
 							</div>
 
-							<div class="form-group col-md-2 mb-2">
-								<input type="number" id="campoCantidadNueva" class="form-control-plaintext" name="cantidad" min="0" placeholder="Cantidad">
+							<div class="form-group mx-sm-3 mb-2">
+								<input type="number" id="campoCantidadNueva" class="form-control" name="cantidad" min="0" placeholder="Cantidad">
 							</div>
 
-							<div class="form-group col-md-2 mb-2">
-								<input type="number" id="campoPrecioNueva" class="form-control-plaintext" name="precio_unitario" min="0" placeholder="Precio unitario">
+							<div class="form-group mb-2">
+								<input type="number" id="campoPrecioNueva" class="form-control" name="precio_unitario" min="0" placeholder="Precio unitario">
 							</div>
 							
-							<button type="button" id="botonAgregarProductoNueva" class="btn btn-primary mb-2" data-toggle="tooltip" data-placement="top" title="Agregar Producto">
+							<button type="button" id="botonAgregarProductoNueva" class="btn btn-primary mx-sm-3 mb-2" data-toggle="tooltip" data-placement="top" title="Agregar Producto">
 			                    <span class="fas fa-cart-plus"></span>
 			                </button>
 
