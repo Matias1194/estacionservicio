@@ -65,7 +65,7 @@
 			</div>
 
 			<!-- Listado de compras-->
-			<div id="listado">
+			<div id="listado" style="display:none">
 
 	            <div class="row mt-5">
 	                
@@ -126,7 +126,7 @@
 	        </div>
 
 	        <!-- Nueva compra -->
-	        <div id="nueva">
+	        <div id="nueva" style="display:none">
 	            
 				<!-- Encabezado -->
 	            <div class="row mt-5">
@@ -155,6 +155,19 @@
 	                
 	            	<!-- Cabecera de la compra -->
 
+					<!-- Primera fila -->
+	                <div class="form-row">
+
+	                	<!-- Detalle -->
+	                	<div class="form-group col-md-6">
+	                        <label>
+	                            Detalle
+	                        </label>
+	                        <input type="text" class="form-control" name="detalle" required></select> 
+	                    </div>
+
+					</div>
+
 	                <!-- Primera fila -->
 	                <div class="form-row">
 
@@ -163,7 +176,7 @@
 	                        <label>
 	                            Proveedor
 	                        </label>
-	                        <select id="comboProveedoresNueva" class="form-control" name="id_proveedor"></select> 
+	                        <select class="form-control" name="id_proveedor" required></select> 
 	                    </div>
 
 	                    <!-- Tipo Comprobante -->
@@ -171,7 +184,7 @@
 	                        <label>
 	                            Tipo Comprobante
 	                        </label>
-	                        <select id="comboTipoComprobanteNueva" class="form-control" name="id_tipo_comprobante"></select> 
+	                        <select class="form-control" name="id_tipo_comprobante" required></select> 
 	                    </div>
 
 	                    <!-- N° de Factura -->
@@ -179,7 +192,7 @@
 	                        <label>
 	                            N° de Factura
 	                        </label>
-	                        <input type="number" class="form-control" name="numero_factura" min="0">
+	                        <input type="number" class="form-control" name="numero_factura" min="0" required>
 	                    </div>
 
 	                </div>
@@ -192,7 +205,7 @@
 	                        <label>
 	                        	Nº Orden de compra
 	                        </label>
-	                        <input type="number" class="form-control" name="orden_compra_numero" min="0">
+	                        <input type="number" class="form-control" name="orden_compra_numero" min="0" required>
 	                    </div>
 
 	                    <!-- Fecha Orden de compra -->
@@ -200,7 +213,7 @@
 	                        <label>
 	                        	Fecha Orden de compra
 	                        </label>
-	                        <input type="text" class="form-control" name="orden_compra_fecha">
+	                        <input type="text" class="form-control" name="orden_compra_fecha" required>
 	                    </div>
 	                    
 	                </div>
@@ -213,7 +226,7 @@
 	                        <label>
 	                        	Gastos de envío
 	                        </label>
-	                         <input type="number" class="form-control" name="gastos_envio" min="0" step=".01">
+	                         <input type="number" class="form-control" name="gastos_envio" min="0" step=".01" required>
 	                    </div>
 
                         <!-- % de IVA en gastos de envío-->
@@ -221,112 +234,112 @@
 	                        <label>
 	                        	% IVA Gastos de envío
 	                        </label>
-	                        <input type="number" class="form-control" name="gastos_envio_iva" min="0" max="100" step=".01">
+	                        <input type="number" class="form-control" name="gastos_envio_iva" min="0" max="100" step=".01" required>
 	                    </div>
 
 	                    <!-- Impuestos en gastos de envío -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                        	Impuestos Gatos de envío
+	                        	Impuestos Gastos de envío
 	                        </label>
-	                        <input type="number" class="form-control" name="gastos_envio_impuestos" min="0" step=".01">
+	                        <input type="number" class="form-control" name="gastos_envio_impuestos" min="0" step=".01" required>
 	                    </div>
 
 	                </div>
-				</form>
 
-				<hr>
+					<hr>
 
-				<!-- Cuerpo de la compra -->
-				<div id="divAgregarProductoNueva" class="form-inline">
+					<!-- Cuerpo de la compra -->
+					<div id="divAgregarProductoNueva" class="form-inline">
 
-					<form class="form-inline">
-						
-						<!-- Producto -->
-						<div class="form-group mb-2">
-							<select class="form-control" name="id_producto"></select> 
-						</div>
-						
-						<!-- Cantidad -->
-						<div class="form-group mx-sm-3 mb-2">
-							<input type="number" class="form-control" name="cantidad" min="0" step=".01" placeholder="Cantidad">
-						</div>
-
-						<!-- Precio unitario-->
-						<div class="form-group mb-2">
-							<input type="number" class="form-control" name="precio_unitario" min="0" step=".01" placeholder="Precio unitario">
-						</div>
-						
-						<!-- Botón agregar producto -->
-						<button class="btn btn-primary mx-sm-3 mb-2" data-toggle="tooltip" data-placement="top" title="Agregar Producto">
-							<span class="fas fa-cart-plus"></span>
-						</button>
-
-					</form>
-
-				</div>
-
-				<!-- Productos agregados -->
-				<div id="divProductosAgregadosNueva">
-					
-					<div class="mt-4">
-
-						<!-- Tabla Subtotales -->
-						<div class="table-responsive-xl">
+						<form class="form-inline">
 							
-							<table class="table table-striped table-dark">
+							<!-- Producto -->
+							<div class="form-group mb-2">
+								<select class="form-control" name="id_producto"></select> 
+							</div>
+							
+							<!-- Cantidad -->
+							<div class="form-group mx-sm-3 mb-2">
+								<input type="number" class="form-control" name="cantidad" min="0" step=".01" placeholder="Cantidad">
+							</div>
+
+							<!-- Precio unitario-->
+							<div class="form-group mb-2">
+								<input type="number" class="form-control" name="precio_unitario" min="0" step=".01" placeholder="Precio unitario">
+							</div>
+							
+							<!-- Botón agregar producto -->
+							<button type="button" class="btn btn-primary mx-sm-3 mb-2" name="agregar-producto" data-toggle="tooltip" data-placement="top" title="Agregar Producto">
+								<span class="fas fa-cart-plus"></span>
+							</button>
+
+						</form>
+
+					</div>
+
+					<!-- Productos agregados -->
+					<div id="divProductosAgregadosNueva">
+						
+						<div class="mt-4">
+
+							<!-- Tabla Subtotales -->
+							<div class="table-responsive-xl">
 								
-								<thead>
-									<tr>
-										<th scope="col">
-											Codigo
-										</th>
-										<th scope="col">
-											Descripción
-										</th>
-										<th scope="col">
-											Cantidad
-										</th>
-										<th scope="col">
-											Precio Unitario
-										</th>
-										<th scope="col">
-											Precio Total
-										</th>
-										<th class="text-center" scope="col" colspan="4">
-											Acciones
-										</th>
-									</tr>
-								</thead>
+								<table class="table table-striped table-dark">
+									
+									<thead>
+										<tr>
+											<th scope="col">
+												Codigo
+											</th>
+											<th scope="col">
+												Descripción
+											</th>
+											<th scope="col">
+												Cantidad
+											</th>
+											<th scope="col">
+												Precio Unitario
+											</th>
+											<th scope="col">
+												Precio Total
+											</th>
+											<th class="text-center" scope="col" colspan="4">
+												Acciones
+											</th>
+										</tr>
+									</thead>
 
-								<tbody>
-									<tr>
-										<td class="text-center" colspan="6">
-											No se ingresaron productos
-										</td>
-									</tr>
-								</tbody>
-							
-							</table>
+									<tbody>
+										<tr>
+											<td class="text-center" colspan="6">
+												No se ingresaron productos
+											</td>
+										</tr>
+									</tbody>
+								
+								</table>
 
-							Total: $
+								Total: $
+
+							</div>
 
 						</div>
 
 					</div>
 
-				</div>
-
-				<!-- Botón confirmar -->
-				<button class="btn btn-primary mt-3" name="confirmar">
-					<span class="fa fa-check"></span> 
-					Confirmar Compra
-				</button>
+					<!-- Botón confirmar -->
+					<button type="button" class="btn btn-primary mt-3" name="confirmar">
+						<span class="fa fa-check"></span> 
+						Confirmar Compra
+					</button>
+				</form>
 
 	        </div>
 
 	        <!-- Editar compra -->
-	        <div id="editar">
+	        <div id="editar" style="display:none">
 	        	
 	        	<div class="row mt-5">
 	                
@@ -424,7 +437,7 @@
 	                    <!-- Impuestos en gastos de envío -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                        	Impuestos Gatos de envio
+	                        	Impuestos Gastos de envio
 	                        </label>
 	                        <input type="text" class="form-control" name="gastos_envio_impuestos">
 	                    </div>

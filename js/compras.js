@@ -39,6 +39,8 @@ var compras =
     // Inicio.
     inicio : 
     {
+        $div : null,
+
         inicializar : function()
         {
             this.asignarEventos();
@@ -47,37 +49,39 @@ var compras =
 
         asignarEventos : function() 
         {
+            this.$div = $('#inicio');
+
+            // Desasignar eventos.
+            this.$div.find('button').unbind('click');
+
             // Cargar el listado de compras.
-            $('#inicio').find('button[name="consultar"]').unbind('click').click(compras.listado.inicializar);
+            this.$div.find('button[name="consultar"]').click(() => compras.listado.buscar());
 
             // Carga la pantalla para crear un nueva compra.
-            $('#inicio').find('button[name="nueva"]').unbind('click').click(compras.nueva.buscar);
+            this.$div.find('button[name="nueva"]').click(() => compras.nueva.buscar());
         },
 
-        mostrar : () =>
+        mostrar : function()
         {
             compras.ocultarPantallas();
-            $('#inicio').fadeIn();
+            this.$div.fadeIn();
         }
     },
 
     // Buscar Listado.
     listado : 
     {
-        $div : $('#listado'),
-
-        inicializar : function()
-        {
-            this.buscar();
-        },
+        $div : null,
 
         asignarEventos : function()
         {
+            this.$div = $('#listado');
+
             // Desasignar eventos.
             this.$div.find('button').unbind('click');
 
             // Vuelve a la pantalla anterior.
-            this.$div.find('button[name="volver"]').click(compras.inicio.inicializar);
+            this.$div.find('button[name="volver"]').click(() => compras.inicio.mostrar());
 
             // Editar.
             this.$div.find('button[name="editar"]').click((e) => compras.editar.buscar($(e.currentTarget).closest('tr').data('id')));
@@ -90,7 +94,6 @@ var compras =
 
             // Habilitar.
             this.$div.find('button[name="habilitar"]').click((e) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => compras.habilitar.confirmar($(e.currentTarget).closest('tr').data('id'))));
-
         },
 
         mostrar : function()
@@ -105,7 +108,7 @@ var compras =
             var datos = {
                 accion : 'buscar_listado'
             };
-    
+            
             // Envía los datos.
             bd.enviar(datos, compras.modulo, (respuesta) => 
             {
@@ -241,21 +244,32 @@ var compras =
     // Nueva compra.
     nueva :
     {
-        $div : $('#nueva'),
+        $div : null,
 
         asignarEventos : function()
         {
+            this.$div = $('#nueva');
+
             // Desasignar eventos.
             this.$div.find('button').unbind('click');
 
+            // Vuelve a la pantalla anterior.
+            this.$div.find('button[name="volver"]').click(() => compras.inicio.mostrar());
+
             // Agregar Producto.
-            this.$div.find('button[name="agregar-producto"]').click(this.agregarProducto);
+            this.$div.find('button[name="agregar-producto"]').click(() => this.agregarProducto());
 
             // Eliminar Producto.
             this.$div.find('button[name="eliminar-producto"]').click(() => compras.nueva.eliminarProducto()); //(event) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => compras.nueva.eliminarProducto($(event.currentTarget).closest('tr'))));
 
             // Confirmar nueva compra.
-            this.$div.find('button[name="confirmar"]').click(this.nueva.confirmar);
+            this.$div.find('button[name="confirmar"]').click(() => this.confirmar());
+        },
+
+        mostrar : function()
+        {
+            compras.ocultarPantallas();
+            this.$div.fadeIn();
         },
 
         // Buscar información para crear compra.
@@ -269,8 +283,9 @@ var compras =
             // Envía los datos.
             bd.enviar(datos, compras.modulo, function(respuesta)
             {
+                var $formulario = $('#nueva').find('form:first');
                 // lLeno combo Proveedores.
-                var comboProveedores = $('#comboProveedoresNueva').html("");
+                var comboProveedores = $formulario.find('select[name="id_proveedor"]').html("");
                 $(comboProveedores).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
                 
                 $.each(respuesta.proveedores, function(i, proveedor)
@@ -279,7 +294,7 @@ var compras =
                 });
 
                 // lLeno combo Tipo Comprobante.
-                var comboTipoComprobante = $('#comboTipoComprobanteNueva').html("");
+                var comboTipoComprobante = $formulario.find('select[name="id_tipo_comprobante"]').html("");
                 $(comboTipoComprobante).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
                 
                 $.each(respuesta.tipos_comprobantes, function(i, tipo_comprobante)
@@ -288,7 +303,7 @@ var compras =
                 });
 
                 // lLeno combo Tipo Comprobante.
-                var comboProductos = $('#comboProductosNueva').html("");
+                var comboProductos = $formulario.find('select[name="id_producto"]').html("");
                 $(comboProductos).append($('<option>').html("Producto").val("").attr({'disabled': true, 'selected': true}));
                 
                 $.each(respuesta.productos, function(i, producto)
@@ -299,8 +314,8 @@ var compras =
                 // Borro los datos en los campos.
                 $('#nueva form').find('input:not([readonly])').val("");
                 
-                this.asignarEventos();
-                this.mostrar();
+                compras.nueva.asignarEventos();
+                compras.nueva.mostrar();
             });
         },
 
@@ -340,7 +355,7 @@ var compras =
                             .append(producto.id_producto)
                         )
                         .append($('<td>')
-                            .append($('#comboProductosNueva :selected').html())
+                            .append($('select[name="id_producto"] :selected').html())
                         )
                         .append($('<td>')
                             .append(producto.cantidad)
@@ -408,14 +423,17 @@ var compras =
         {
             var datos = 
             {
-                accion: 'nueva_confirmar',
-                compra: {}
+                accion : 'nueva_confirmar',
+                compra : {
+                    cabecera : {},
+                    cuerpo: {}
+                }
             };
             
             var mensajeError = "";
             var funcionCerrar;
 
-            $.each($('#nueva form').find('input:not([readonly]), select'), function(i, campo) 
+            $.each($('#nueva form').find('input:required, select:required'), function(i, campo) 
             {
                 if(!$(campo).val()) 
                 {
@@ -433,7 +451,7 @@ var compras =
                     return false;
                 }
 
-                datos.compra[$(campo).attr('name')] = $(campo).val();
+                datos.compra.cabecera[$(campo).attr('name')] = $(campo).val();
             });
 
             if(mensajeError != "")
@@ -441,10 +459,12 @@ var compras =
                 alertas.advertencia(mensajeError, '', funcionCerrar);
                 return;
             }
+            
+            datos.compra.cuerpo = compras.nueva.productos;
 
-            //bd.enviar(datos, compras.modulo, compras.nueva.confirmarExito);
             console.log(datos);
-            alertas.advertencia("En desarrollo");
+            
+            bd.enviar(datos, compras.modulo, compras.nueva.confirmarExito);         
         },
 
         confirmarExito : function(respuesta)

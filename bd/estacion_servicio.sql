@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-09-2019 a las 17:43:53
--- Versión del servidor: 10.4.6-MariaDB
--- Versión de PHP: 7.1.31
+-- Tiempo de generación: 11-09-2019 a las 01:35:17
+-- Versión del servidor: 10.1.38-MariaDB
+-- Versión de PHP: 7.3.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -36,8 +36,8 @@ CREATE TABLE `clientes` (
   `domicilio` varchar(50) NOT NULL,
   `telefono` varchar(12) NOT NULL,
   `email` varchar(50) NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1,
-  `eliminado` tinyint(1) NOT NULL DEFAULT 0
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -55,11 +55,35 @@ INSERT INTO `clientes` (`id`, `id_tipo_cliente`, `razon_social`, `cuit`, `domici
 
 CREATE TABLE `compras` (
   `id` bigint(20) NOT NULL,
-  `id_factura_cabecera` bigint(20) NOT NULL,
   `detalle` varchar(200) NOT NULL,
-  `fecha_compra` datetime NOT NULL DEFAULT current_timestamp(),
-  `eliminado` tinyint(1) NOT NULL DEFAULT 0
+  `fecha_compra` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `compras`
+--
+
+INSERT INTO `compras` (`id`, `detalle`, `fecha_compra`, `eliminado`) VALUES
+(1, '', '2019-09-10 19:59:51', 0),
+(2, 'Compra de cigarrillos', '2019-09-10 20:01:56', 0),
+(3, 'Aguas minerales', '2019-09-10 20:11:31', 0),
+(4, 'ASD', '2019-09-10 20:20:47', 0),
+(5, 'ASd', '2019-09-10 20:23:07', 0),
+(6, 'Bebidas', '2019-09-10 20:24:17', 0),
+(7, 'Bebidas', '2019-09-10 20:26:02', 0),
+(8, 'Bebidas', '2019-09-10 20:26:29', 0),
+(9, 'Bebidas', '2019-09-10 20:26:49', 0),
+(10, 'Bebidas', '2019-09-10 20:29:05', 0),
+(11, 'Bebidas', '2019-09-10 20:30:08', 0),
+(12, 'Bebidas', '2019-09-10 20:30:16', 0),
+(13, 'Bebidas', '2019-09-10 20:30:55', 0),
+(14, 'Bebidas', '2019-09-10 20:32:19', 0),
+(15, 'Bebidas', '2019-09-10 20:33:01', 0),
+(16, 'Bebidas', '2019-09-10 20:33:26', 0),
+(17, 'Bebidas', '2019-09-10 20:33:46', 0),
+(18, 'Bebidas', '2019-09-10 20:33:58', 0),
+(19, 'Bebidas', '2019-09-10 20:34:32', 0);
 
 -- --------------------------------------------------------
 
@@ -77,8 +101,24 @@ CREATE TABLE `compras_facturas_cabecera` (
   `orden_compra_fecha` datetime NOT NULL,
   `gastos_envio` int(11) NOT NULL,
   `gastos_envio_iva` int(11) NOT NULL,
-  `gastos envio_impuestos` int(11) NOT NULL
+  `gastos_envio_impuestos` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `compras_facturas_cabecera`
+--
+
+INSERT INTO `compras_facturas_cabecera` (`id`, `id_compra`, `id_proveedor`, `id_tipo_comprobante`, `numero_factura`, `orden_compra_numero`, `orden_compra_fecha`, `gastos_envio`, `gastos_envio_iva`, `gastos_envio_impuestos`) VALUES
+(1, 9, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12),
+(2, 11, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12),
+(3, 12, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12),
+(4, 13, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12),
+(5, 14, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12),
+(6, 15, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12),
+(7, 16, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12),
+(8, 17, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12),
+(9, 18, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12),
+(10, 19, 2, 1, 1, 1, '2019-10-10 00:00:00', 100, 21, 12);
 
 -- --------------------------------------------------------
 
@@ -95,6 +135,16 @@ CREATE TABLE `compras_facturas_cuerpo` (
   `precio_total` decimal(8,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `compras_facturas_cuerpo`
+--
+
+INSERT INTO `compras_facturas_cuerpo` (`id`, `id_factura_cabecera`, `id_producto`, `cantidad`, `precio_unitario`, `precio_total`) VALUES
+(1, 9, 1, 100, '10.00', '100'),
+(2, 9, 2, 200, '50.00', '100'),
+(3, 10, 1, 100, '10.00', '100'),
+(4, 10, 2, 200, '50.00', '100');
+
 -- --------------------------------------------------------
 
 --
@@ -104,7 +154,7 @@ CREATE TABLE `compras_facturas_cuerpo` (
 CREATE TABLE `perfiles` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -127,7 +177,7 @@ INSERT INTO `perfiles` (`id`, `descripcion`, `habilitado`) VALUES
 CREATE TABLE `perfiles_permisos` (
   `id_perfil` int(11) NOT NULL,
   `id_permiso` int(11) NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -203,7 +253,7 @@ INSERT INTO `perfiles_permisos` (`id_perfil`, `id_permiso`, `habilitado`) VALUES
 CREATE TABLE `permisos` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -249,9 +299,9 @@ CREATE TABLE `productos` (
   `id_tipo_producto` int(11) NOT NULL,
   `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `precio` decimal(10,0) NOT NULL,
-  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1,
-  `eliminado` tinyint(1) NOT NULL DEFAULT 0
+  `fecha_registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -287,10 +337,10 @@ CREATE TABLE `proveedores` (
   `calle` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `telefono` int(11) NOT NULL,
-  `fecha_modificacion` datetime DEFAULT NULL ON UPDATE current_timestamp(),
-  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
-  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
-  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+  `fecha_modificacion` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT '1',
+  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -332,7 +382,7 @@ INSERT INTO `tipos_clientes` (`id`, `descripcion`) VALUES
 CREATE TABLE `tipos_comprobantes` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(50) NOT NULL,
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -353,7 +403,7 @@ INSERT INTO `tipos_comprobantes` (`id`, `descripcion`, `habilitado`) VALUES
 CREATE TABLE `tipos_documentos` (
   `id` int(11) NOT NULL,
   `descripcion` varchar(50) NOT NULL,
-  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -377,7 +427,7 @@ INSERT INTO `tipos_documentos` (`id`, `descripcion`, `habilitado`) VALUES
 CREATE TABLE `tipos_pagos` (
   `id` int(10) UNSIGNED NOT NULL,
   `descripcion` varchar(50) NOT NULL,
-  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -427,9 +477,9 @@ CREATE TABLE `usuarios` (
   `apellidos` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `email` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
   `telefono` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
-  `habilitado` tinyint(1) NOT NULL DEFAULT 1,
-  `eliminado` tinyint(1) NOT NULL DEFAULT 0
+  `fecha_registro` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `habilitado` tinyint(1) NOT NULL DEFAULT '1',
+  `eliminado` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -571,19 +621,19 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `compras`
 --
 ALTER TABLE `compras`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT de la tabla `compras_facturas_cabecera`
 --
 ALTER TABLE `compras_facturas_cabecera`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `compras_facturas_cuerpo`
 --
 ALTER TABLE `compras_facturas_cuerpo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
