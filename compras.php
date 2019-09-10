@@ -29,7 +29,7 @@
 		<main role="main" class="container">
 			
 			<!-- Inicio -->
-			<div id="divInicioCompras">
+			<div id="inicio">
 				
 				<div class="row mt-5">
 	                
@@ -46,7 +46,7 @@
 	            
 	                <!-- Botón Consultar Compras -->
                     <div class="col-sm-3 text-center">
-                        <button type="button" id="botonConsultarCompras" class="btn btn-lg btn-primary mt-2">
+                        <button class="btn btn-lg btn-primary mt-2" name="consultar">
                             <span class="fa fa-search"></span>
                             Consultar
                         </button>
@@ -54,7 +54,7 @@
 
                     <!-- Botón Nueva Compra -->
                     <div class="col-sm-3 text-center">
-                        <button type="button" id="botonNuevaCompra" class="btn btn-lg btn-primary mt-2">
+                        <button class="btn btn-lg btn-primary mt-2" name="nueva">
                             <span class="fa fa-shopping-cart"></span>
                             Nueva Compra
                         </button>
@@ -64,8 +64,8 @@
 
 			</div>
 
-			<!-- Listado de Compras -->
-			<div id="divListadoCompras" style="display: none;">
+			<!-- Listado de compras-->
+			<div id="listado">
 
 	            <div class="row mt-5">
 	                
@@ -78,7 +78,7 @@
 
 	                <!-- Volver al listado -->
 	                <div class="col-md-6 text-right">
-                        <button type="button" class="botonVolver btn btn-secondary mt-2" data-pantalla="Inicio">
+                        <button class="btn btn-secondary mt-2" name="volver" data-pantalla="inicio">
                             <span class="fa fa-chevron-left"></span> 
                             Volver
                         </button>
@@ -125,9 +125,10 @@
 
 	        </div>
 
-	        <!-- Nueva Compra -->
-	        <div id="divNuevaCompra" style="display: none;">
+	        <!-- Nueva compra -->
+	        <div id="nueva">
 	            
+				<!-- Encabezado -->
 	            <div class="row mt-5">
 
 	            	<!-- Título -->
@@ -137,9 +138,9 @@
 	                    </h1>
 	                </div>
 	                
-	                <!-- Volver al listado -->
+	                <!-- Botón volver -->
 	                <div class="col-md-6 text-right">
-                        <button type="button" class="botonVolver btn btn-secondary mt-2" data-pantalla="Inicio">
+                        <button class="btn btn-secondary mt-2" name="volver" data-pantalla="inicio">
                             <span class="fa fa-chevron-left"></span> 
                             Volver
                         </button>
@@ -212,116 +213,120 @@
 	                        <label>
 	                        	Gastos de envío
 	                        </label>
-	                         <input type="number" class="form-control" name="gastos_envio" min="0">
+	                         <input type="number" class="form-control" name="gastos_envio" min="0" step=".01">
 	                    </div>
 
                         <!-- % de IVA en gastos de envío-->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                        	% IVA Gastos de envio
+	                        	% IVA Gastos de envío
 	                        </label>
-	                        <input type="number" class="form-control" name="gastos_envio_iva" min="0" max="100">
+	                        <input type="number" class="form-control" name="gastos_envio_iva" min="0" max="100" step=".01">
 	                    </div>
 
 	                    <!-- Impuestos en gastos de envío -->
 	                    <div class="form-group col-md-3">
 	                        <label>
-	                        	Impuestos Gatos de envio
+	                        	Impuestos Gatos de envío
 	                        </label>
-	                        <input type="number" class="form-control" name="gastos_envio_impuestos" min="0">
+	                        <input type="number" class="form-control" name="gastos_envio_impuestos" min="0" step=".01">
 	                    </div>
 
 	                </div>
+				</form>
 
-	                <hr>
+				<hr>
 
-	                <!-- Cuerpo de la compra -->
+				<!-- Cuerpo de la compra -->
+				<div id="divAgregarProductoNueva" class="form-inline">
 
-	                <!-- Productos -->
-	                <div id="divAgregarProductoNueva" class="form-inline">
+					<form class="form-inline">
+						
+						<!-- Producto -->
+						<div class="form-group mb-2">
+							<select class="form-control" name="id_producto"></select> 
+						</div>
+						
+						<!-- Cantidad -->
+						<div class="form-group mx-sm-3 mb-2">
+							<input type="number" class="form-control" name="cantidad" min="0" step=".01" placeholder="Cantidad">
+						</div>
 
-	                    <form class="form-inline">
+						<!-- Precio unitario-->
+						<div class="form-group mb-2">
+							<input type="number" class="form-control" name="precio_unitario" min="0" step=".01" placeholder="Precio unitario">
+						</div>
+						
+						<!-- Botón agregar producto -->
+						<button class="btn btn-primary mx-sm-3 mb-2" data-toggle="tooltip" data-placement="top" title="Agregar Producto">
+							<span class="fas fa-cart-plus"></span>
+						</button>
+
+					</form>
+
+				</div>
+
+				<!-- Productos agregados -->
+				<div id="divProductosAgregadosNueva">
+					
+					<div class="mt-4">
+
+						<!-- Tabla Subtotales -->
+						<div class="table-responsive-xl">
 							
-							<div class="form-group mb-2">
-								<select id="comboProductosNueva" class="form-control" name="id_producto"></select> 
-							</div>
+							<table class="table table-striped table-dark">
+								
+								<thead>
+									<tr>
+										<th scope="col">
+											Codigo
+										</th>
+										<th scope="col">
+											Descripción
+										</th>
+										<th scope="col">
+											Cantidad
+										</th>
+										<th scope="col">
+											Precio Unitario
+										</th>
+										<th scope="col">
+											Precio Total
+										</th>
+										<th class="text-center" scope="col" colspan="4">
+											Acciones
+										</th>
+									</tr>
+								</thead>
 
-							<div class="form-group mx-sm-3 mb-2">
-								<input type="number" id="campoCantidadNueva" class="form-control" name="cantidad" min="0" placeholder="Cantidad">
-							</div>
-
-							<div class="form-group mb-2">
-								<input type="number" id="campoPrecioNueva" class="form-control" name="precio_unitario" min="0" placeholder="Precio unitario">
-							</div>
+								<tbody>
+									<tr>
+										<td class="text-center" colspan="6">
+											No se ingresaron productos
+										</td>
+									</tr>
+								</tbody>
 							
-							<button type="button" id="botonAgregarProductoNueva" class="btn btn-primary mx-sm-3 mb-2" data-toggle="tooltip" data-placement="top" title="Agregar Producto">
-			                    <span class="fas fa-cart-plus"></span>
-			                </button>
+							</table>
 
-						</form>
+							Total: $
 
-	                </div>
+						</div>
 
-	                <div id="divProductosAgregadosNueva">
-	                	
-	                    <div class="mt-4">
+					</div>
 
-			                <!-- Tabla Subtotales -->
-			                <div class="table-responsive-xl">
-			                    
-			                    <table class="table table-striped table-dark">
-			                        
-			                        <thead>
-			                            <tr>
-			                                <th scope="col">
-			                                    Codigo
-			                                </th>
-			                                <th scope="col">
-			                                    Descripción
-			                                </th>
-			                                <th scope="col">
-			                                    Cantidad
-			                                </th>
-			                                <th scope="col">
-			                                    Precio Unitario
-			                                </th>
-			                                <th scope="col">
-			                                    Precio Total
-			                                </th>
-			                                <th class="text-center" scope="col" colspan="4">
-			                                    Acciones
-			                                </th>
-			                            </tr>
-			                        </thead>
+				</div>
 
-			                        <tbody>
-			                        	<tr>
-			                        		<td class="text-center" colspan="6">
-			                        			No se ingresaron productos
-			                        		</td>
-			                        	</tr>
-			                        </tbody>
-			                    
-			                    </table>
-
-			                </div>
-
-			            </div>
-
-	                </div>
-
-	                <!-- Botón confirmar -->
-	                <button type="button" id="botonConfirmarNueva" class="btn btn-primary mt-3">
-	                    <span class="fa fa-check"></span> 
-	                    Confirmar Compra
-	                </button>
-
-	            </form>
+				<!-- Botón confirmar -->
+				<button class="btn btn-primary mt-3" name="confirmar">
+					<span class="fa fa-check"></span> 
+					Confirmar Compra
+				</button>
 
 	        </div>
 
-	        <!-- Editar Compra -->
-	        <div id="divEditarCompra" style="display: none;">
+	        <!-- Editar compra -->
+	        <div id="editar">
 	        	
 	        	<div class="row mt-5">
 	                
@@ -334,7 +339,7 @@
 	                
 	                <!-- Volver al listado -->
 	                <div class="col-md-6 text-right">
-                        <button type="button" class="botonVolver btn btn-secondary mt-2" data-pantalla="Listado">
+                        <button class="btn btn-secondary mt-2" name="volver" data-pantalla="listado">
                             <span class="fa fa-chevron-left"></span> 
                             Volver
                         </button>
@@ -429,7 +434,7 @@
 	                <input type="hidden" name="id">
 
 	                <!-- Botón confirmar -->
-	                <button type="button" id="botonConfirmarEditar" class="btn btn-primary mt-3">
+	                <button id="botonConfirmarEditar" class="btn btn-primary mt-3">
 	                    <span class="fa fa-check"></span> 
 	                    Confirmar
 	                </button>
@@ -438,7 +443,7 @@
 
 	        </div>
 
-       </div>
+       	</main>
 
 		<!-- Footer -->
 		<?php include('secciones/footer.php'); ?>
