@@ -1,24 +1,5 @@
-$(function() 
-{
-	alertas.asignarEventos();
-});
-
 var alertas = 
 {
-	asignarEventos : function() 
-	{
-		$('.toast').toast(
-			{
-				delay: 2000
-			}
-		);
-	},
-
-	notificacion : function()
-	{
-		$('.toast').toast('show');
-	},
-
 	exito : function(descripcion, titulo, funcionCerrar)
 	{
 		if(!descripcion) 
@@ -30,16 +11,14 @@ var alertas =
 			titulo = "Exito";
 		}
 
-		$('#botonCerrarAlerta').unbind('click');
+		// Cerrar alerta.
+		$('#botonCerrarAlerta').unbind('click').click(() => $('#alerta').modal('hide'));
 
-		// Función antes cerrar.
+		// Función al cerrar alerta.
 		if(funcionCerrar) 
 		{
 			$('#botonCerrarAlerta').click(funcionCerrar);
 		}
-		
-		// Cerrar alerta.
-		$('#botonCerrarAlerta').click(() => $('#alerta').modal('hide'));
 
 		$('#alerta #alertaCabecera').removeClass().addClass('modal-header alert-success');
 		$('#alerta #alertaTitulo').html('<span class="fa fa-check-square"></span> ' + titulo);
@@ -59,16 +38,14 @@ var alertas =
 			titulo = "Advertencia";
 		}
 
-		$('#botonCerrarAlerta').unbind('click');
+		// Cerrar alerta.
+		$('#botonCerrarAlerta').unbind('click').click(() => $('#alerta').modal('hide'));
 
 		// Función al cerrar alerta.
 		if(funcionCerrar) 
 		{
-			$('#botonCerrarAlerta').unbind('click').click(funcionCerrar);
+			$('#botonCerrarAlerta').click(funcionCerrar);
 		}
-		
-		// Cerrar alerta.
-		$('#botonCerrarAlerta').click(() => $('#alerta').modal('hide'));
 
 		$('#alerta #alertaCabecera').removeClass().addClass('modal-header alert-warning');
 		$('#alerta #alertaTitulo').html('<span class="fa fa-exclamation-triangle"></span> ' + titulo);
@@ -88,16 +65,14 @@ var alertas =
 			titulo = "Error";
 		}
 
-		$('#botonCerrarAlerta').unbind('click');
+		// Cerrar alerta.
+		$('#botonCerrarAlerta').unbind('click').click(() => $('#alerta').modal('hide'));
 
 		// Función al cerrar alerta.
 		if(funcionCerrar) 
 		{
 			$('#botonCerrarAlerta').click(funcionCerrar);
 		}
-		
-		// Cerrar alerta.
-		$('#botonCerrarAlerta').click(() => $('#alerta').modal('hide'));
 
 		$('#alerta #alertaCabecera').removeClass().addClass('modal-header alert-danger');
 		$('#alerta #alertaTitulo').html('<span class="fa fa-exclamation-circle"></span> ' + titulo);
@@ -117,27 +92,21 @@ var alertas =
 			titulo = "Confirmar";
 		}
 
-		$('#botonConfirmarAlerta').unbind('click');
-
 		// Confirmar Alerta.
+		$('#botonConfirmarAlerta').unbind('click').click(() => $('#alerta').modal('hide'));
+
 		if(funcionConfirmar)
 		{
 			$('#botonConfirmarAlerta').unbind('click').click(funcionConfirmar);
 		}
-
-		// Cerrar alerta.
-		$('#botonConfirmarAlerta').click(() => $('#alerta').modal('hide'));
 		
-		// Función al cerrar alerta.
-		$('#botonCerrarAlerta').unbind('click');
+		// Cerrar alerta.
+		$('#botonCerrarAlerta').unbind('click').click(() => $('#alerta').modal('hide'));
 
-		if(funcionCerrar) 
+		if(funcionCerrar)
 		{
 			$('#botonCerrarAlerta').click(funcionCerrar);
 		}
-		
-		// Cerrar alerta.
-		$('#botonCerrarAlerta').click(() => $('#alerta').modal('hide'));
 
 		$('#alerta #alertaCabecera').removeClass().addClass('modal-header alert-info');
 		$('#alerta #alertaTitulo').html('<span class="fa fa-question-circle"></span> ' + titulo);

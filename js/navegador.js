@@ -52,9 +52,14 @@ var redireccionar =
         redireccionar.pagina('usuarios.php');
     },
     
-    cursos : function() 
+    compras : function() 
     {
-        redireccionar.pagina('cursos.php');
+        redireccionar.pagina('compras.php');
+    },
+
+    ventas : function() 
+    {
+        redireccionar.pagina('ventas.php');
     },
     
     ingreso : function() 
