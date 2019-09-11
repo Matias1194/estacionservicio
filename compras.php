@@ -22,7 +22,7 @@
 		<!-- Barra de Navegación -->
         <?php include('secciones/navegador.php'); ?>
 
-        <!-- Alertas y Notificaciones -->
+        <!-- Alertas -->
         <?php include('secciones/alertas.php'); ?>
 
 		<!-- Contenido -->
@@ -101,13 +101,16 @@
 	                        <thead>
 	                            <tr>
 	                                <th scope="col">
-	                                    Codigo
-	                                </th>
-	                                <th scope="col">
 	                                    Detalle
 	                                </th>
+									<th scope="col">
+	                                    Proveedor
+	                                </th>
+									<th scope="col">
+	                                    Importe
+	                                </th>
 	                                <th scope="col">
-	                                    Fecha de Registro
+	                                    Fecha
 	                                </th>
 	                                <th class="text-center" scope="col" colspan="4">
 	                                    Acciones
@@ -163,12 +166,12 @@
 	                        <label>
 	                            Detalle
 	                        </label>
-	                        <input type="text" class="form-control" name="detalle" required></select> 
+	                        <input type="text" class="form-control" name="detalle" data-requerido></select> 
 	                    </div>
 
 					</div>
 
-	                <!-- Primera fila -->
+	                <!-- Segunda fila -->
 	                <div class="form-row">
 
 	                	<!-- Proveedor -->
@@ -176,7 +179,7 @@
 	                        <label>
 	                            Proveedor
 	                        </label>
-	                        <select class="form-control" name="id_proveedor" required></select> 
+	                        <select class="form-control" name="id_proveedor" data-requerido></select> 
 	                    </div>
 
 	                    <!-- Tipo Comprobante -->
@@ -184,7 +187,7 @@
 	                        <label>
 	                            Tipo Comprobante
 	                        </label>
-	                        <select class="form-control" name="id_tipo_comprobante" required></select> 
+	                        <select class="form-control" name="id_tipo_comprobante" data-requerido></select> 
 	                    </div>
 
 	                    <!-- N° de Factura -->
@@ -192,12 +195,12 @@
 	                        <label>
 	                            N° de Factura
 	                        </label>
-	                        <input type="number" class="form-control" name="numero_factura" min="0" required>
+	                        <input type="number" class="form-control" name="numero_factura" min="0" data-requerido>
 	                    </div>
 
 	                </div>
 
-	                <!-- Segunda fila -->
+	                <!-- Tercera fila -->
 	                <div class="form-row">
 
 	                    <!-- N° Orden de compra -->
@@ -205,7 +208,7 @@
 	                        <label>
 	                        	Nº Orden de compra
 	                        </label>
-	                        <input type="number" class="form-control" name="orden_compra_numero" min="0" required>
+	                        <input type="number" class="form-control" name="orden_compra_numero" min="0" data-requerido>
 	                    </div>
 
 	                    <!-- Fecha Orden de compra -->
@@ -213,12 +216,12 @@
 	                        <label>
 	                        	Fecha Orden de compra
 	                        </label>
-	                        <input type="text" class="form-control" name="orden_compra_fecha" required>
+	                        <input type="text" class="form-control" name="orden_compra_fecha" data-requerido>
 	                    </div>
 	                    
 	                </div>
 
-	                <!-- Tercera fila -->
+	                <!-- Cuarta fila -->
 	                <div class="form-row">
 
 	                	<!-- Gastos de envío -->
@@ -226,7 +229,7 @@
 	                        <label>
 	                        	Gastos de envío
 	                        </label>
-	                         <input type="number" class="form-control" name="gastos_envio" min="0" step=".01" required>
+	                         <input type="number" class="form-control" name="gastos_envio" min="0" step=".01" data-requerido>
 	                    </div>
 
                         <!-- % de IVA en gastos de envío-->
@@ -234,7 +237,7 @@
 	                        <label>
 	                        	% IVA Gastos de envío
 	                        </label>
-	                        <input type="number" class="form-control" name="gastos_envio_iva" min="0" max="100" step=".01" required>
+	                        <input type="number" class="form-control" name="gastos_envio_iva" min="0" max="100" step=".01" data-requerido>
 	                    </div>
 
 	                    <!-- Impuestos en gastos de envío -->
@@ -242,7 +245,7 @@
 	                        <label>
 	                        	Impuestos Gastos de envío
 	                        </label>
-	                        <input type="number" class="form-control" name="gastos_envio_impuestos" min="0" step=".01" required>
+	                        <input type="number" class="form-control" name="gastos_envio_impuestos" min="0" step=".01" data-requerido>
 	                    </div>
 
 	                </div>
@@ -252,7 +255,7 @@
 					<!-- Cuerpo de la compra -->
 					<div id="divAgregarProductoNueva" class="form-inline">
 
-						<form class="form-inline">
+						<div class="form-inline">
 							
 							<!-- Producto -->
 							<div class="form-group mb-2">
@@ -274,55 +277,62 @@
 								<span class="fas fa-cart-plus"></span>
 							</button>
 
-						</form>
+						</div>
 
 					</div>
 
 					<!-- Productos agregados -->
-					<div id="divProductosAgregadosNueva">
-						
-						<div class="mt-4">
+					<div id="divProductosAgregadosNueva" class="mt-4">
 
-							<!-- Tabla Subtotales -->
-							<div class="table-responsive-xl">
+						<!-- Tabla Subtotales -->
+						<div class="table-responsive-xl">
+							
+							<table class="table table-striped table-dark">
 								
-								<table class="table table-striped table-dark">
-									
-									<thead>
-										<tr>
-											<th scope="col">
-												Codigo
-											</th>
-											<th scope="col">
-												Descripción
-											</th>
-											<th scope="col">
-												Cantidad
-											</th>
-											<th scope="col">
-												Precio Unitario
-											</th>
-											<th scope="col">
-												Precio Total
-											</th>
-											<th class="text-center" scope="col" colspan="4">
-												Acciones
-											</th>
-										</tr>
-									</thead>
+								<thead>
+									<tr>
+										<th scope="col">
+											Codigo
+										</th>
+										<th scope="col">
+											Descripción
+										</th>
+										<th scope="col">
+											Cantidad
+										</th>
+										<th scope="col">
+											Precio Unitario
+										</th>
+										<th scope="col">
+											Precio Total
+										</th>
+										<th class="text-center" scope="col" colspan="4">
+											Acciones
+										</th>
+									</tr>
+								</thead>
 
-									<tbody>
-										<tr>
-											<td class="text-center" colspan="6">
-												No se ingresaron productos
-											</td>
-										</tr>
-									</tbody>
-								
-								</table>
+								<tbody>
+									<tr>
+										<td class="text-center" colspan="6">
+											No se ingresaron productos
+										</td>
+									</tr>
+								</tbody>
+							
+							</table>
 
-								Total: $
+						</div>
 
+						<!-- Quinta fila -->
+						<div class="form-row">
+
+							<!-- Importe total -->
+							<div class="form-group col-md-3">
+								<label>
+								Importe total
+								</label>
+								<input type="text" class="form-control" name="importe_total" data-requerido readonly>
 							</div>
 
 						</div>
@@ -334,6 +344,7 @@
 						<span class="fa fa-check"></span> 
 						Confirmar Compra
 					</button>
+					
 				</form>
 
 	        </div>

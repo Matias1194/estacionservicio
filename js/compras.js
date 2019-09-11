@@ -1,51 +1,44 @@
 $(function() 
 {
-	compras.inicio.inicializar();
+	compras.inicializar();
 });
 
 var compras =
 {
     modulo : 'compras',
 
+    inicializar : function()
+    {
+        this.inicio.$div = $('#inicio');
+        this.listado.$div = $('#listado');
+        this.nueva.$div = $('#nueva');
+        this.editar.$div = $('#editar');
+
+        this.inicio.asignarEventos();
+        this.inicio.mostrar();
+    },
+
 	asignarEventos : function() 
 	{
         // Asigna los eventos de los tooltip.
         $('[data-toggle="tooltip"]').tooltip();
 
-    /* Editar compra */
+        /* Editar compra */
         // Confirmar editar compra.
         $('#botonConfirmarEditar').unbind('click').click(() => alertas.confirmar('¿Está seguro?', 'Confirmar Edición', compras.editar.confirmar));
 	},
 	
-    // Pantallas.
+    // Ocultar pantallas.
 	ocultarPantallas : function() 
     {
         $('.tooltip').tooltip('hide');
         $('main').children().hide();
     },
 
-    mostrarNueva : function() 
-    {
-        compras.ocultarPantallas();
-        $('#nueva').fadeIn();
-    },
-
-    mostrarEditar : function() 
-    {
-        compras.ocultarPantallas();
-        $('#editar').fadeIn();
-    },
-
     // Inicio.
     inicio : 
     {
         $div : null,
-
-        inicializar : function()
-        {
-            this.asignarEventos();
-            this.mostrar();
-        },
 
         asignarEventos : function() 
         {
@@ -68,15 +61,13 @@ var compras =
         }
     },
 
-    // Buscar Listado.
+    // Listado.
     listado : 
     {
         $div : null,
 
         asignarEventos : function()
         {
-            this.$div = $('#listado');
-
             // Desasignar eventos.
             this.$div.find('button').unbind('click');
 
@@ -87,13 +78,7 @@ var compras =
             this.$div.find('button[name="editar"]').click((e) => compras.editar.buscar($(e.currentTarget).closest('tr').data('id')));
             
             // Eliminar.
-            this.$div.find('button[name="eliminar"]').click((e) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => compras.eliminar.confirmar($(e.currentTarget).closest('tr').data('id'))));
-            
-            // Deshabilitar.
-            this.$div.find('button[name="deshabilitar"]').click((e) => compras.deshabilitar($e.currentTarget).closest('tr').data('id'));// alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => compras.deshabilitar.confirmar($(e.currentTarget).closest('tr').data('id'))));
-
-            // Habilitar.
-            this.$div.find('button[name="habilitar"]').click((e) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => compras.habilitar.confirmar($(e.currentTarget).closest('tr').data('id'))));
+            this.$div.find('button[name="eliminar"]').click((e) => compras.eliminar($(e.currentTarget).closest('tr').data('id')));
         },
 
         mostrar : function()
@@ -124,7 +109,7 @@ var compras =
                             .append($('<td>')
                                 .append("No se encontraron registros.")
                                 .attr('class', 'text-center')
-                                .attr('colspan', 4)
+                                .attr('colspan', 5)
                             )
                         );
                 }
@@ -136,19 +121,16 @@ var compras =
                             .find('tbody')
                             .append($('<tr>')
                                 .append($('<td>')
-                                    .append(compra.razon_social)
+                                    .append(compra.detalle)
                                 )
                                 .append($('<td>')
-                                    .append(compra.documento)
+                                    .append(compra.proveedor)
                                 )
                                 .append($('<td>')
-                                    .append(compra.calle)
+                                    .append(utilidades.formatearDinero(compra.importe_total))
                                 )
                                 .append($('<td>')
-                                    .append(compra.email)
-                                )
-                                .append($('<td>')
-                                    .append(compra.telefono)
+                                    .append(compra.fecha_compra)
                                 )
                                 .attr('data-id', compra.id)
                             )
@@ -194,41 +176,6 @@ var compras =
                                     .attr('class', 'text-center')
                                 );
                         //}
-    
-                        // Si el compra está habilitado.
-                        //if(utilidades.tienePermiso(respuesta.permisos, 6) && compra.habilitado == "1")
-                        //{
-                        if(compra.habilitado == "1")
-                        {
-                            $(tablaCompras)
-                                .find('tbody tr:last') 
-                                .append($('<td>')
-                                    // Botón Deshabilitar Compra.
-                                    .append('<button type="button" class="botonDeshabilitarCompra btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
-                                            + '<span class="fa fa-ban"></span>'
-                                        + ' </button>'
-                                    )
-                                    .attr('class', 'text-center')
-                                );
-                        }
-                        // Si el compra está deshabilitado.
-                        //else if(utilidades.tienePermiso(respuesta.permisos, 5))
-                        //{
-                        else
-                        {
-                            $(tablaCompras)
-                                .find('tbody tr:last')
-                                .append($('<td>')
-                                    // Botón Habilitar Compra.
-                                    .append('<button type="button" class="botonHabilitarCompra btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
-                                            + '<span class="fa fa-check"></span>'
-                                        + ' </button>'
-                                    )
-                                    .attr('class', 'text-center')
-                                )
-                            // Fila de color rojo.
-                            .attr('class', 'table-danger');
-                        }
                     });
                 }
     
@@ -248,8 +195,6 @@ var compras =
 
         asignarEventos : function()
         {
-            this.$div = $('#nueva');
-
             // Desasignar eventos.
             this.$div.find('button').unbind('click');
 
@@ -260,7 +205,7 @@ var compras =
             this.$div.find('button[name="agregar-producto"]').click(() => this.agregarProducto());
 
             // Eliminar Producto.
-            this.$div.find('button[name="eliminar-producto"]').click(() => compras.nueva.eliminarProducto()); //(event) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => compras.nueva.eliminarProducto($(event.currentTarget).closest('tr'))));
+            this.$div.find('button[name="eliminar-producto"]').click(() => compras.nueva.eliminarProducto());
 
             // Confirmar nueva compra.
             this.$div.find('button[name="confirmar"]').click(() => this.confirmar());
@@ -272,7 +217,7 @@ var compras =
             this.$div.fadeIn();
         },
 
-        // Buscar información para crear compra.
+        // Buscar información para generar compra.
         buscar : function()
         {
             // Prepara los datos.
@@ -281,9 +226,9 @@ var compras =
             };
 
             // Envía los datos.
-            bd.enviar(datos, compras.modulo, function(respuesta)
+            bd.enviar(datos, compras.modulo, (respuesta) =>
             {
-                var $formulario = $('#nueva').find('form:first');
+                var $formulario = this.$div.find('form');
                 // lLeno combo Proveedores.
                 var comboProveedores = $formulario.find('select[name="id_proveedor"]').html("");
                 $(comboProveedores).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
@@ -314,8 +259,8 @@ var compras =
                 // Borro los datos en los campos.
                 $('#nueva form').find('input:not([readonly])').val("");
                 
-                compras.nueva.asignarEventos();
-                compras.nueva.mostrar();
+                this.asignarEventos();
+                this.mostrar();
             });
         },
 
@@ -336,7 +281,7 @@ var compras =
                     return false;
                 }
 
-                producto[$(campo).attr('name')] = $(campo).val();
+                producto[$(campo).attr('name')] = Number($(campo).val());
             });
 
             if(camposCompletos)
@@ -347,6 +292,8 @@ var compras =
                 {
                     $(tablaCompras).find('tbody').html("");
                 }
+                
+                producto.precio_total = producto.precio_unitario * producto.cantidad;
 
                 $(tablaCompras)
                     .find('tbody')
@@ -364,32 +311,30 @@ var compras =
                             .append(utilidades.formatearDinero(producto.precio_unitario))
                         )
                         .append($('<td>')
-                            .append(utilidades.formatearDinero(producto.cantidad * producto.precio_unitario))
+                            .append(utilidades.formatearDinero(producto.precio_total))
+                        )
+                        .append($('<td>')
+                            .append('<button type="button" class="botonEliminarProductoNueva btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
+                                    + '<span class="fa fa-trash"></span>'
+                                + ' </button>'
+                            )
+                            .attr('class', 'text-center')
                         )
                         .attr('data-id_producto', producto.id_producto)
-                        .attr('style', 'display:none')
-                    );
-
-                $(tablaCompras)
-                    .find('tbody tr:last')
-                    .append($('<td>')
-                        .append('<button type="button" class="botonEliminarProductoNueva btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
-                                + '<span class="fa fa-trash"></span>'
-                            + ' </button>'
-                        )
-                        .attr('class', 'text-center')
-                    );
-
-                $(tablaCompras).find('tbody tr:last').fadeIn();
+                    )
+                    .hide()
+                    .fadeIn();
 
                 // Borro los datos en los campos.
                 $('#divAgregarProductoNueva').find('input:not([readonly]), select').val("");
                 
                 compras.nueva.productos.push(producto);
 
+                var $importe_total = this.$div.find('[name="importe_total"]');
+                $importe_total.val(utilidades.formatearDinero(Number(utilidades.desformatearDinero($importe_total.val())) + producto.precio_total));
+
                 compras.asignarEventos();
             }
-
         },
 
         eliminarProducto : function(filaProducto)
@@ -421,55 +366,55 @@ var compras =
         // Confirmar nueva compra.
         confirmar : function() 
         {
+            // Prepara los datos.
             var datos = 
             {
                 accion : 'nueva_confirmar',
                 compra : {
-                    cabecera : {},
-                    cuerpo: {}
+                    importe_total : 0,
+                    productos : {}
                 }
             };
             
-            var mensajeError = "";
+            var $formulario = this.$div.find('form');
+            
+            var mensajeError;
             var funcionCerrar;
 
-            $.each($('#nueva form').find('input:required, select:required'), function(i, campo) 
+            $.each($formulario.find('[data-requerido]'), (i, campo) =>
             {
                 if(!$(campo).val()) 
                 {
-                    mensajeError = "Falta completar el campo ";
-                    if($(campo).prev().length > 0) 
-                    {
-                        mensajeError += $.trim($(campo).prev().html());
-                    }
-                    else
-                    {
-                        mensajeError += $.trim($(campo).parent().prev().html());
-                    }
+                    mensajeError = "Falta completar el campo " + $.trim($(campo).prev('label').html()) || $(campo).prop('placeholder');
 
-                    funcionCerrar = ()=> $(campo).focus();
+                    funcionCerrar = () => $(campo).focus();
                     return false;
                 }
 
-                datos.compra.cabecera[$(campo).attr('name')] = $(campo).val();
+                datos.compra[$(campo).attr('name')] = $(campo).val();
             });
 
-            if(mensajeError != "")
+            datos.compra.importe_total = utilidades.desformatearDinero(datos.compra.importe_total);
+            
+            if(mensajeError)
             {
                 alertas.advertencia(mensajeError, '', funcionCerrar);
                 return;
             }
-            
-            datos.compra.cuerpo = compras.nueva.productos;
 
-            console.log(datos);
-            
-            bd.enviar(datos, compras.modulo, compras.nueva.confirmarExito);         
-        },
+            if(this.productos.length == 0)
+            {
+                alertas.advertencia("No se ingresaron productos", '', () => $formulario.find('[name="id_producto"]').focus());
+                return;
+            }
 
-        confirmarExito : function(respuesta)
-        {
-            alertas.exito(respuesta.descripcion, '' , redireccionar.compras);
+            datos.compra.productos = this.productos;
+            
+            // Envía los datos.
+            bd.enviar(datos, compras.modulo, (respuesta) =>
+            {
+                alertas.exito(respuesta.descripcion, '' , redireccionar.compras);
+            });
         }
     },
 
@@ -567,87 +512,24 @@ var compras =
         // Confirmar eliminación de compra.
         confirmar : function(id)
         {
-            // Prepara los datos.
-            var datos = {
-                accion : 'eliminar',
-                id : id
-            };
-            
-            // Envía los datos.
-            bd.enviar(datos, compras.modulo, (respuesta) =>
+            alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', function()
             {
-                // Actualizar fila.
-                $('#listado tr[data-id="' + respuesta.id + '"]')
-                    .fadeOut(() => $(this).remove());
-
-                alertas.exito(respuesta.descripcion);
+                // Prepara los datos.
+                var datos = {
+                    accion : 'eliminar',
+                    id : id
+                };
+                
+                // Envía los datos.
+                bd.enviar(datos, compras.modulo, (respuesta) =>
+                {
+                    // Actualizar fila.
+                    $('#listado tr[data-id="' + respuesta.id + '"]')
+                        .fadeOut(() => $(this).remove());
+    
+                    alertas.exito(respuesta.descripcion);
+                });
             });
         }
-    },
-
-    // Deshabilitar compra.
-    deshabilitar : (id) =>
-    {
-        // Confirmar deshabilitación de compra.
-        alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => 
-        {
-            // Prepara los datos.
-            var datos = {
-                accion : 'deshabilitar',
-                id : id
-            };
-            
-            // Envía los datos.
-            bd.enviar(datos, compras.modulo, (respuesta) =>
-            {
-                // Actualizar fila.
-                var id = respuesta.id;
-                var fila = $('#listado tr[data-id="' + id + '"]');
-                
-                $(fila).addClass("table-danger");
-                $(fila).find('td:last').html
-                (
-                    '<button type="button" class="botonHabilitarCompra btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
-                        + '<span class="fa fa-check"></span>'
-                    + ' </button>'
-                );
-                compras.asignarEventos();
-    
-                alertas.exito(respuesta.descripcion);
-            });
-        });
-    },
-
-    // Habilitar compra.
-    habilitar : (id) =>
-    {
-        // Confirmar deshabilitación de compra.
-        alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => 
-        {
-            // Prepara los datos.
-            var datos = {
-                accion : 'habilitar',
-                id : id
-            };
-
-            // Envía los datos.
-            bd.enviar(datos, compras.modulo, (respuesta) =>
-            {
-                // Actualizar fila.
-                var id = respuesta.id;
-                var fila = $('#listado tr[data-id="' + id + '"]');
-                
-                $(fila).removeClass();
-                $(fila).find('td:last').html
-                (
-                    '<button type="button" class="botonDeshabilitarCompra btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
-                        + '<span class="fa fa-ban"></span>'
-                    + ' </button>'
-                );
-                compras.asignarEventos();
-    
-                alertas.exito(respuesta.descripcion);
-            });
-        });
     }
 }

@@ -24,9 +24,11 @@
             //validarPermiso($conexion, $tabla, $accion, $respuesta, true);
 
             // Prepara la consulta.
-            $query = "SELECT * 
+            $query = "SELECT compras.id, proveedores.razon_social as 'proveedor', compras.importe_total, compras.detalle, DATE_FORMAT(compras.fecha_compra, '%d/%m/%Y') as 'fecha_compra' 
                       FROM compras
-                      WHERE eliminado = 0";
+                      INNER JOIN proveedores
+                        ON compras.id_proveedor = proveedores.id
+                      WHERE compras.eliminado = 0";
 
             // Consulta el listado de compras.
             $compras = consultar_listado($conexion, $query);
@@ -152,16 +154,25 @@
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             //validarPermiso($conexion, $tabla, "nueva_buscar", $respuesta, false);
-
-            $cabecera = $_POST["compra"]["cabecera"];
-            $cuerpo = $_POST["compra"]["cuerpo"];
+            
+            $compra = $_POST["compra"];
+            $productos = $compra["productos"];
             
             // Prepara la consulta.
-            $query = "INSERT INTO compras (detalle) "
-                    . "VALUES"
-                    . "("
-                        . "'" . $cabecera['detalle'] . "' "
-                    . ")";
+            $query = "INSERT INTO compras (id_proveedor, id_tipo_comprobante, numero_factura, orden_compra_numero, orden_compra_fecha, gastos_envio, gastos_envio_iva, gastos_envio_impuestos, importe_total, detalle) "
+            . "VALUES"
+            . "("
+                . $compra['id_proveedor'] . ", "
+                . $compra['id_tipo_comprobante'] . ", "
+                . $compra['numero_factura'] . ", "
+                . $compra['orden_compra_numero'] . ", "
+                . "STR_TO_DATE('" . $compra['orden_compra_fecha'] . "', '%d/%m/%Y'), "
+                . $compra['gastos_envio'] . ", "
+                . $compra['gastos_envio_iva'] . ", "
+                . $compra['gastos_envio_impuestos'] . ", "
+                . $compra['importe_total'] . ", "
+                . "'" . $compra['detalle'] . "'"
+            . ")";
             
             // Inserta un nueva compra.
             $resultado = ejecutar($conexion, $query);
@@ -169,77 +180,46 @@
             // Si hubo error ejecutando la consulta.
             if($resultado === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al guardar nueva compra (L 252).";
+                $respuesta['descripcion'] = "Ocurrió un error al guardar nueva compra (L 184).";
             }
             // Si la consulta fue exitosa.
             else
             {
                 $id_compra = mysqli_insert_id($conexion);
-                
+
                 // Prepara la consulta.
-                $query = "INSERT INTO compras_facturas_cabecera (id_compra, id_proveedor, id_tipo_comprobante, numero_factura, orden_compra_numero, orden_compra_fecha, gastos_envio, gastos_envio_iva, gastos_envio_impuestos) "
-                . "VALUES"
-                . "("
-                          . $id_compra . ", "
-                          . $cabecera['id_proveedor'] . ", "
-                          . $cabecera['id_tipo_comprobante'] . ", "
-                          . $cabecera['numero_factura'] . ", "
-                          . $cabecera['orden_compra_numero'] . ", "
-                          . "STR_TO_DATE('" . $cabecera['orden_compra_fecha'] . "', '%d/%m/%Y'), "
-                          . $cabecera['gastos_envio'] . ", "
-                          . $cabecera['gastos_envio_iva'] . ", "
-                          . $cabecera['gastos_envio_impuestos'] 
-                . ")";
+                $query = "INSERT INTO compras_detalles (id_compra, id_producto, cantidad, precio_unitario, precio_total) "
+                . "VALUES";
                 
-                // Inserta un nueva cabecera de compra.
+                for ($i = 0; $i < count($productos); $i++)
+                {
+                    $query .= "("
+                    . $id_compra . ", "
+                    . $productos[$i]['id_producto'] . ", "
+                    . $productos[$i]['cantidad'] . ", "
+                    . $productos[$i]['precio_unitario'] . ", "
+                    . $productos[$i]['precio_total'] 
+                    . ")";
+
+                    if($i < count($productos) - 1)
+                    {
+                        $query .= ', ';
+                    }
+                }
+                
+                // Inserta un nueva compra de compra.
                 $resultado = ejecutar($conexion, $query);
 
                 // Si hubo error ejecutando la consulta.
                 if($resultado === false)
                 {
-                    $respuesta['descripcion'] = "Ocurrió un error al guardar nueva compra (L 252).";
+                    $respuesta['descripcion'] = "Ocurrió un error al guardar nueva compra (L 217).";
                 }
                 // Si la consulta fue exitosa.
                 else
                 {
-                    $id_cabecera = mysqli_insert_id($conexion);
-
-                    
-                    // Prepara la consulta.
-                    $query = "INSERT INTO compras_facturas_cuerpo (id_factura_cabecera, id_producto, cantidad, precio_unitario, precio_total) "
-                    . "VALUES";
-                    
-                    for ($i = 0; $i < count($cuerpo); $i++)
-                    {
-                        $query .= "("
-                        . $id_cabecera . ", "
-                        . $cuerpo[$i]['id_producto'] . ", "
-                        . $cuerpo[$i]['cantidad'] . ", "
-                        . $cuerpo[$i]['precio_unitario'] . ", "
-                        //. $cuerpo[$i]['precio_total'] 
-                        . 100
-                        . ")";
-
-                        if($i < count($cuerpo) - 1)
-                        {
-                            $query .= ', ';
-                        }
-                    }
-                    
-                    // Inserta un nueva cabecera de compra.
-                    $resultado = ejecutar($conexion, $query);
-
-                    // Si hubo error ejecutando la consulta.
-                    if($resultado === false)
-                    {
-                        $respuesta['descripcion'] = "Ocurrió un error al guardar nueva compra (L 252).";
-                    }
-                    // Si la consulta fue exitosa.
-                    else
-                    {
-                        $respuesta['exito'] = true;
-                        $respuesta['descripcion'] = "<b>" . $cabecera["detalle"] . "</b> se agregó correctamente a Compras.";
-                    }
+                    $respuesta['exito'] = true;
+                    $respuesta['descripcion'] = "<b>" . $compra["detalle"] . "</b> se agregó correctamente a Compras.";
                 }
             }
         }
