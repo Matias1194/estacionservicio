@@ -11,6 +11,7 @@ var compras =
     {
         this.inicio.$div = $('#inicio');
         this.listado.$div = $('#listado');
+        this.detalles.$div = $('#detalles');
         this.nueva.$div = $('#nueva');
         this.editar.$div = $('#editar');
 
@@ -73,6 +74,9 @@ var compras =
 
             // Vuelve a la pantalla anterior.
             this.$div.find('button[name="volver"]').click(() => compras.inicio.mostrar());
+
+            // Detalles.
+            this.$div.find('button[name="detalles"]').click((e) => compras.detalles.buscar($(e.currentTarget).closest('tr').data('id')));
 
             // Editar.
             this.$div.find('button[name="editar"]').click((e) => compras.editar.buscar($(e.currentTarget).closest('tr').data('id')));
@@ -141,7 +145,7 @@ var compras =
                             $(tablaCompras)
                                 .find('tbody tr:last')
                                 .append($('<td>')
-                                    .append('<button type="button" class="botonDetallesCompra btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Detalles">'
+                                    .append('<button type="button" class="btn btn-sm btn-info" name="detalles" data-toggle="tooltip" data-placement="top" title="Detalles">'
                                             + '<span class="fa fa-eye"></span>'
                                         + ' </button>'
                                     )
@@ -155,7 +159,7 @@ var compras =
                             $(tablaCompras)
                                 .find('tbody tr:last')
                                 .append($('<td>')
-                                    .append('<button type="button" class="botonEditarCompra btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar">'
+                                    .append('<button type="button" class="btn btn-sm btn-warning" name="editar" data-toggle="tooltip" data-placement="top" title="Editar">'
                                             + '<span class="fa fa-pencil-alt"></span>'
                                         + ' </button>'
                                     )
@@ -169,7 +173,7 @@ var compras =
                             $(tablaCompras)
                                 .find('tbody tr:last')
                                 .append($('<td>')
-                                    .append('<button type="button" class="botonEliminarCompra btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
+                                    .append('<button type="button" class="btn btn-sm btn-secondary" name="eliminar" data-toggle="tooltip" data-placement="top" title="Eliminar">'
                                             + '<span class="fa fa-trash"></span>'
                                         + ' </button>'
                                     )
@@ -184,6 +188,69 @@ var compras =
     
                 this.asignarEventos();
                 this.mostrar();
+            });
+        }
+    },
+
+    // Detalles.
+    detalles :
+    {
+        $div : null,
+
+        asignarEventos : function()
+        {
+            // Desasignar eventos.
+            this.$div.find('button').unbind('click');
+
+            // Vuelve a la pantalla anterior.
+            this.$div.find('button[name="volver"]').click(() => compras.listado.mostrar());
+        },
+
+        mostrar : function()
+        {
+            compras.ocultarPantallas();
+            this.$div.fadeIn();
+        },
+
+        buscar : function(id)
+        {
+            var datos = {
+                accion : 'buscar_detalles',
+                id : id
+            };
+            
+            bd.enviar(datos, compras.modulo, (respuesta) =>
+            {
+                $.each($('#detalles label[data-label]'), function(i, label) 
+                {
+                    $(label).find('b').html(respuesta.compra[$(label).data('label')]);
+                });
+
+                var tablaDetalles = $('#detalles table');
+                $(tablaDetalles).find('tbody').html("");
+
+                $.each(respuesta.detalles, function(indice, detalle) 
+                {
+                    $(tablaDetalles)
+                        .find('tbody')
+                        .append($('<tr>')
+                            .append($('<td>')
+                                .append(detalle.descripcion)
+                            )
+                            .append($('<td>')
+                                .append(detalle.cantidad)
+                            )
+                            .append($('<td>')
+                                .append(utilidades.formatearDinero(detalle.precio_unitario))
+                            )
+                            .append($('<td>')
+                                .append(utilidades.formatearDinero(detalle.precio_total))
+                            )
+                        );
+                });
+                
+                compras.detalles.asignarEventos();
+                compras.detalles.mostrar();
             });
         }
     },
@@ -314,7 +381,7 @@ var compras =
                             .append(utilidades.formatearDinero(producto.precio_total))
                         )
                         .append($('<td>')
-                            .append('<button type="button" class="botonEliminarProductoNueva btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
+                            .append('<button type="button" class="btn btn-sm btn-secondary" name="eliminar-producto" data-toggle="tooltip" data-placement="top" title="Eliminar">'
                                     + '<span class="fa fa-trash"></span>'
                                 + ' </button>'
                             )
@@ -333,6 +400,7 @@ var compras =
                 var $importe_total = this.$div.find('[name="importe_total"]');
                 $importe_total.val(utilidades.formatearDinero(Number(utilidades.desformatearDinero($importe_total.val())) + producto.precio_total));
 
+                compras.nueva.asignarEventos();
                 compras.asignarEventos();
             }
         },
@@ -507,29 +575,25 @@ var compras =
     },
 
     // Eliminar compra.
-    eliminar :
+    eliminar : function(id)
     {
-        // Confirmar eliminación de compra.
-        confirmar : function(id)
+        alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', function()
         {
-            alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', function()
+            // Prepara los datos.
+            var datos = {
+                accion : 'eliminar',
+                id : id
+            };
+            
+            // Envía los datos.
+            bd.enviar(datos, compras.modulo, (respuesta) =>
             {
-                // Prepara los datos.
-                var datos = {
-                    accion : 'eliminar',
-                    id : id
-                };
-                
-                // Envía los datos.
-                bd.enviar(datos, compras.modulo, (respuesta) =>
-                {
-                    // Actualizar fila.
-                    $('#listado tr[data-id="' + respuesta.id + '"]')
-                        .fadeOut(() => $(this).remove());
-    
-                    alertas.exito(respuesta.descripcion);
-                });
+                // Actualizar fila.
+                $('#listado tr[data-id="' + respuesta.id + '"]')
+                    .fadeOut(() => $(this).remove());
+
+                alertas.exito(respuesta.descripcion);
             });
-        }
+        });
     }
 }

@@ -53,17 +53,15 @@
             //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
             $id = $_POST['id'];
-
+            
             // Prepara la consulta.
-            $query = "SELECT compras.id, compras.nombres, compras.apellidos, DATE_FORMAT(compras.fecha_nacimiento, '%d/%m/%Y') as 'fecha_nacimiento', compras.ocupacion, tipo_nacionalidad.descripcion as 'nacionalidad_descripcion', tipo_estado_civil.descripcion as 'estado_civil_descripcion', tipo_documento.descripcion as 'tipo_documento_descripcion', compras.documento, compras.domicilio, compras.id_postal, compras.localidad, compras.provincia, compras.telefono_fijo, compras.telefono_celular, compras.email, compras.facebook, compras.instagram, DATE_FORMAT(compras.fecha_registro, '%d/%m/%Y') as 'fecha_registro' 
+            $query = "SELECT compras.detalle, proveedores.razon_social as 'proveedor', tipos_comprobantes.descripcion as 'tipo_comprobante', compras.numero_factura, compras.orden_compra_numero, DATE_FORMAT(compras.orden_compra_fecha, '%d/%m/%Y') as 'orden_compra_fecha', compras.gastos_envio, compras.gastos_envio_iva, compras.gastos_envio_impuestos, compras.importe_total, DATE_FORMAT(compras.fecha_compra, '%d/%m/%Y') as 'fecha_compra' 
                       FROM compras 
-                      INNER JOIN tipo_nacionalidad 
-                        ON compras.id_nacionalidad = tipo_nacionalidad.id 
-                      INNER JOIN tipo_estado_civil 
-                        ON compras.id_estado_civil = tipo_estado_civil.id 
-                      INNER JOIN tipo_documento 
-                        ON compras.id_tipo_documento = tipo_documento.id 
-                      WHERE compras.id = $id LIMIT 1";
+                      INNER JOIN proveedores 
+                        ON compras.id_proveedor = proveedores.id 
+                      INNER JOIN tipos_comprobantes 
+                        ON compras.id_tipo_comprobante = tipos_comprobantes.id
+                      WHERE compras.id = $id AND compras.eliminado = 0 LIMIT 1";
             
             // Consulta los detalles de compra.
             $compra = consultar_registro($conexion, $query);
@@ -71,7 +69,7 @@
             // Si hubo error ejecutando la consulta.
             if($compra === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar los detalles del compra (L 63).";
+                $respuesta['descripcion'] = "Ocurrió un error al buscar los detalles del compra (L 72).";
             }
             // Si la consulta fue exitosa y no se encuentra el compra.
             else if(empty($compra))
@@ -81,8 +79,28 @@
             // Si la consulta fue exitosa y el compra se encuentra.
             else 
             {
-                $respuesta['exito'] = true;
-                $respuesta['compra'] = $compra;
+                // Prepara la consulta.
+                $query = "SELECT productos.descripcion, compras_detalles.cantidad, compras_detalles.precio_unitario, compras_detalles.precio_total 
+                        FROM compras_detalles
+                        INNER JOIN productos
+                        ON compras_detalles.id_producto = productos.id
+                        WHERE compras_detalles.id_compra = $id ";
+                
+                // Consulta los detalles de compra.
+                $detalles = consultar_listado($conexion, $query);
+                
+                // Si hubo error ejecutando la consulta.
+                if($detalles === false)
+                {
+                    $respuesta['descripcion'] = "Ocurrió un error al buscar los detalles del detalles (L 95).";
+                }
+                // Si la consulta fue exitosa y no se encuentra el detalles.
+                else
+                {
+                    $respuesta['exito'] = true;
+                    $respuesta['compra'] = $compra;
+                    $respuesta['detalles'] = $detalles;
+                }
             }
         }
 
@@ -383,7 +401,7 @@
                 {
                     $respuesta['exito'] = true;
                     $respuesta['id'] = $id;
-                    $respuesta['descripcion'] = "Compra eliminado correctamente.";
+                    $respuesta['descripcion'] = "Compra eliminada correctamente.";
                 }
             }
         }
