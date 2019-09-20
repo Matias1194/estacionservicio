@@ -168,7 +168,7 @@
         }
 
         // NUEVO: Confirmar nueva compra.
-        else if($accion == "nueva_confirmar") 
+        else if($accion == "nueva_confirmar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             //validarPermiso($conexion, $tabla, "nueva_buscar", $respuesta, false);
@@ -205,6 +205,9 @@
             {
                 $id_compra = mysqli_insert_id($conexion);
 
+
+                $productos_stock = array();
+
                 // Prepara la consulta.
                 $query = "INSERT INTO compras_detalles (id_compra, id_producto, cantidad, precio_unitario, precio_total) "
                 . "VALUES";
@@ -212,22 +215,25 @@
                 for ($i = 0; $i < count($productos); $i++)
                 {
                     $query .= "("
-                    . $id_compra . ", "
-                    . $productos[$i]['id_producto'] . ", "
-                    . $productos[$i]['cantidad'] . ", "
-                    . $productos[$i]['precio_unitario'] . ", "
-                    . $productos[$i]['precio_total'] 
+                        . $id_compra . ", "
+                        . $productos[$i]['id_producto'] . ", "
+                        . $productos[$i]['cantidad'] . ", "
+                        . $productos[$i]['precio_unitario'] . ", "
+                        . $productos[$i]['precio_total'] 
                     . ")";
 
                     if($i < count($productos) - 1)
                     {
                         $query .= ', ';
                     }
+
+                    $productos_stock[$i]['id_producto'] = $productos[$i]['id_producto'];
+                    $productos_stock[$i]['cantidad'] = $productos[$i]['cantidad'];
                 }
                 
                 // Inserta un nueva compra de compra.
                 $resultado = ejecutar($conexion, $query);
-
+                
                 // Si hubo error ejecutando la consulta.
                 if($resultado === false)
                 {
@@ -236,8 +242,27 @@
                 // Si la consulta fue exitosa.
                 else
                 {
-                    $respuesta['exito'] = true;
-                    $respuesta['descripcion'] = "<b>" . $compra["detalle"] . "</b> se agregó correctamente a Compras.";
+                    for ($i = 0; $i < count($productos_stock); $i++) { 
+                        // Prepara la consulta.
+                        $query = "UPDATE stock 
+                                  SET unidades = unidades + " . $productos_stock[$i]['cantidad'] . "
+                                  WHERE id_producto = " . $productos_stock[$i]['id_producto'];
+                        
+                        // Edita stock.
+                        $resultado = ejecutar($conexion, $query);
+                    }
+                    
+                    // Si hubo error ejecutando la consulta.
+                    if($resultado === false)
+                    {
+                        $respuesta['descripcion'] = "Ocurrió un error al editar la compra (L 383).";
+                    }
+                    // Si la consulta fue exitosa.
+                    else
+                    {
+                        $respuesta['exito'] = true;
+                        $respuesta['descripcion'] = "<b>" . $compra["detalle"] . "</b> se agregó correctamente a Compras.";
+                    }
                 }
             }
         }
