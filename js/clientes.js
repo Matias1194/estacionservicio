@@ -318,7 +318,7 @@ var clientes =
 
         buscarExito : function(respuesta)
         {
-            // lLeno combo Tipo Cliente.
+            // Lleno combo Tipo Cliente.
             var comboTipoCliente = $('#comboTipoClienteEditar').html("");
             $.each(respuesta.tipos_clientes, function(i, opcion)
             {
