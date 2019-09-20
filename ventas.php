@@ -52,14 +52,6 @@
                         </button>
                     </div>
 
-                    <!-- Botón Tarjeta -->
-                    <div class="col-sm-3 text-center">
-                        <button class="btn btn-lg btn-primary mt-2" name="tarjeta">
-                            <span class="fa fa-credit-card fa-lg"></span>
-                            Tarjeta
-                        </button>
-                    </div>
-
                     <!-- Botón Tickets -->
                     <div class="col-sm-3 text-center">
                         <button class="btn btn-lg btn-primary mt-2" name="tickets">
@@ -308,7 +300,7 @@
 	                
 	                <!-- Botón volver -->
 	                <div class="col-md-6 text-right">
-                        <button class="btn btn-secondary mt-2" name="volver" data-pantalla="inicio">
+                        <button class="btn btn-secondary mt-2" name="volver">
                             <span class="fa fa-chevron-left"></span> 
                             Volver
                         </button>
