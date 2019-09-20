@@ -243,114 +243,149 @@
         }
         
         // EDITAR: Buscar información para editar compra.
-        else if($accion == "editar_buscar")
+        else if($accion == "editar_buscar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
-            $id = $_POST['id'];
+            $id_compra = $_POST['id'];
 
             // Prepara la consulta.
-            $query = "SELECT * 
-                      FROM compras 
-                      WHERE id = $id LIMIT 1";
-            
-            // Consulta información del compra a editar.
+            $query = "SELECT id, id_proveedor, id_tipo_comprobante, numero_factura, orden_compra_numero, DATE_FORMAT(orden_compra_fecha, '%d/%m/%Y') as 'orden_compra_fecha', gastos_envio, gastos_envio_iva, gastos_envio_impuestos, detalle
+            FROM compras
+            WHERE id = $id_compra AND eliminado = 0";
+
+            // Consulta la compra a editar.
             $compra = consultar_registro($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
             if($compra === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar información de compra (L 279).";
+                $respuesta['descripcion'] = "Ocurrió un error al buscar la compra (L 136).";
             }
-            // Si la consulta fue exitosa y no existe el compra.
+            // Si la consulta fue exitosa y no existe la compra.
             else if(empty($compra))
             {
-                $respuesta['descripcion'] = "El compra buscado no existe.";
+                $respuesta['descripcion'] = "La compra que se intenta editar no existe.";
             }
-            // Si la consulta fue exitosa y existe el compra.
+            // Si la consulta fue exitosa.
             else
             {
                 // Prepara la consulta.
-                $query = "SELECT id, descripcion 
-                          FROM tipos_documentos
-                          WHERE habilitado = 1";
+                $query = "SELECT compras_detalles.id, compras_detalles.id_producto, productos.descripcion, compras_detalles.cantidad, compras_detalles.precio_unitario, compras_detalles.precio_total
+                          FROM compras_detalles
+                          INNER JOIN productos
+                            ON compras_detalles.id_producto = productos.id
+                          WHERE compras_detalles.id_compra = $id_compra";
 
-                // Consulta los tipos de documentos habilitados.
-                $tipos_documentos = consultar_listado($conexion, $query);
+                // Consulta detalles de la compra.
+                $detalles = consultar_listado($conexion, $query);
 
                 // Si hubo error ejecutando la consulta.
-                if($tipos_documentos === false)
+                if($detalles === false)
                 {
-                    $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de documentos (L 104).";
+                    $respuesta['descripcion'] = "Ocurrió un error al buscar los detalles de la compra (L 136).";
                 }
                 // Si la consulta fue exitosa.
                 else
                 {
-                    $respuesta['exito'] = true;
-                    $respuesta['compra'] = $compra;
-                    $respuesta['tipos_documentos'] = $tipos_documentos;
+                    // Prepara la consulta.
+                    $query = "SELECT id, razon_social 
+                            FROM proveedores
+                            WHERE habilitado = 1";
+
+                    // Consulta los tipos de proveedores habilitados.
+                    $proveedores = consultar_listado($conexion, $query);
+
+                    // Si hubo error ejecutando la consulta.
+                    if($proveedores === false)
+                    {
+                        $respuesta['descripcion'] = "Ocurrió un error al buscar los proveedores (L 104).";
+                    }
+                    // Si la consulta fue exitosa.
+                    else
+                    {
+                        // Prepara la consulta.
+                        $query = "SELECT id, descripcion 
+                                FROM tipos_comprobantes
+                                WHERE habilitado = 1";
+
+                        // Consulta los tipos de comprobantes habilitados.
+                        $tipos_comprobantes = consultar_listado($conexion, $query);
+
+                        // Si hubo error ejecutando la consulta.
+                        if($tipos_comprobantes === false)
+                        {
+                            $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de comprobantes (L 120).";
+                        }
+                        // Si la consulta fue exitosa.
+                        else
+                        {
+                            // Prepara la consulta.
+                            $query = "SELECT id, descripcion 
+                                    FROM productos
+                                    WHERE habilitado = 1";
+
+                            // Consulta los tipos de productos habilitados.
+                            $productos = consultar_listado($conexion, $query);
+
+                            // Si hubo error ejecutando la consulta.
+                            if($productos === false)
+                            {
+                                $respuesta['descripcion'] = "Ocurrió un error al buscar los productos (L 136).";
+                            }
+                            // Si la consulta fue exitosa.
+                            else
+                            {
+                                $respuesta['exito'] = true;
+                                $respuesta['compra'] = $compra;
+                                $respuesta['detalles'] = $detalles;
+                                $respuesta['proveedores'] = $proveedores;
+                                $respuesta['tipos_comprobantes'] = $tipos_comprobantes;
+                                $respuesta['productos'] = $productos;
+                            }
+                        }
+                    }
                 }
             }
         }
 
         // EDITAR: Confirmar edición de compra.
-        else if($accion == "editar_confirmar")
+        else if($accion == "editar_confirmar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, "editar_buscar", $respuesta, false);
-
+            //validarPermiso($conexion, $tabla, "nueva_buscar", $respuesta, false);
+            
             $compra = $_POST["compra"];
-
+            $productos = $compra["productos"];
+            
             // Prepara la consulta.
-            $query = "SELECT * 
-                      FROM compras
-                      WHERE compras.id = " . $compra['id'] . " LIMIT 1";
-
-            // Consulta información del compra a editar.
-            $compraDB = consultar_registro($conexion, $query);
+            $query = "UPDATE compras 
+                      SET id_proveedor = " . $compra['id_proveedor'] . ",
+                      id_tipo_comprobante = " . $compra['id_tipo_comprobante'] . ",
+                      numero_factura = " . $compra["numero_factura"] . ",
+                      orden_compra_numero = " . $compra['orden_compra_numero'] . ",
+                      orden_compra_fecha = STR_TO_DATE('" . $compra['orden_compra_fecha'] . "', '%d/%m/%Y'),
+                      gastos_envio = " . $compra['gastos_envio'] . ",
+                      gastos_envio_iva = " . $compra['gastos_envio_iva'] . ",
+                      gastos_envio_impuestos = " . $compra['gastos_envio_impuestos'] . ",  
+                      importe_total = " . $compra['importe_total'] . ",  
+                      detalle = '" . $compra['detalle'] . "'
+                      WHERE id = " . $compra['id'];
+            
+            // Edita una compra.
+            $resultado = ejecutar($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
-            if($compraDB === false)
+            if($resultado === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar información del compra (L 361).";
+                $respuesta['descripcion'] = "Ocurrió un error al editar la compra (L 383).";
             }
-            // Si la consulta fue exitosa y no existe el compra.
-            else if(empty($compraDB))
-            {
-                $respuesta['descripcion'] = "El compra que se intenta editar no existe.";
-            }
-            // Si la consulta fue exitosa y existe el compra.
+            // Si la consulta fue exitosa.
             else
             {
-                // Prepara la consulta.
-                $query = "UPDATE compras 
-                          SET razon_social = '" . $compra['razon_social'] . "', 
-                          id_tipo_documento = " . $compra['id_tipo_documento'] . ", 
-                          documento = " . $compra['documento'] . ", 
-                          sucursal = '" . $compra["sucursal"] . "', 
-                          pais = '" . $compra["pais"] . "', 
-                          provincia = '" . $compra["provincia"] . "', 
-                          localidad = '" . $compra["localidad"] . "', 
-                          calle = '" . $compra["calle"] . "', 
-                          email = '" . $compra['email'] . "', 
-                          telefono = " . $compra['telefono'] . "  
-                          WHERE id = " . $compra['id'];
-                
-                // Actualizo la información del compra.
-                $resultado = ejecutar($conexion, $query);
-                
-                // Si hubo error ejecutando la consulta.
-                if($resultado === false)
-                {
-                    $respuesta['descripcion'] = "Ocrrió un error al editar compra (L 400).";
-                }
-                // Si la consulta fue exitosa.
-                else
-                {
-                    $respuesta['exito'] = true;
-                    $respuesta['descripcion'] = "<b>" . $compra['razon_social'] . "</b> se editó correctamente.";
-                }
+                $respuesta['exito'] = true;
+                $respuesta['descripcion'] = "<b>" . $compra["detalle"] . "</b> se editó correctamente.";
             }
         }
 
@@ -402,110 +437,6 @@
                     $respuesta['exito'] = true;
                     $respuesta['id'] = $id;
                     $respuesta['descripcion'] = "Compra eliminada correctamente.";
-                }
-            }
-        }
-
-        // DESHABILITAR: Confirmar deshabilitación de compra.
-        else if($accion == "deshabilitar")
-        {
-            // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
-
-            $id = $_POST['id'];
-
-            // Prepara la consulta.
-            $query = "SELECT * 
-                      FROM compras 
-                      WHERE id = $id LIMIT 1";
-
-            // Consulta información del compra a deshabilitar.
-            $compraDB = consultar_registro($conexion, $query);
-
-            // Si hubo error ejecutando la consulta.
-            if($compraDB === false)
-            {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar información de compra (L 476).";
-            }
-            // Si la consulta fue exitosa y no existe el compra.
-            else if(empty($compraDB))
-            {
-                $respuesta['descripcion'] = "El compra que se intenta deshabilitar no existe.";
-            }
-            // Si la consulta fue exitosa y existe el compra.
-            else
-            {
-                // Prepara la consulta.
-                $query = "UPDATE compras 
-                          SET habilitado = 0 
-                          WHERE id = $id LIMIT 1";
-
-                // Actualiza la información del compra.
-                $resultado = ejecutar($conexion, $query);
-
-                // Si hubo error ejecutando la consulta.
-                if($resultado === false)
-                {
-                    $respuesta['descripcion'] = "Ocrrió un error al deshabilitar compra (L 497).";
-                }
-                // Si la consulta fue exitosa.
-                else
-                {
-                    $respuesta['exito'] = true;
-                    $respuesta['id'] = $id;
-                    $respuesta['descripcion'] = "Compra deshabilitado correctamente.";
-                }
-            }
-        }
-
-        // HABILITAR: Confirmar habilitación de compra.
-        else if($accion == "habilitar")
-        {
-            // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
-
-            $id = $_POST['id'];
-
-            // Prepara la consulta.
-            $query = "SELECT * 
-                      FROM compras 
-                      WHERE id = $id LIMIT 1";
-
-            // Consulta información del compra a habilitar.
-            $compraDB = consultar_registro($conexion, $query);
-
-            // Si hubo error ejecutando la consulta.
-            if($compraDB === false)
-            {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar información de compra (L 525).";
-            }
-            // Si la consulta fue exitosa y no existe el compra.
-            else if(empty($compraDB))
-            {
-                $respuesta['descripcion'] = "El compra que se intenta habilitar no existe.";
-            }
-            // Si la consulta fue exitosa y existe el compra.
-            else
-            {
-                // Prepara la consulta.
-                $query = "UPDATE compras 
-                          SET habilitado = 1 
-                          WHERE id = $id";
-
-                // Actualiza la información del compra.
-                $resultado = ejecutar($conexion, $query);
-
-                // Si hubo error ejecutando la consulta.
-                if($resultado === false)
-                {
-                    $respuesta['descripcion'] = "Ocrrió un error al habilitar compra (L 546).";
-                }
-                // Si la consulta fue exitosa.
-                else
-                {
-                    $respuesta['exito'] = true;
-                    $respuesta['id'] = $id;
-                    $respuesta['descripcion'] = "Compra habilitado correctamente.";
                 }
             }
         }
