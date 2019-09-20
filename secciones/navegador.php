@@ -38,6 +38,18 @@
                     Ventas
                 </a>
             </li>
+            <!--<?php //} if(tienePermiso(15)) { ?>-->
+            <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/productos.php' ? 'active' : '') ?>">
+                <a href="javascript:void(0)" class="nav-link" data-url="productos">
+                    Productos
+                </a>
+            </li>
+            <!--<?php //} if(tienePermiso(15)) { ?>-->
+            <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/stock.php' ? 'active' : '') ?>">
+                <a href="javascript:void(0)" class="nav-link" data-url="stock">
+                    Stock
+                </a>
+            </li>
             <!--<?php //} ?>-->
         </ul>
         <?php } ?>

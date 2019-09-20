@@ -42,14 +42,29 @@ var redireccionar =
         redireccionar.pagina('proveedores.php');
     },
 
-    clientes : function() 
+    inicio : function() 
     {
-        redireccionar.pagina('clientes.php');
+        redireccionar.pagina('inicio.php');
     },
     
     usuarios : function() 
     {
         redireccionar.pagina('usuarios.php');
+    },
+    
+    ingreso : function() 
+    {
+        redireccionar.pagina('ingreso.php');
+    },
+
+    clientes : function() 
+    {
+        redireccionar.pagina('clientes.php');
+    },
+    
+    productos : function() 
+    {
+        redireccionar.pagina('productos.php');
     },
     
     compras : function() 
@@ -61,14 +76,9 @@ var redireccionar =
     {
         redireccionar.pagina('ventas.php');
     },
-    
-    ingreso : function() 
+
+    stock : function() 
     {
-        redireccionar.pagina('ingreso.php');
-    },
-    
-    inicio : function() 
-    {
-        redireccionar.pagina('inicio.php');
-    },
+        redireccionar.pagina('stock.php');
+    }
 }
