@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-09-2019 a las 01:37:36
+-- Tiempo de generación: 25-09-2019 a las 01:37:56
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.4
 
@@ -76,7 +76,9 @@ CREATE TABLE `compras` (
 
 INSERT INTO `compras` (`id`, `id_proveedor`, `id_tipo_comprobante`, `numero_factura`, `orden_compra_numero`, `orden_compra_fecha`, `gastos_envio`, `gastos_envio_iva`, `gastos_envio_impuestos`, `importe_total`, `detalle`, `fecha_compra`, `eliminado`) VALUES
 (3, 1, 1, 1, 0, '2019-10-10 00:00:00', '0.00', '0.00', '0.00', 8000.00, 'ASD', '2019-09-20 19:56:50', 0),
-(4, 3, 1, 36, 150, '2019-09-20 00:00:00', '30.00', '21.00', '13.50', 3500.00, 'Golosinas Septiembre', '2019-09-20 20:00:57', 0);
+(4, 3, 1, 36, 150, '2019-09-20 00:00:00', '30.00', '21.00', '13.50', 3500.00, 'Golosinas Septiembre', '2019-09-20 20:00:57', 0),
+(5, 3, 1, 8, 9, '2019-09-24 00:00:00', '100.00', '21.00', '10.00', 9000.00, 'Compra de yerba', '2019-09-24 18:37:43', 0),
+(6, 3, 1, 9, 9, '2019-09-24 00:00:00', '100.00', '21.00', '100.00', 2550.00, 'Agua mineral', '2019-09-24 19:19:30', 0);
 
 -- --------------------------------------------------------
 
@@ -100,7 +102,10 @@ CREATE TABLE `compras_detalles` (
 INSERT INTO `compras_detalles` (`id`, `id_compra`, `id_producto`, `cantidad`, `precio_unitario`, `precio_total`) VALUES
 (3, 3, 2, 10, '50.00', '500'),
 (4, 3, 3, 50, '150.00', '7500'),
-(5, 4, 10, 100, '35.00', '3500');
+(5, 4, 10, 100, '35.00', '3500'),
+(6, 5, 11, 100, '90.00', '9000'),
+(7, 6, 1, 50, '45.00', '2250'),
+(8, 6, 2, 5, '60.00', '300');
 
 -- --------------------------------------------------------
 
@@ -274,7 +279,8 @@ INSERT INTO `productos` (`id`, `id_tipo_producto`, `descripcion`, `fecha_registr
 (7, 1, 'Kin Gasificada 1lt', '2019-06-08 23:52:53', 1, 0),
 (8, 3, 'Sonrisas frambuesa pack x3', '2019-06-08 23:54:10', 1, 0),
 (9, 4, 'La Merced Campo y Monte 500g', '2019-06-09 17:11:21', 1, 0),
-(10, 3, 'Alfajor Jorgito Choco 100g', '2019-09-20 19:24:20', 1, 0);
+(10, 3, 'Alfajor Jorgito Choco 100g', '2019-09-20 19:24:20', 1, 0),
+(11, 4, 'La Merced 500 gr', '2019-09-24 18:34:45', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -328,15 +334,16 @@ CREATE TABLE `stock` (
 
 INSERT INTO `stock` (`id`, `id_producto`, `unidades`) VALUES
 (1, 10, 100),
-(2, 1, 0),
-(3, 2, 10),
+(2, 1, 40),
+(3, 2, 5),
 (4, 3, 50),
 (5, 4, 0),
 (6, 5, 0),
 (7, 6, 0),
 (8, 7, 0),
 (9, 8, 0),
-(10, 9, 0);
+(10, 9, 0),
+(11, 11, 100);
 
 -- --------------------------------------------------------
 
@@ -483,6 +490,51 @@ INSERT INTO `usuarios` (`id`, `id_perfil`, `id_tipo_documento`, `documento`, `us
 (6, 1, 2, 123123123, 'user', 'user', 'Usuario', 'Prueba', 'user@mail.com', '123123', '2019-09-06 19:03:30', 1, 1),
 (7, 2, 5, 24526889, 'gerente', 'gerente', 'Ger', 'Ente', 'gerente@mail.com', '43456162', '2019-09-08 18:05:31', 1, 1);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventas`
+--
+
+CREATE TABLE `ventas` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `importe_total` double(8,2) UNSIGNED NOT NULL,
+  `fecha_venta` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`id`, `importe_total`, `fecha_venta`) VALUES
+(1, 450.00, '2019-09-24 20:33:25'),
+(2, 250.00, '2019-09-24 20:34:25'),
+(3, 250.00, '2019-09-24 20:35:40');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `ventas_detalles`
+--
+
+CREATE TABLE `ventas_detalles` (
+  `id` int(11) NOT NULL,
+  `id_venta` bigint(20) NOT NULL,
+  `id_producto` int(10) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio_unitario` decimal(8,2) NOT NULL,
+  `precio_total` decimal(8,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `ventas_detalles`
+--
+
+INSERT INTO `ventas_detalles` (`id`, `id_venta`, `id_producto`, `cantidad`, `precio_unitario`, `precio_total`) VALUES
+(1, 1, 1, 10, '45.00', '450'),
+(2, 2, 2, 5, '50.00', '250'),
+(3, 3, 2, 5, '50.00', '250');
+
 --
 -- Índices para tablas volcadas
 --
@@ -578,6 +630,18 @@ ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `ventas_detalles`
+--
+ALTER TABLE `ventas_detalles`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -591,13 +655,13 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `compras`
 --
 ALTER TABLE `compras`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `compras_detalles`
 --
 ALTER TABLE `compras_detalles`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -615,7 +679,7 @@ ALTER TABLE `permisos`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
@@ -627,7 +691,7 @@ ALTER TABLE `proveedores`
 -- AUTO_INCREMENT de la tabla `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `tipos_clientes`
@@ -664,6 +728,18 @@ ALTER TABLE `tipos_productos`
 --
 ALTER TABLE `usuarios`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `ventas`
+--
+ALTER TABLE `ventas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `ventas_detalles`
+--
+ALTER TABLE `ventas_detalles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
