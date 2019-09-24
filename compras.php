@@ -5,6 +5,10 @@
     
     <head>
 
+		<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     	<!-- Título -->
         <title> Estación de Servicio - Compras </title>
         
@@ -26,7 +30,7 @@
         <?php include('secciones/alertas.php'); ?>
 
 		<!-- Contenido -->
-		<main role="main" class="container">
+		<div class="container">
 			
 			<!-- Inicio -->
 			<div id="inicio">
@@ -712,7 +716,7 @@
 
 	        </div>
 
-       	</main>
+       	</div>
 
 		<!-- Footer -->
 		<?php include('secciones/footer.php'); ?>

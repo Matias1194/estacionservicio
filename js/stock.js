@@ -25,7 +25,7 @@ var stock =
 	ocultarPantallas : function() 
     {
         $('.tooltip').tooltip('hide');
-        $('main').children().hide();
+        $('.container').children().hide();
     },
 
     // Listado.
@@ -96,7 +96,7 @@ var stock =
                         // Botón Detalles Stock.
                         //if(utilidades.tienePermiso(respuesta.permisos, 2))
                         //{
-                            $(tablaStock)
+                            /*$(tablaStock)
                                 .find('tbody tr:last')
                                 .append($('<td>')
                                     .append('<button type="button" class="btn btn-sm btn-info" name="detalles" data-toggle="tooltip" data-placement="top" title="Detalles">'
@@ -104,7 +104,7 @@ var stock =
                                         + ' </button>'
                                     )
                                     .attr('class', 'text-center')
-                                );
+                                );*/
                     });
                 }
     

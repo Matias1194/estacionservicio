@@ -31,7 +31,7 @@ var ventas =
 	ocultarPantallas : function() 
     {
         $('.tooltip').tooltip('hide');
-        $('main').children().hide();
+        $('.container').children().hide();
     },
 
     // Inicio.

@@ -5,6 +5,10 @@
 
     <head>
 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
         <!-- Título -->
         <title> Estación de Servicio - Inicio </title>
 
@@ -27,13 +31,19 @@
         
         <!-- Contenido -->
 		<div class="container">
+
 			<div class="row mt-5">
+
                 <div class="col-sm-10">
+
                     <h1 class="font-weight-normal">
 						Bienvenido <?php echo $_SESSION["usuario"]->nombres . ' ' . $_SESSION["usuario"]->apellidos ?> !
                     </h1>
+                    
                 </div>
+
             </div>
+
 		</div>
 
         <!-- Footer -->

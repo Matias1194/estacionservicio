@@ -1,7 +1,9 @@
-<footer class="text-center">
-	<p>
+<div class="footer text-center">
+
+	<span class="text-muted">
 		Gestión de Estaciones de Servicio 
 		<span class="far fa-registered fa-sm"></span> 
-		2019
-	</p>
-</footer>
+		<?php echo date('Y'); ?>
+	</span>
+
+</div>

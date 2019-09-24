@@ -3,6 +3,10 @@
 
 	<head>
 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
 		<!-- Título -->
 		<title> Estación de Servicio - Ingreso </title>
 
@@ -31,7 +35,7 @@
                 <div class="col-md-4 mx-auto">
 
                     <!-- Título -->
-                    <h2 class="mb-3 font-weight-normal">
+                    <h2 class="mb-3 font-weight-normal text-center">
                         Ingreso
                     </h2>
 					
@@ -49,7 +53,7 @@
                         </div>
                         
                         <!-- Botón Ingresar -->
-                        <button type="button" id="botonIngresar" class="btn btn-primary">
+                        <button type="button" id="botonIngresar" class="btn btn-primary btn-block">
                             <span class="fa fa-sign-in-alt"></span> 
                             Ingresar
                         </button>

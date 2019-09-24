@@ -148,7 +148,7 @@ var usuarios =
                     // Botón Detalles Usuario.
                     //if(utilidades.tienePermiso(respuesta.permisos, 2))
                     //{
-                        $(tablaUsuarios)
+                        /*$(tablaUsuarios)
                             .find('tbody tr:last')
                             .append($('<td>')
                                 .append('<button type="button" class="botonDetallesUsuario btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Detalles">'
@@ -156,7 +156,7 @@ var usuarios =
                                     + ' </button>'
                                 )
                                 .attr('class', 'text-center')
-                            );
+                            );*/
                     //}
                     
                     // Botón Editar Usuario.
@@ -235,22 +235,16 @@ var usuarios =
                 id : id
             };
             
-            alertas.advertencia("En desarrollo");
-            //bd.enviar(datos, usuarios.tabla, usuarios.buscar.detallesExito);
+            bd.enviar(datos, usuarios.tabla, usuarios.buscar.detallesExito);
         },
 
         detallesExito : function(respuesta)
         {
+            // Llena los campos.
             $.each($('#divDetallesUsuario label[data-label]'), function(i, label) 
             {
-                if($(label).data('label') == "habilitado")
-                {
-                    $(label).find('b').html(respuesta.usuario[$(label).data('label')] == "1" ? "Si" : "No");
-                }
-                else
-                {
-                    $(label).find('b').html(respuesta.usuario[$(label).data('label')]);
-                }
+                var valor = respuesta.ficha_medica[$(label).data('label')];
+                $(label).find('b').html(valor == '' ? '-' : (valor == '1' ? 'Si' : (valor == '0' ? 'No' : valor)));
             });
 
             usuarios.mostrarDetalles();

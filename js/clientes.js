@@ -141,7 +141,7 @@ var clientes =
                     // Botón Detalles Cliente.
                     //if(utilidades.tienePermiso(respuesta.permisos, 2))
                     //{
-                        $(tablaClientes)
+                        /*$(tablaClientes)
                             .find('tbody tr:last')
                             .append($('<td>')
                                 .append('<button type="button" class="botonDetallesCliente btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Detalles">'
@@ -149,7 +149,7 @@ var clientes =
                                     + ' </button>'
                                 )
                                 .attr('class', 'text-center')
-                            );
+                            );*/
                     //}
                     
                     // Botón Editar Cliente.

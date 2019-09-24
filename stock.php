@@ -5,6 +5,10 @@
     
     <head>
 
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
     	<!-- Título -->
         <title> Estación de Servicio - Stock </title>
         
@@ -26,7 +30,7 @@
         <?php include('secciones/alertas.php'); ?>
 
 		<!-- Contenido -->
-		<main role="main" class="container">
+		<div class="container">
 
 			<!-- Listado de stock-->
 			<div id="listado" style="display:none">
@@ -65,9 +69,9 @@
 									<th scope="col">
 	                                    Unidades
 	                                </th>
-	                                <th class="text-center" scope="col" colspan="4">
+	                                <!--<th class="text-center" scope="col" colspan="4">
 	                                    Acciones
-	                                </th>
+	                                </th>-->
 	                            </tr>
 	                        </thead>
 
@@ -175,53 +179,9 @@
 					
                 </form>
 
-                <hr>
-
-                <!-- Cursos inscriptos -->
-                <div id="divCursosInscriptos">
-
-                    <div class="row">
-                        
-                        <!-- Título -->
-                        <div class="col-sm-6">
-                            <h3 class="font-weight-normal">
-                                Detalles de compra
-                            </h3>
-                        </div>
-                    </div>
-
-                    <!-- Tabla cursos inscriptos -->
-                    <div class="table-responsive-xl mt-2">
-                        
-                        <table class="table table-striped table-dark">
-                            <thead>
-                                <tr>
-                                    <th scope="col">
-                                        Descripción
-                                    </th>
-                                    <th scope="col">
-                                        Cantidad
-                                    </th>
-									<th scope="col">
-                                        Precio unitario
-                                    </th>
-                                    <th scope="col">
-                                        Precio total
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody></tbody>
-
-                        </table>
-
-                    </div>
-
-                </div>
-
             </div>
 
-       	</main>
+       	</div>
 
 		<!-- Footer -->
 		<?php include('secciones/footer.php'); ?>

@@ -29,7 +29,7 @@ var compras =
 	ocultarPantallas : function() 
     {
         $('.tooltip').tooltip('hide');
-        $('main').children().hide();
+        $('.container').children().hide();
     },
 
     // Inicio.
@@ -479,22 +479,22 @@ var compras =
                 datos.compra[$(campo).attr('name')] = $(campo).val();
             });
 
-            datos.compra.importe_total = utilidades.desformatearDinero(datos.compra.importe_total);
             
             if(mensajeError)
             {
                 alertas.advertencia(mensajeError, '', funcionCerrar);
                 return;
             }
-
+            
             if(this.productos.length == 0)
             {
                 alertas.advertencia("No se ingresaron productos", '', () => $formulario.find('[name="id_producto"]').focus());
                 return;
             }
-
+            
+            datos.compra.importe_total = utilidades.desformatearDinero(datos.compra.importe_total);
             datos.compra.productos = this.productos;
-            console.log(datos);
+            
             // Envía los datos.
             bd.enviar(datos, compras.modulo, (respuesta) =>
             {

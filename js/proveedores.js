@@ -138,7 +138,7 @@ var proveedores =
                     // Botón Detalles Proveedor.
                     //if(utilidades.tienePermiso(respuesta.permisos, 2))
                     //{
-                        $(tablaProveedores)
+                        /*$(tablaProveedores)
                             .find('tbody tr:last')
                             .append($('<td>')
                                 .append('<button type="button" class="botonDetallesProveedor btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Detalles">'
@@ -146,7 +146,7 @@ var proveedores =
                                     + ' </button>'
                                 )
                                 .attr('class', 'text-center')
-                            );
+                            );*/
                     //}
                     
                     // Botón Editar Proveedor.

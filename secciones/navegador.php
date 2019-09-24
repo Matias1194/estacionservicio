@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a href="javascript:void(0)" class="navbar-brand" data-url="inicio">
         <img src="img/estacion_servicio_icono.png" class="img-responsive img-rounded" width="80" height="50"></img>
     </a>

@@ -55,15 +55,15 @@
             $id = $_POST['id'];
 
             // Prepara la consulta.
-            $query = "SELECT perfil.descripcion as 'perfil_descripcion', usuarios.usuario, usuarios.nombres, usuarios.apellidos, DATE_FORMAT(usuarios.fecha_registro, '%d/%m/%Y') as 'fecha_registro', usuarios.habilitado 
+            $query = "SELECT perfiles.descripcion as 'perfil_descripcion', usuarios.usuario, usuarios.nombres, usuarios.apellidos, DATE_FORMAT(usuarios.fecha_registro, '%d/%m/%Y') as 'fecha_registro', usuarios.habilitado 
                       FROM usuarios 
                       INNER JOIN perfiles 
-                        ON usuarios.id_perfil = perfil.id 
+                        ON usuarios.id_perfil = perfiles.id 
                       WHERE usuarios.id = $id LIMIT 1";
 
             // Consulta los detalles de usuario.
             $usuario = consultar_registro($conexion, $query);
-
+            
             // Si hubo error ejecutando la consulta.
             if($usuario === false)
             {
