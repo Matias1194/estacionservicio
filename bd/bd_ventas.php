@@ -110,60 +110,25 @@
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
+            
             // Prepara la consulta.
-            $query = "SELECT id, razon_social 
-                      FROM proveedores
-                      WHERE habilitado = 1";
+            $query = "SELECT id, descripcion, precio_unitario 
+                        FROM productos
+                        WHERE habilitado = 1";
 
-            // Consulta los tipos de proveedores habilitados.
-            $proveedores = consultar_listado($conexion, $query);
+            // Consulta los tipos de productos habilitados.
+            $productos = consultar_listado($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
-            if($proveedores === false)
+            if($productos === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar los proveedores (L 104).";
+                $respuesta['descripcion'] = "Ocurrió un error al buscar los productos (L 136).";
             }
             // Si la consulta fue exitosa.
             else
             {
-                // Prepara la consulta.
-                $query = "SELECT id, descripcion 
-                          FROM tipos_comprobantes
-                          WHERE habilitado = 1";
-
-                // Consulta los tipos de comprobantes habilitados.
-                $tipos_comprobantes = consultar_listado($conexion, $query);
-
-                // Si hubo error ejecutando la consulta.
-                if($tipos_comprobantes === false)
-                {
-                    $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de comprobantes (L 120).";
-                }
-                // Si la consulta fue exitosa.
-                else
-                {
-                    // Prepara la consulta.
-                    $query = "SELECT id, descripcion 
-                              FROM productos
-                              WHERE habilitado = 1";
-
-                    // Consulta los tipos de productos habilitados.
-                    $productos = consultar_listado($conexion, $query);
-
-                    // Si hubo error ejecutando la consulta.
-                    if($productos === false)
-                    {
-                        $respuesta['descripcion'] = "Ocurrió un error al buscar los productos (L 136).";
-                    }
-                    // Si la consulta fue exitosa.
-                    else
-                    {
-                        $respuesta['exito'] = true;
-                        $respuesta['proveedores'] = $proveedores;
-                        $respuesta['tipos_comprobantes'] = $tipos_comprobantes;
-                        $respuesta['productos'] = $productos;
-                    }
-                }
+                $respuesta['exito'] = true;
+                $respuesta['productos'] = $productos;
             }
         }
 
@@ -175,87 +140,122 @@
             
             $venta = $_POST["venta"];
             $productos = $venta["productos"];
-            
+
             // Prepara la consulta.
-            $query = "INSERT INTO ventas (importe_total) "
-            . "VALUES"
-            . "("
-                . $venta['importe_total']
-            . ")";
+            /*$query = "SELECT precio_unitario 
+                      FROM stock 
+                      WHERE ";
+            
+            for ($i = 0; $i < count($productos); $i++)
+            {
+                $query .= $productos[$i]['id_producto'];
+
+                if($i < count($productos) - 1)
+                {
+                    $query .= ' AND ';
+                }
+            }
             
             // Inserta un nueva venta.
-            $resultado = ejecutar($conexion, $query);
+            $productos_unidades = consultar_registros($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
-            if($resultado === false)
+            if($productos_unidades === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 184).";
+                $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 165).";
             }
             // Si la consulta fue exitosa.
             else
             {
-                $id_venta = mysqli_insert_id($conexion);
+                /* VALIDAR QUE HAYA STOCK.
+                for($i = 0; $i < count($productos_unidades); $i++)
+                {
+                    if($productos_)
+                    {
 
-
-                $productos_stock = array();
+                    }
+                }*/
 
                 // Prepara la consulta.
-                $query = "INSERT INTO ventas_detalles (id_venta, id_producto, cantidad, precio_unitario, precio_total) "
-                . "VALUES";
+                $query = "INSERT INTO ventas (importe_total) "
+                . "VALUES"
+                . "("
+                    . $venta['importe_total']
+                . ")";
                 
-                for ($i = 0; $i < count($productos); $i++)
-                {
-                    $query .= "("
-                        . $id_venta . ", "
-                        . $productos[$i]['id_producto'] . ", "
-                        . $productos[$i]['cantidad'] . ", "
-                        . $productos[$i]['precio_unitario'] . ", "
-                        . $productos[$i]['precio_total'] 
-                    . ")";
-
-                    if($i < count($productos) - 1)
-                    {
-                        $query .= ', ';
-                    }
-
-                    $productos_stock[$i]['id_producto'] = $productos[$i]['id_producto'];
-                    $productos_stock[$i]['cantidad'] = $productos[$i]['cantidad'];
-                }
-                
-                // Inserta un nueva venta de venta.
+                // Inserta un nueva venta.
                 $resultado = ejecutar($conexion, $query);
-                
+
                 // Si hubo error ejecutando la consulta.
                 if($resultado === false)
                 {
-                    $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 217).";
+                    $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 184).";
                 }
                 // Si la consulta fue exitosa.
                 else
                 {
-                    for ($i = 0; $i < count($productos_stock); $i++) { 
-                        // Prepara la consulta.
-                        $query = "UPDATE stock 
-                                  SET unidades = unidades - " . $productos_stock[$i]['cantidad'] . "
-                                  WHERE id_producto = " . $productos_stock[$i]['id_producto'];
-                        
-                        // Edita stock.
-                        $resultado = ejecutar($conexion, $query);
+                    $id_venta = mysqli_insert_id($conexion);
+
+                    $productos_stock = array();
+
+                    // Prepara la consulta.
+                    $query = "INSERT INTO ventas_detalles (id_venta, id_producto, cantidad, precio_unitario, precio_total) "
+                    . "VALUES";
+                    
+                    for ($i = 0; $i < count($productos); $i++)
+                    {
+                        $query .= "("
+                            . $id_venta . ", "
+                            . $productos[$i]['id_producto'] . ", "
+                            . $productos[$i]['cantidad'] . ", "
+                            . $productos[$i]['precio_unitario'] . ", "
+                            . $productos[$i]['precio_total'] 
+                        . ")";
+
+                        if($i < count($productos) - 1)
+                        {
+                            $query .= ', ';
+                        }
+
+                        $productos_stock[$i]['id_producto'] = $productos[$i]['id_producto'];
+                        $productos_stock[$i]['cantidad'] = $productos[$i]['cantidad'];
                     }
+                    
+                    // Inserta un nueva venta de venta.
+                    $resultado = ejecutar($conexion, $query);
                     
                     // Si hubo error ejecutando la consulta.
                     if($resultado === false)
                     {
-                        $respuesta['descripcion'] = "Ocurrió un error al editar la venta (L 383).";
+                        $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 217).";
                     }
                     // Si la consulta fue exitosa.
                     else
                     {
-                        $respuesta['exito'] = true;
-                        $respuesta['descripcion'] = "Se registró correctamente la venta!";
+                        for ($i = 0; $i < count($productos_stock); $i++) { 
+                            // Prepara la consulta.
+                            $query = "UPDATE stock 
+                                    SET unidades = unidades - " . $productos_stock[$i]['cantidad'] . "
+                                    WHERE id_producto = " . $productos_stock[$i]['id_producto'];
+                            
+                            // Edita stock.
+                            $resultado = ejecutar($conexion, $query);
+                        }
+                        
+                        // Si hubo error ejecutando la consulta.
+                        if($resultado === false)
+                        {
+                            $respuesta['descripcion'] = "Ocurrió un error al editar la venta (L 214).";
+                        }
+                        // Si la consulta fue exitosa.
+                        else
+                        {
+                            $respuesta['exito'] = true;
+                            $respuesta['descripcion'] = "Se registró correctamente la venta!";
+                        }
                     }
                 }
-            }
+            //}
         }
         
         // EDITAR: Buscar información para editar venta.

@@ -67,11 +67,19 @@ var ventas =
 
         asignarEventos : function()
         {
-            // Desasignar eventos.
+            // Desasignar eventos click.
             this.$div.find('button').unbind('click');
+
+            // Desasignar eventos click.
+            this.$div.find('select').unbind('change');
 
             // Vuelve a la pantalla anterior.
             this.$div.find('button[name="volver"]').click(() => ventas.inicio.mostrar());
+
+            // Actualiza el precio unitario del producto seleccionado.
+            this.$div.find('select[name="id_producto"]').change((e) => {
+                this.$div.find('input[name="precio_unitario"]').val($(':selected', e.target).data('precio'));
+            });
 
             // Agregar Producto.
             this.$div.find('button[name="agregar-producto"]').click(() => this.agregarProducto());
@@ -108,11 +116,15 @@ var ventas =
                 
                 $.each(respuesta.productos, function(i, producto)
                 {
-                    $(comboProductos).append($("<option>").val(producto.id).html(producto.descripcion));
+                    $(comboProductos).append($("<option>")
+                            .val(producto.id)
+                            .html(producto.descripcion)
+                            .attr('data-precio', producto.precio_unitario)
+                        );
                 });
 
                 // Borro los datos en los campos.
-                $formulario.find('input:not([readonly])').val("");
+                $formulario.find('input').val("");
                 
                 this.asignarEventos();
                 this.mostrar();
@@ -126,9 +138,9 @@ var ventas =
             var producto = {};
             var camposCompletos = true;
 
-            $.each($('#divAgregarProductoNueva').find('input:not([readonly]), select'), function(i, campo) 
+            $.each($('#divAgregarProductoNueva').find('input, select'), function(i, campo) 
             {
-                if(!$(campo).val()) 
+                if($(campo).data('requerido') && !$(campo).val()) 
                 {
                     $(campo).focus();
                     camposCompletos = false;

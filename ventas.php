@@ -104,9 +104,7 @@
 							</div>
 
 							<!-- Precio unitario-->
-							<div class="form-group mb-2">
-								<input type="number" class="form-control" name="precio_unitario" min="0" step=".01" placeholder="Precio unitario">
-							</div>
+							<input type="hidden" class="form-control" name="precio_unitario">
 							
 							<!-- Botón agregar producto -->
 							<button type="button" class="btn btn-primary mx-sm-3 mb-2" name="agregar-producto" data-toggle="tooltip" data-placement="top" title="Agregar Producto">
