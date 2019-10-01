@@ -276,7 +276,7 @@
             $id_compra = $_POST['id'];
 
             // Prepara la consulta.
-            $query = "SELECT id, id_proveedor, id_tipo_comprobante, numero_factura, orden_compra_numero, DATE_FORMAT(orden_compra_fecha, '%d/%m/%Y') as 'orden_compra_fecha', gastos_envio, gastos_envio_iva, gastos_envio_impuestos, detalle
+            $query = "SELECT id, id_proveedor, id_tipo_comprobante, numero_factura, orden_compra_numero, DATE_FORMAT(orden_compra_fecha, '%Y-%m-%d') as 'orden_compra_fecha', gastos_envio, gastos_envio_iva, gastos_envio_impuestos, detalle
             FROM compras
             WHERE id = $id_compra AND eliminado = 0";
 

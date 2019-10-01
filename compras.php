@@ -360,7 +360,7 @@
 	                        <label>
 	                        	Fecha Orden de compra
 	                        </label>
-	                        <input type="text" class="form-control" name="orden_compra_fecha" data-requerido>
+	                        <input type="date" class="form-control" name="orden_compra_fecha" data-requerido>
 	                    </div>
 	                    
 	                </div>
@@ -581,7 +581,7 @@
 	                        <label>
 	                        	Fecha Orden de compra
 	                        </label>
-	                        <input type="text" class="form-control" name="orden_compra_fecha" data-requerido>
+	                        <input type="date" class="form-control" name="orden_compra_fecha" data-requerido>
 	                    </div>
 	                    
 	                </div>
