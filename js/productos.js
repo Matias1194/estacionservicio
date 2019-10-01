@@ -97,17 +97,19 @@ var productos =
                                 .append($('<td>')
                                     .append(producto.tipo_producto)
                                 )
-                                .append($('<td>')
-                                    .append(producto.unidades)
-                                )
                                 .attr('data-id', producto.id)
-                            )
-                        
+                            );
+                    });
+                    
+                    $(tablaProductos).DataTable();
+    
+                    $.each(respuesta.productos, function(indice, producto) 
+                    {
                         // Botón Editar Producto.
                         //if(utilidades.tienePermiso(respuesta.permisos, 4))
                         //{
                             $(tablaProductos)
-                                .find('tbody tr:last')
+                                .find('tbody tr[data-id=' + producto.id + ']')
                                 .append($('<td>')
                                     .append('<button type="button" class="btn btn-sm btn-warning" name="editar" data-toggle="tooltip" data-placement="top" title="Editar">'
                                             + '<span class="fa fa-pencil-alt"></span>'
@@ -121,7 +123,7 @@ var productos =
                         //if(utilidades.tienePermiso(respuesta.permisos, 7))
                         //{
                             $(tablaProductos)
-                                .find('tbody tr:last')
+                                .find('tbody tr[data-id=' + producto.id + ']')
                                 .append($('<td>')
                                     .append('<button type="button" class="btn btn-sm btn-secondary" name="eliminar" data-toggle="tooltip" data-placement="top" title="Eliminar">'
                                             + '<span class="fa fa-trash"></span>'

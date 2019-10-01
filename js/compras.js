@@ -134,12 +134,18 @@ var compras =
                                 )
                                 .attr('data-id', compra.id)
                             )
+                    });
+                    
+                    $(tablaCompras).DataTable();
+    
+                    $.each(respuesta.compras, function(indice, compra)
+                    {
     
                         // Botón Detalles Compra.
                         //if(utilidades.tienePermiso(respuesta.permisos, 2))
                         //{
                             $(tablaCompras)
-                                .find('tbody tr:last')
+                                .find('tbody tr[data-id=' + compra.id + ']')
                                 .append($('<td>')
                                     .append('<button type="button" class="btn btn-sm btn-info" name="detalles" data-toggle="tooltip" data-placement="top" title="Detalles">'
                                             + '<span class="fa fa-eye"></span>'
@@ -153,7 +159,7 @@ var compras =
                         //if(utilidades.tienePermiso(respuesta.permisos, 4))
                         //{
                             $(tablaCompras)
-                                .find('tbody tr:last')
+                                .find('tbody tr[data-id=' + compra.id + ']')
                                 .append($('<td>')
                                     .append('<button type="button" class="btn btn-sm btn-warning" name="editar" data-toggle="tooltip" data-placement="top" title="Editar">'
                                             + '<span class="fa fa-pencil-alt"></span>'
@@ -167,7 +173,7 @@ var compras =
                         //if(utilidades.tienePermiso(respuesta.permisos, 7))
                         //{
                             $(tablaCompras)
-                                .find('tbody tr:last')
+                                .find('tbody tr[data-id=' + compra.id + ']')
                                 .append($('<td>')
                                     .append('<button type="button" class="btn btn-sm btn-secondary" name="eliminar" data-toggle="tooltip" data-placement="top" title="Eliminar">'
                                             + '<span class="fa fa-trash"></span>'
@@ -514,7 +520,7 @@ var compras =
             this.$div.find('button').unbind('click');
 
             // Vuelve a la pantalla anterior.
-            this.$div.find('button[name="volver"]').click(() => compras.inicio.mostrar());
+            this.$div.find('button[name="volver"]').click(() => compras.listado.buscar());
 
             // Agregar Producto.
             this.$div.find('button[name="agregar-producto"]').click(() => this.agregarProducto());

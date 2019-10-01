@@ -134,7 +134,12 @@ var proveedores =
                             )
                             .attr('data-id', proveedor.id)
                         )
+                });
 
+                $(tablaProveedores).DataTable();
+
+                $.each(respuesta.proveedores, function(indice, proveedor) 
+                {
                     // Botón Detalles Proveedor.
                     //if(utilidades.tienePermiso(respuesta.permisos, 2))
                     //{
@@ -153,7 +158,7 @@ var proveedores =
                     //if(utilidades.tienePermiso(respuesta.permisos, 4))
                     //{
                         $(tablaProveedores)
-                            .find('tbody tr:last')
+                            .find('tbody tr[data-id=' + proveedor.id + ']')
                             .append($('<td>')
                                 .append('<button type="button" class="botonEditarProveedor btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar">'
                                         + '<span class="fa fa-pencil-alt"></span>'
@@ -167,7 +172,7 @@ var proveedores =
                     //if(utilidades.tienePermiso(respuesta.permisos, 7))
                     //{
                         $(tablaProveedores)
-                            .find('tbody tr:last')
+                            .find('tbody tr[data-id=' + proveedor.id + ']')
                             .append($('<td>')
                                 .append('<button type="button" class="botonEliminarProveedor btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
                                         + '<span class="fa fa-trash"></span>'
@@ -183,7 +188,7 @@ var proveedores =
                     if(proveedor.habilitado == "1")
                     {
                         $(tablaProveedores)
-                            .find('tbody tr:last') 
+                            .find('tbody tr[data-id=' + proveedor.id + ']')
                             .append($('<td>')
                                 // Botón Deshabilitar Proveedor.
                                 .append('<button type="button" class="botonDeshabilitarProveedor btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
@@ -199,7 +204,7 @@ var proveedores =
                     else
                     {
                         $(tablaProveedores)
-                            .find('tbody tr:last')
+                            .find('tbody tr[data-id=' + proveedor.id + ']')
                             .append($('<td>')
                                 // Botón Habilitar Proveedor.
                                 .append('<button type="button" class="botonHabilitarProveedor btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'

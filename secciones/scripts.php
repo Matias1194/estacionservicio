@@ -5,6 +5,9 @@
 <script src="js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="js/bootstrap/bootstrap-datepicker.js"></script>
 
+<!-- Bootstrap Datatables JS -->
+<script src="js/bootstrap/datatables.min.js"></script>  
+
 <!-- JS -->
 <script src="js/bd.js"></script>
 <script src="js/navegador.js"></script>

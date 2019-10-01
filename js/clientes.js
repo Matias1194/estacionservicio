@@ -137,6 +137,11 @@ var clientes =
                             )
                             .attr('data-id', cliente.id)
                         )
+                });
+                $(tablaClientes).DataTable();
+
+                $.each(respuesta.clientes, function(indice, cliente)
+                {
 
                     // Botón Detalles Cliente.
                     //if(utilidades.tienePermiso(respuesta.permisos, 2))
@@ -156,7 +161,7 @@ var clientes =
                     //if(utilidades.tienePermiso(respuesta.permisos, 4))
                     //{
                         $(tablaClientes)
-                            .find('tbody tr:last')
+                            .find('tbody tr[data-id=' + cliente.id + ']')
                             .append($('<td>')
                                 .append('<button type="button" class="botonEditarCliente btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar">'
                                         + '<span class="fa fa-pencil-alt"></span>'
@@ -170,7 +175,7 @@ var clientes =
                     //if(utilidades.tienePermiso(respuesta.permisos, 7))
                     //{
                         $(tablaClientes)
-                            .find('tbody tr:last')
+                            .find('tbody tr[data-id=' + cliente.id + ']')
                             .append($('<td>')
                                 .append('<button type="button" class="botonEliminarCliente btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
                                         + '<span class="fa fa-trash"></span>'
@@ -186,7 +191,7 @@ var clientes =
                     if(cliente.habilitado == "1")
                     {
                         $(tablaClientes)
-                            .find('tbody tr:last') 
+                            .find('tbody tr[data-id=' + cliente.id + ']')
                             .append($('<td>')
                                 // Botón Deshabilitar Cliente.
                                 .append('<button type="button" class="botonDeshabilitarCliente btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
@@ -202,7 +207,7 @@ var clientes =
                     else
                     {
                         $(tablaClientes)
-                            .find('tbody tr:last')
+                            .find('tbody tr[data-id=' + cliente.id + ']')
                             .append($('<td>')
                                 // Botón Habilitar Cliente.
                                 .append('<button type="button" class="botonHabilitarCliente btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'

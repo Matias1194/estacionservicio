@@ -76,7 +76,7 @@
 									<th scope="col">
 	                                    Tipo Producto
 	                                </th>
-	                                <th class="text-center" scope="col" colspan="4">
+	                                <th scope="col" colspan="4">
 	                                    Acciones
 	                                </th>
 	                            </tr>

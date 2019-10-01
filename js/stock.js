@@ -92,12 +92,18 @@ var stock =
                                 )
                                 .attr('data-id', stock.id)
                             )
+                    });
+
+                    $(tablaStock).DataTable();
+    
+                    $.each(respuesta.stock, function(indice, stock) 
+                    {
     
                         // Botón Detalles Stock.
                         //if(utilidades.tienePermiso(respuesta.permisos, 2))
                         //{
                             /*$(tablaStock)
-                                .find('tbody tr:last')
+                                .find('tbody tr[data-id=' + stock.id + ']')
                                 .append($('<td>')
                                     .append('<button type="button" class="btn btn-sm btn-info" name="detalles" data-toggle="tooltip" data-placement="top" title="Detalles">'
                                             + '<span class="fa fa-eye"></span>'

@@ -144,7 +144,11 @@ var usuarios =
                             )
                             .attr('data-id', usuario.id)
                         );
+                });
+                $(tablaUsuarios).DataTable();
 
+                $.each(respuesta.usuarios, function(indice, usuario) 
+                {
                     // Botón Detalles Usuario.
                     //if(utilidades.tienePermiso(respuesta.permisos, 2))
                     //{
@@ -163,7 +167,7 @@ var usuarios =
                     //if(utilidades.tienePermiso(respuesta.permisos, 4))
                     //{
                         $(tablaUsuarios)
-                            .find('tbody tr:last')
+                            .find('tbody tr[data-id=' + usuario.id + ']')
                             .append($('<td>')
                                 .append('<button type="button" class="botonEditarUsuario btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar">'
                                         + '<span class="fa fa-pencil-alt"></span>'
@@ -177,7 +181,7 @@ var usuarios =
                     //if(utilidades.tienePermiso(respuesta.permisos, 7))
                     //{
                         $(tablaUsuarios)
-                            .find('tbody tr:last')
+                            .find('tbody tr[data-id=' + usuario.id + ']')
                             .append($('<td>')
                                 .append('<button type="button" class="botonEliminarUsuario btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
                                         + '<span class="fa fa-trash"></span>'
@@ -192,7 +196,7 @@ var usuarios =
                     if(usuario.habilitado == "1")
                     {
                         $(tablaUsuarios)
-                            .find('tbody tr:last') 
+                            .find('tbody tr[data-id=' + usuario.id + ']') 
                             .append($('<td>')
                                 // Botón Deshabilitar Usuario.
                                 .append('<button type="button" class="botonDeshabilitarUsuario btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
@@ -207,7 +211,7 @@ var usuarios =
                     if(usuario.habilitado == "0")
                     {
                         $(tablaUsuarios)
-                            .find('tbody tr:last')
+                            .find('tbody tr[data-id=' + usuario.id + ']')
                             .append($('<td>')
                                 // Botón Habilitar Usuario.
                                 .append('<button type="button" class="botonHabilitarUsuario btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
@@ -221,7 +225,6 @@ var usuarios =
                     }
                 });
             }
-
             $(barraCargando).slideUp();
             $(tablaUsuarios).fadeIn();
             
