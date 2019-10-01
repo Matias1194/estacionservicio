@@ -145,3 +145,21 @@ Stock Mercado
 - Consultar Movimientos Mercado 			No				Si				No			No
 
 ---------------------------------------
+
+01/10/2019
+Tareas 
+
+1° Terminar módulo Ventas orientado a consumidor final.
+- Crear Módulo Caja (para ver el dinero)
+- Analizar tablas para controlar los movimientos de Caja y Stock.
+- Mostrar PDF con el ticket al confirmar la venta (PDF Filler)
+
+2° 
+- (LISTO) Campos fecha type="date"
+- (LISTO) Campos BUSCAR en todas las tablas (DataTable)
+- Cuando se elige un producto repetido, que se sume si existía.
+- (LISTO) Ordenar tablas descendente por fecha (DataTable)
+- Dropdown MERCADO (Productos, Compras, Ventas, Stock)
+- Dropdown PLAYA (Productos, Compras, Ventas, Stock)
+- Informes: Botón Descargar PDF (Stock, compras, ventas)
+- Permisos de perfil de usuario
