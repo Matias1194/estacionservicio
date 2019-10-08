@@ -50,6 +50,12 @@
                     Stock
                 </a>
             </li>
+            <!--<?php //} if(tienePermiso(15)) { ?>-->
+                <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/caja.php' ? 'active' : '') ?>">
+                <a href="javascript:void(0)" class="nav-link" data-url="caja">
+                    Caja
+                </a>
+            </li>
             <!--<?php //} ?>-->
         </ul>
         <?php } ?>

@@ -87,7 +87,20 @@
 
 	            <!-- Formulario -->
 	            <form class="mt-4">
-				
+
+					<!-- Primera fila -->
+	                <div class="form-row">
+
+						<!-- Tipo pago -->
+	                	<div class="form-group col-md-3">
+							<label>
+								Tipo Pago
+							</label>
+							<select class="form-control" name="id_tipo_pago" data-requerido></select> 
+						</div>
+	                	
+					</div>
+
 					<!-- Cuerpo de la venta -->
 					<div id="divAgregarProductoNueva" class="form-inline">
 

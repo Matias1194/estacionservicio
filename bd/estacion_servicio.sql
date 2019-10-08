@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-10-2019 a las 01:44:36
+-- Tiempo de generación: 09-10-2019 a las 01:36:15
 -- Versión del servidor: 10.1.38-MariaDB
 -- Versión de PHP: 7.3.4
 
@@ -106,6 +106,32 @@ INSERT INTO `compras_detalles` (`id`, `id_compra`, `id_producto`, `cantidad`, `p
 (6, 5, 11, 100, '90.00', '9000'),
 (7, 6, 1, 50, '45.00', '2250'),
 (8, 6, 2, 5, '60.00', '300');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `movimientos_caja`
+--
+
+CREATE TABLE `movimientos_caja` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `id_tipo_registro_caja` int(10) UNSIGNED NOT NULL,
+  `entrada` decimal(8,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `salida` decimal(8,2) UNSIGNED NOT NULL DEFAULT '0.00',
+  `saldo` decimal(8,2) NOT NULL,
+  `id_pago` int(10) UNSIGNED NOT NULL,
+  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `id_usuario` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `movimientos_caja`
+--
+
+INSERT INTO `movimientos_caja` (`id`, `id_tipo_registro_caja`, `entrada`, `salida`, `saldo`, `id_pago`, `fecha`, `id_usuario`) VALUES
+(1, 1, '0.00', '0.00', '5000.00', 1, '2019-10-08 20:14:21', 1),
+(2, 7, '90.00', '0.00', '5090.00', 1, '2019-10-08 20:30:22', 2),
+(3, 7, '10.00', '0.00', '5100.00', 1, '2019-10-08 20:34:05', 2);
 
 -- --------------------------------------------------------
 
@@ -335,8 +361,8 @@ CREATE TABLE `stock` (
 
 INSERT INTO `stock` (`id`, `id_producto`, `unidades`) VALUES
 (1, 10, 100),
-(2, 1, 38),
-(3, 2, 4),
+(2, 1, 0),
+(3, 2, 1),
 (4, 3, 50),
 (5, 4, 0),
 (6, 5, 0),
@@ -459,6 +485,30 @@ INSERT INTO `tipos_productos` (`id`, `descripcion`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `tipos_registros_caja`
+--
+
+CREATE TABLE `tipos_registros_caja` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `tipos_registros_caja`
+--
+
+INSERT INTO `tipos_registros_caja` (`id`, `descripcion`, `habilitado`) VALUES
+(1, 'Apertura caja diaria: Efectivo en caja', 1),
+(3, 'Cierre de caja diario: Retiro de efectivo', 1),
+(4, 'Cierre de caja diario: Cheques', 1),
+(5, 'Cierre de caja diario: Tarjeta de crédito', 1),
+(6, 'Ingreso de efectivo a caja', 1),
+(7, 'Venta', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuarios`
 --
 
@@ -499,6 +549,7 @@ INSERT INTO `usuarios` (`id`, `id_perfil`, `id_tipo_documento`, `documento`, `us
 
 CREATE TABLE `ventas` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `id_tipo_pago` int(10) UNSIGNED NOT NULL,
   `importe_total` double(8,2) UNSIGNED NOT NULL,
   `fecha_venta` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -507,15 +558,42 @@ CREATE TABLE `ventas` (
 -- Volcado de datos para la tabla `ventas`
 --
 
-INSERT INTO `ventas` (`id`, `importe_total`, `fecha_venta`) VALUES
-(1, 450.00, '2019-09-24 20:33:25'),
-(2, 250.00, '2019-09-24 20:34:25'),
-(3, 250.00, '2019-09-24 20:35:40'),
-(4, 5000.00, '2019-10-01 18:16:48'),
-(5, 5000.00, '2019-10-01 18:28:41'),
-(6, 5000.00, '2019-10-01 18:28:56'),
-(7, 5000.00, '2019-10-01 18:29:14'),
-(8, 100.00, '2019-10-01 19:17:36');
+INSERT INTO `ventas` (`id`, `id_tipo_pago`, `importe_total`, `fecha_venta`) VALUES
+(1, 0, 450.00, '2019-09-24 20:33:25'),
+(2, 0, 250.00, '2019-09-24 20:34:25'),
+(3, 0, 250.00, '2019-09-24 20:35:40'),
+(4, 0, 5000.00, '2019-10-01 18:16:48'),
+(5, 0, 5000.00, '2019-10-01 18:28:41'),
+(6, 0, 5000.00, '2019-10-01 18:28:56'),
+(7, 0, 5000.00, '2019-10-01 18:29:14'),
+(8, 0, 100.00, '2019-10-01 19:17:36'),
+(9, 1, 90.00, '2019-10-08 20:11:31'),
+(10, 1, 90.00, '2019-10-08 20:16:16'),
+(11, 1, 90.00, '2019-10-08 20:16:43'),
+(12, 1, 90.00, '2019-10-08 20:17:14'),
+(13, 1, 90.00, '2019-10-08 20:18:30'),
+(14, 1, 90.00, '2019-10-08 20:19:08'),
+(15, 1, 90.00, '2019-10-08 20:20:04'),
+(16, 1, 90.00, '2019-10-08 20:20:24'),
+(17, 1, 90.00, '2019-10-08 20:20:59'),
+(18, 1, 90.00, '2019-10-08 20:21:29'),
+(19, 1, 90.00, '2019-10-08 20:21:59'),
+(20, 1, 90.00, '2019-10-08 20:22:44'),
+(21, 1, 90.00, '2019-10-08 20:23:22'),
+(22, 1, 90.00, '2019-10-08 20:24:03'),
+(23, 1, 90.00, '2019-10-08 20:25:27'),
+(24, 1, 90.00, '2019-10-08 20:27:11'),
+(25, 1, 90.00, '2019-10-08 20:27:48'),
+(26, 1, 90.00, '2019-10-08 20:28:27'),
+(27, 1, 90.00, '2019-10-08 20:29:13'),
+(28, 1, 90.00, '2019-10-08 20:29:47'),
+(29, 1, 90.00, '2019-10-08 20:31:40'),
+(30, 1, 90.00, '2019-10-08 20:32:03'),
+(31, 1, 90.00, '2019-10-08 20:32:03'),
+(32, 1, 90.00, '2019-10-08 20:32:38'),
+(33, 1, 10.00, '2019-10-08 20:33:47'),
+(34, 1, 10.00, '2019-10-08 20:33:51'),
+(35, 1, 10.00, '2019-10-08 20:34:04');
 
 -- --------------------------------------------------------
 
@@ -545,7 +623,34 @@ INSERT INTO `ventas_detalles` (`id`, `id_venta`, `id_producto`, `cantidad`, `pre
 (6, 6, 2, 100, '50.00', '5000'),
 (7, 7, 2, 100, '50.00', '5000'),
 (8, 8, 1, 2, '45.00', '90'),
-(9, 8, 2, 1, '10.00', '10');
+(9, 8, 2, 1, '10.00', '10'),
+(10, 9, 1, 2, '45.00', '90'),
+(11, 10, 1, 2, '45.00', '90'),
+(12, 11, 1, 2, '45.00', '90'),
+(13, 12, 1, 2, '45.00', '90'),
+(14, 13, 1, 2, '45.00', '90'),
+(15, 14, 1, 2, '45.00', '90'),
+(16, 15, 1, 2, '45.00', '90'),
+(17, 16, 1, 2, '45.00', '90'),
+(18, 17, 1, 2, '45.00', '90'),
+(19, 18, 1, 2, '45.00', '90'),
+(20, 19, 1, 2, '45.00', '90'),
+(21, 20, 1, 2, '45.00', '90'),
+(22, 21, 1, 2, '45.00', '90'),
+(23, 22, 1, 2, '45.00', '90'),
+(24, 23, 1, 2, '45.00', '90'),
+(25, 24, 1, 2, '45.00', '90'),
+(26, 25, 1, 2, '45.00', '90'),
+(27, 26, 1, 2, '45.00', '90'),
+(28, 27, 1, 2, '45.00', '90'),
+(29, 28, 1, 2, '45.00', '90'),
+(30, 29, 1, 2, '45.00', '90'),
+(31, 30, 1, 2, '45.00', '90'),
+(32, 31, 1, 2, '45.00', '90'),
+(33, 32, 1, 2, '45.00', '90'),
+(34, 33, 2, 1, '10.00', '10'),
+(35, 34, 2, 1, '10.00', '10'),
+(36, 35, 2, 1, '10.00', '10');
 
 --
 -- Índices para tablas volcadas
@@ -567,6 +672,12 @@ ALTER TABLE `compras`
 -- Indices de la tabla `compras_detalles`
 --
 ALTER TABLE `compras_detalles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `movimientos_caja`
+--
+ALTER TABLE `movimientos_caja`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -636,6 +747,12 @@ ALTER TABLE `tipos_productos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `tipos_registros_caja`
+--
+ALTER TABLE `tipos_registros_caja`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -674,6 +791,12 @@ ALTER TABLE `compras`
 --
 ALTER TABLE `compras_detalles`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `movimientos_caja`
+--
+ALTER TABLE `movimientos_caja`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -736,6 +859,12 @@ ALTER TABLE `tipos_productos`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT de la tabla `tipos_registros_caja`
+--
+ALTER TABLE `tipos_registros_caja`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -745,13 +874,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas_detalles`
 --
 ALTER TABLE `ventas_detalles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

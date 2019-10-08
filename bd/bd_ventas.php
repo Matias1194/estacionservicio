@@ -110,7 +110,6 @@
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
-            
             // Prepara la consulta.
             $query = "SELECT id, descripcion, precio_unitario 
                         FROM productos
@@ -127,8 +126,26 @@
             // Si la consulta fue exitosa.
             else
             {
-                $respuesta['exito'] = true;
-                $respuesta['productos'] = $productos;
+                // Prepara la consulta.
+                $query = "SELECT id, descripcion 
+                        FROM tipos_pagos
+                        WHERE habilitado = 1";
+
+                // Consulta los tipos de pagos habilitados.
+                $tipos_pagos = consultar_listado($conexion, $query);
+
+                // Si hubo error ejecutando la consulta.
+                if($tipos_pagos === false)
+                {
+                    $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de pago(L 140).";
+                }
+                // Si la consulta fue exitosa.
+                else
+                {
+                    $respuesta['exito'] = true;
+                    $respuesta['productos'] = $productos;
+                    $respuesta['tipos_pagos'] = $tipos_pagos;
+                }
             }
         }
 
@@ -177,9 +194,10 @@
                 }*/
 
                 // Prepara la consulta.
-                $query = "INSERT INTO ventas (importe_total) "
+                $query = "INSERT INTO ventas (id_tipo_pago, importe_total) "
                 . "VALUES"
                 . "("
+                    . $venta['id_tipo_pago'] . ", "
                     . $venta['importe_total']
                 . ")";
                 
@@ -250,8 +268,38 @@
                         // Si la consulta fue exitosa.
                         else
                         {
-                            $respuesta['exito'] = true;
-                            $respuesta['descripcion'] = "Se registró correctamente la venta!";
+                            // Prepara la consulta.
+                            $query = "SELECT *
+                                      FROM movimientos_caja
+                                      ORDER BY id DESC LIMIT 1";
+                            
+                            // Consulta ultimo movimiento de caja.
+                            $ultimo_movimiento_caja = consultar_registro($conexion, $query);
+                            
+                            // Prepara la consulta.
+                            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, saldo, id_pago, id_usuario)
+                                      VALUES ("
+                                        . 7 . ", "
+                                        . $venta['importe_total'] . ", "
+                                        . (floatval($ultimo_movimiento_caja->saldo) + floatval($venta['importe_total'])) . ", "
+                                        . $venta['id_tipo_pago'] . ", "
+                                        . $_SESSION['usuario']->id
+                                    . ')';
+                            
+                            // Guarda un nuevo movimiento de caja.
+                            $resultado = ejecutar($conexion, $query);
+                            
+                            // Si hubo error ejecutando la consulta.
+                            if($resultado === false)
+                            {
+                                $respuesta['descripcion'] = "Ocurrió un error al regitrar el movimiento de caja (L 295).";
+                            }
+                            // Si la consulta fue exitosa.
+                            else
+                            {
+                                $respuesta['exito'] = true;
+                                $respuesta['descripcion'] = "Se registró correctamente la venta!";
+                            }
                         }
                     }
                 }

@@ -123,6 +123,18 @@ var ventas =
                         );
                 });
 
+                // Llena combo Productos.
+                var comboTiposPago = $formulario.find('select[name="id_tipo_pago"]').html("");
+                $(comboTiposPago).append($('<option>').html("Tipo pago").val("").attr({'disabled': true, 'selected': true}));
+                
+                $.each(respuesta.tipos_pagos, function(i, opcion)
+                {
+                    $(comboTiposPago).append($("<option>")
+                            .val(opcion.id)
+                            .html(opcion.descripcion)
+                        );
+                });
+
                 // Borro los datos en los campos.
                 $formulario.find('input').val("");
                 
