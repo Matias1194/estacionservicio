@@ -63,7 +63,7 @@
 	                <!-- Tabla Productos -->
 	                <div class="table-responsive-xl">
 	                    
-	                    <table class="table table-striped table-dark">
+	                    <table class="table table-striped table-dark" style="width: 100%">
 	                        
 	                        <thead>
 	                            <tr>
@@ -76,7 +76,7 @@
 									<th scope="col">
 	                                    Tipo Producto
 	                                </th>
-	                                <th scope="col" colspan="4">
+	                                <th class="text-center" scope="col" colspan="4" style="width: 20%">
 	                                    Acciones
 	                                </th>
 	                            </tr>

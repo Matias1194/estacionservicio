@@ -42,7 +42,15 @@
 	                    <h1 class="font-weight-normal">
 	                        Listado de Stock
 	                    </h1>
-	                </div>
+                    </div>
+                    
+                    <!-- Descargar PDF -->
+	                <div class="col-md-6 text-right">
+                        <button class="btn btn-success mt-2" name="descargar">
+                            <span class="fa fa-file-pdf"></span>
+                            Descargar
+                        </button>
+                    </div>
 
 	            </div>
 
@@ -69,7 +77,7 @@
 									<th scope="col">
 	                                    Unidades
 	                                </th>
-	                                <!--<th class="text-center" scope="col" colspan="4">
+	                                <!--<th class="text-center">
 	                                    Acciones
 	                                </th>-->
 	                            </tr>

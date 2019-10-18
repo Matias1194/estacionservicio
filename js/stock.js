@@ -38,8 +38,8 @@ var stock =
             // Desasignar eventos.
             this.$div.find('button').unbind('click');
 
-            // Detalles.
-            this.$div.find('button[name="detalles"]').click((e) => stock.detalles.buscar($(e.currentTarget).closest('tr').data('id')));
+            // Descargar.
+            this.$div.find('button[name="descargar"]').click(() => stock.listado.descargar());
         },
 
         mostrar : function()
@@ -120,6 +120,12 @@ var stock =
                 this.asignarEventos();
                 this.mostrar();
             });
+        },
+
+        descargar : function()
+        {            
+            // Envía los datos.
+            redireccionar.pagina('reportes/reporte_stock.php');
         }
     },
 
