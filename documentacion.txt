@@ -152,14 +152,19 @@ Tareas
 1° Terminar módulo Ventas orientado a consumidor final.
 - Crear Módulo Caja (para ver el dinero)
 - Analizar tablas para controlar los movimientos de Caja y Stock.
-- Mostrar PDF con el ticket al confirmar la venta (PDF Filler)
-
-2° 
+- Diseñar Reportes
+    - Stock (falta terminar)            reporte_stock.php
+    - Ticket al confirmar la venta      reporte_ticket.php
+    - Compras por periodo (Totales)     reporte_compras_periodo.php     (parámetros: desde y hasta. EJ: 09/2019 a 10/2019)
+    - Compra individual (Detalles)      reporte_compras_detalles.php    (parámetros: id compra. EJ: 15)
+    - Ventas por periodo (Totales)      reporte_ventas_periodo.php      (parámetros: desde y hasta. EJ: 07/2019 a 11/2019)
+    - Venta individual (Detalles)       reporte_ventas_detalles.php     (parámetros: id venta. EJ: 29)
+    
+Secundarias 
 - (LISTO) Campos fecha type="date"
 - (LISTO) Campos BUSCAR en todas las tablas (DataTable)
-- Cuando se elige un producto repetido, que se sume si existía.
 - (LISTO) Ordenar tablas descendente por fecha (DataTable)
+- Cuando se elige un producto repetido, que se sume si existía.
 - Dropdown MERCADO (Productos, Compras, Ventas, Stock)
 - Dropdown PLAYA (Productos, Compras, Ventas, Stock)
-- Informes: Botón Descargar PDF (Stock, compras, ventas)
 - Permisos de perfil de usuario
