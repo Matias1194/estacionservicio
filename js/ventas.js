@@ -142,8 +142,13 @@ var ventas =
                 this.mostrar();
             });
         },
+        descargar : function(id)
+        {            
+            // Envía los datos.
+            redireccionar.pagina('reportes/reporte_venta.php?id=' . id);
+        },
 
-        productos : [],
+        productos: [],
 
         agregarProducto : function()
         {
@@ -294,6 +299,7 @@ var ventas =
             bd.enviar(datos, ventas.modulo, (respuesta) =>
             {
                 alertas.exito(respuesta.descripcion, '' , redireccionar.ventas);
+                ventas.tickets.descargar(respuesta.id);
             });
         }
     }    
