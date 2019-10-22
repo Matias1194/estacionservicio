@@ -72,9 +72,16 @@
 	                        Nueva Venta
 	                    </h1>
 	                </div>
+					<!-- Descargar PDF -->
+	                <div class="col-md-3 text-right">
+                        <button class="btn btn-success mt-2" name="descargar">
+                            <span class="fa fa-file-pdf"></span>
+                            Descargar
+                        </button>
+                    </div>
 	                
 	                <!-- Botón volver -->
-	                <div class="col-md-6 text-right">
+	                <div class="col-md-3 text-right">
                         <button class="btn btn-secondary mt-2" name="volver">
                             <span class="fa fa-chevron-left"></span> 
                             Volver

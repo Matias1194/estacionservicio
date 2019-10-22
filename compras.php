@@ -79,9 +79,16 @@
 	                        Listado de Compras
 	                    </h1>
 	                </div>
+					<!-- Descargar PDF -->
+	                <div class="col-md-3 text-right">
+                        <button class="btn btn-success mt-2" name="descargar">
+                            <span class="fa fa-file-pdf"></span>
+                            Descargar
+                        </button>
+                    </div>
 
 	                <!-- Volver al listado -->
-	                <div class="col-md-6 text-right">
+	                <div class="col-md-3 text-right">
                         <button class="btn btn-secondary mt-2" name="volver" data-pantalla="inicio">
                             <span class="fa fa-chevron-left"></span> 
                             Volver
