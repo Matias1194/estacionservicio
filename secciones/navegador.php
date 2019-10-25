@@ -1,6 +1,8 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <a href="javascript:void(0)" class="navbar-brand" data-url="inicio">
         <img src="img/estacion_servicio_icono.png" class="img-responsive img-rounded" width="80" height="50"></img>
+        <link rel="shortcut icon" href="./img/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="./img/favicon.ico" type="image/x-icon">
     </a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarContenido" aria-controls="navbarContenido" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
