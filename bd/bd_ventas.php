@@ -157,153 +157,118 @@
             
             $venta = $_POST["venta"];
             $productos = $venta["productos"];
-
-            // Prepara la consulta.
-            /*$query = "SELECT precio_unitario 
-                      FROM stock 
-                      WHERE ";
             
-            for ($i = 0; $i < count($productos); $i++)
-            {
-                $query .= $productos[$i]['id_producto'];
-
-                if($i < count($productos) - 1)
-                {
-                    $query .= ' AND ';
-                }
-            }
+            // Prepara la consulta.
+            $query = "INSERT INTO ventas (id_tipo_pago, importe_total) "
+            . "VALUES"
+            . "("
+                . $venta['id_tipo_pago'] . ", "
+                . $venta['importe_total']
+            . ")";
             
             // Inserta un nueva venta.
-            $productos_unidades = consultar_registros($conexion, $query);
+            $resultado = ejecutar($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
-            if($productos_unidades === false)
+            if($resultado === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 165).";
+                $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 184).";
             }
             // Si la consulta fue exitosa.
             else
             {
-                /* VALIDAR QUE HAYA STOCK.
-                for($i = 0; $i < count($productos_unidades); $i++)
-                {
-                    if($productos_)
-                    {
+                $id_venta = mysqli_insert_id($conexion);
 
-                    }
-                }*/
+                $productos_stock = array();
 
                 // Prepara la consulta.
-                $query = "INSERT INTO ventas (id_tipo_pago, importe_total) "
-                . "VALUES"
-                . "("
-                    . $venta['id_tipo_pago'] . ", "
-                    . $venta['importe_total']
-                . ")";
+                $query = "INSERT INTO ventas_detalles (id_venta, id_producto, cantidad, precio_unitario, precio_total) "
+                . "VALUES";
                 
-                // Inserta un nueva venta.
-                $resultado = ejecutar($conexion, $query);
+                for ($i = 0; $i < count($productos); $i++)
+                {
+                    $query .= "("
+                        . $id_venta . ", "
+                        . $productos[$i]['id_producto'] . ", "
+                        . $productos[$i]['cantidad'] . ", "
+                        . $productos[$i]['precio_unitario'] . ", "
+                        . $productos[$i]['precio_total'] 
+                    . ")";
 
+                    if($i < count($productos) - 1)
+                    {
+                        $query .= ', ';
+                    }
+
+                    $productos_stock[$i]['id_producto'] = $productos[$i]['id_producto'];
+                    $productos_stock[$i]['cantidad'] = $productos[$i]['cantidad'];
+                }
+                
+                // Inserta un nueva venta de venta.
+                $resultado = ejecutar($conexion, $query);
+                
                 // Si hubo error ejecutando la consulta.
                 if($resultado === false)
                 {
-                    $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 184).";
+                    $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 217).";
                 }
                 // Si la consulta fue exitosa.
                 else
                 {
-                    $id_venta = mysqli_insert_id($conexion);
-
-                    $productos_stock = array();
-
-                    // Prepara la consulta.
-                    $query = "INSERT INTO ventas_detalles (id_venta, id_producto, cantidad, precio_unitario, precio_total) "
-                    . "VALUES";
-                    
-                    for ($i = 0; $i < count($productos); $i++)
-                    {
-                        $query .= "("
-                            . $id_venta . ", "
-                            . $productos[$i]['id_producto'] . ", "
-                            . $productos[$i]['cantidad'] . ", "
-                            . $productos[$i]['precio_unitario'] . ", "
-                            . $productos[$i]['precio_total'] 
-                        . ")";
-
-                        if($i < count($productos) - 1)
-                        {
-                            $query .= ', ';
-                        }
-
-                        $productos_stock[$i]['id_producto'] = $productos[$i]['id_producto'];
-                        $productos_stock[$i]['cantidad'] = $productos[$i]['cantidad'];
+                    for ($i = 0; $i < count($productos_stock); $i++) { 
+                        // Prepara la consulta.
+                        $query = "UPDATE stock 
+                                SET unidades = unidades - " . $productos_stock[$i]['cantidad'] . "
+                                WHERE id_producto = " . $productos_stock[$i]['id_producto'];
+                        
+                        // Edita stock.
+                        $resultado = ejecutar($conexion, $query);
                     }
-                    
-                    // Inserta un nueva venta de venta.
-                    $resultado = ejecutar($conexion, $query);
                     
                     // Si hubo error ejecutando la consulta.
                     if($resultado === false)
                     {
-                        $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 217).";
+                        $respuesta['descripcion'] = "Ocurrió un error al editar la venta (L 214).";
                     }
                     // Si la consulta fue exitosa.
                     else
                     {
-                        for ($i = 0; $i < count($productos_stock); $i++) { 
-                            // Prepara la consulta.
-                            $query = "UPDATE stock 
-                                    SET unidades = unidades - " . $productos_stock[$i]['cantidad'] . "
-                                    WHERE id_producto = " . $productos_stock[$i]['id_producto'];
-                            
-                            // Edita stock.
-                            $resultado = ejecutar($conexion, $query);
-                        }
+                        // Prepara la consulta.
+                        $query = "SELECT *
+                                    FROM movimientos_caja
+                                    ORDER BY id DESC LIMIT 1";
+                        
+                        // Consulta ultimo movimiento de caja.
+                        $ultimo_movimiento_caja = consultar_registro($conexion, $query);
+                        
+                        // Prepara la consulta.
+                        $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, saldo, id_pago, id_usuario)
+                                    VALUES ("
+                                    . 7 . ", "
+                                    . $venta['importe_total'] . ", "
+                                    . (floatval($ultimo_movimiento_caja->saldo) + floatval($venta['importe_total'])) . ", "
+                                    . $venta['id_tipo_pago'] . ", "
+                                    . $_SESSION['usuario']->id
+                                . ')';
+                        
+                        // Guarda un nuevo movimiento de caja.
+                        $resultado = ejecutar($conexion, $query);
                         
                         // Si hubo error ejecutando la consulta.
                         if($resultado === false)
                         {
-                            $respuesta['descripcion'] = "Ocurrió un error al editar la venta (L 214).";
+                            $respuesta['descripcion'] = "Ocurrió un error al regitrar el movimiento de caja (L 295).";
                         }
                         // Si la consulta fue exitosa.
                         else
                         {
-                            // Prepara la consulta.
-                            $query = "SELECT *
-                                      FROM movimientos_caja
-                                      ORDER BY id DESC LIMIT 1";
-                            
-                            // Consulta ultimo movimiento de caja.
-                            $ultimo_movimiento_caja = consultar_registro($conexion, $query);
-                            
-                            // Prepara la consulta.
-                            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, saldo, id_pago, id_usuario)
-                                      VALUES ("
-                                        . 7 . ", "
-                                        . $venta['importe_total'] . ", "
-                                        . (floatval($ultimo_movimiento_caja->saldo) + floatval($venta['importe_total'])) . ", "
-                                        . $venta['id_tipo_pago'] . ", "
-                                        . $_SESSION['usuario']->id
-                                    . ')';
-                            
-                            // Guarda un nuevo movimiento de caja.
-                            $resultado = ejecutar($conexion, $query);
-                            
-                            // Si hubo error ejecutando la consulta.
-                            if($resultado === false)
-                            {
-                                $respuesta['descripcion'] = "Ocurrió un error al regitrar el movimiento de caja (L 295).";
-                            }
-                            // Si la consulta fue exitosa.
-                            else
-                            {
-                                $respuesta['exito'] = true;
-                                $respuesta['descripcion'] = "Se registró correctamente la venta!";
-                            }
+                            $respuesta['exito'] = true;
+                            $respuesta['descripcion'] = "Se registró correctamente la venta!";
+                            $respuesta['id_venta'] = $id_venta;
                         }
                     }
                 }
-            //}
+            }
         }
         
         // EDITAR: Buscar información para editar venta.
