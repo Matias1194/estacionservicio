@@ -159,11 +159,12 @@
             $productos = $venta["productos"];
             
             // Prepara la consulta.
-            $query = "INSERT INTO ventas (id_tipo_pago, importe_total) "
+            $query = "INSERT INTO ventas (id_tipo_pago, importe_total, id_usuario_vendedor) "
             . "VALUES"
             . "("
                 . $venta['id_tipo_pago'] . ", "
-                . $venta['importe_total']
+                . $venta['importe_total'] . ", "
+                . $_SESSION['usuario']->id
             . ")";
             
             // Inserta un nueva venta.

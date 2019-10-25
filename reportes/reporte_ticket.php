@@ -1,5 +1,5 @@
 <?php
-    //header('Content-Type: application/pdf');
+    header('Content-Type: application/pdf');
 
     require_once __DIR__ . '/../vendor/autoload.php';
     require_once __DIR__ . '/../bd/bd_conexion.php';
@@ -8,22 +8,49 @@
     
     try {
 
-        // Prepara la consulta.
-        $query = "SELECT productos.descripcion as 'producto', 
-                     compras_detalles.cantidad,
-                     compras_detalles.precio_unitario,
-                     compras_detalles.precio_total 
-             FROM compras_detalles
-             INNER JOIN productos
-                ON compras_detalles.id_producto = productos.id";
+        $id_venta = $_GET['id'];
 
-        // Consulta el listado de compras_detalle.
-        $compras_detalles = consultar_listado($conexion, $query);
-        
+        // Prepara la consulta.
+        $query = "SELECT ventas.numero_factura, 
+                         ventas.fecha_venta,
+                         tipos_pagos.descripcion as 'tipo_pago',
+                         CONCAT(usuarios.nombres, ' ', usuarios.apellidos) as 'vendedor'
+                  FROM ventas
+                  INNER JOIN tipos_pagos
+                    ON tipos_pagos.id = ventas.id_tipo_pago
+                  INNER JOIN usuarios
+                    ON ventas.id_usuario_vendedor = usuarios.id
+                  WHERE ventas.id = $id_venta";
+
+        // Consulta una venta.
+        $venta = consultar_registro($conexion, $query);
+            
         // Si hubo error ejecutando la consulta.
-        if($compras_detalles === false)
+        if($venta === false)
         {
-            die("Ocurrió un error al buscar el listado de compras_detalles");
+            $respuesta['descripcion'] = "Ocurrió un error al buscar la venta (L 31).";
+        }
+        // Si la consulta fue exitosa y la venta se encuentra.
+        else 
+        {
+            // Prepara la consulta.
+            $query = "SELECT productos.descripcion as 'producto', 
+                        ventas_detalles.cantidad,
+                        ventas_detalles.precio_unitario,
+                        ventas_detalles.precio_total 
+                FROM ventas_detalles
+                INNER JOIN productos
+                    ON ventas_detalles.id_producto = productos.id
+                WHERE ventas_detalles.id_venta = $id_venta";
+
+            // Consulta el listado de ventas_detalle.
+            $ventas_detalles = consultar_listado($conexion, $query);
+            
+            // Si hubo error ejecutando la consulta.
+            if($ventas_detalles === false)
+            {
+                die("Ocurrió un error al buscar el listado de ventas_detalles");
+            }    
         }
         
         // Instancia del PDF.
@@ -31,44 +58,85 @@
         
         // Contenido.
         $contenido = '
-        
-        <h1>Ticket Venta</h1>
-        <h2>Este sería un titulo</h2>
-        <h3>Este sería subtitulo</h3>
-        
-        <hr>
-        
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio unitario</th>
-                    <th>Precio total</th>
-                </tr>
-            </thead>
-            <tbody>';
+        <div class="container">
+
+            <div class="row">
+                
+                <div class="col-md-6">
+                    <h1>Ticket</h1>
+                </div>
             
-            foreach ($compras_detalles as $producto)
-            {
-                $contenido .='
-                <tr>
-                <td>' . $producto['producto'] . '</td>
-                    <td>' . $producto['cantidad'] . '</td>
-                    <td>' . $producto['precio_unitario'] . '</td>
-                    <td>' . $producto['precio_total'] . '</td>
-                </tr>';
-            }
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h2 align="left">Datos de Ticket</h2>
+                </div>
+                
+                <div class="col-md-6">
+                    Fecha: <b>' . date("d/m/y") . '</b>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    Medio de pago: <b>' . $venta->tipo_pago . '</b>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    Vendedor: <b>' . $venta->vendedor . '</b>
+                </div>
+            </div>
+
+            <br>
+            <br>
+            <hr>
+            <h3>Numero de Ticket: </h3>
             
-        $contenido .= '
-            </tbody>
-        </table>';
+            <hr>
+
+            <br>
+            <br>
+            <br>
+            
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <th align="left">Producto</th>
+                        <th align="left">Cantidad</th>
+                        <th align="right">Precio unitario</th>
+                        <th align="right">Precio total</th>
+                    </tr>
+                </thead>
+
+                <tbody>';
+                
+                foreach ($ventas_detalles as $producto)
+                {
+                    $contenido .='
+                    <tr>
+                    <td>' . $producto['producto'] . '</td>
+                        <td>' . $producto['cantidad'] . '</td>
+                        <td align="right"> $' . $producto['precio_unitario'] . '</td>
+                        <td align="right"> $' . $producto['precio_total'] . '</td>
+                    </tr>';
+                }
+                
+            $contenido .= '
+                </tbody>
+            </table>
+        </div>';
         
         // Escribir PDF.
         $mpdf->WriteHTML($contenido);
 
-        // Salida al navegador.
-        $mpdf->Output('reporte_compras_detalle.pdf', 'D');
+        // Descarga PDF.
+        //$mpdf->Output('ticket-' . $id_venta . '.pdf', 'D');
+        $mpdf->Output();
     }
     catch(Excepcion $e) {
         print('Esto es lo que pasó: ' . $e);
