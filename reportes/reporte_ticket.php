@@ -58,22 +58,22 @@
         
         // Contenido.
         $contenido = '
-        <div class="container">
-
+            <b style="font-size:100%">DARUMA S.A</b>
+            <br>
+            <b style="font-size:100%">C.U.I.T.: 30-20203030-3</b>
+            <br>
+            <b style="font-size:100%">CORONEL CHAMIZO N° 3345</b>
+            <br>
+            <b style="font-size:100%">GERLI, CP: 3343</b>
+            <br>
+            <b style="font-size:100%">IVA RESP. INSCRIPTO</b>
+            <br>
+            <b style="font-size:100%">A CONSUMIDOR FINAL</b>
+            <br>
+            <b style="font-size:100%">INI ACT: 01/03/2019</b>
+            <br>
+            <br>
             <div class="row">
-                
-                <div class="col-md-6">
-                    <h1>Ticket</h1>
-                </div>
-            
-            </div>
-
-            <div class="row">
-
-                <div class="col-md-6">
-                    <h2 align="left">Datos de Ticket</h2>
-                </div>
-                
                 <div class="col-md-6">
                     Fecha: <b>' . date("d/m/y") . '</b>
                 </div>
@@ -95,7 +95,7 @@
             <br>
             <br>
             <hr>
-            <h3>Numero de Ticket: </h3>
+            <h3>Numero de Ticket: ' . $venta->numero_factura . '</h3>
             
             <hr>
 
