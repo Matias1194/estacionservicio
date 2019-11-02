@@ -40,7 +40,7 @@
 	                <!-- Título -->
 	                <div class="col-sm-6">
 	                    <h1 class="font-weight-normal">
-	                        Listado de Caja
+	                        Movimientos de Caja
 	                    </h1>
 	                </div>
 
@@ -53,23 +53,10 @@
 	            	<!-- Barra cargando -->
                     <?php include('secciones/barraCargando.php'); ?>
                     
-                    <!-- Primera fila -->
-	                <div class="form-row">
-
-                        <!-- Tipo pago -->
-                        <div class="form-group mb-3">
-                            <label>
-                                Tipo Pago
-                            </label>
-                            <select class="form-control" name="id_tipo_pago"></select> 
-                        </div>
-
-                    </div>
-
 	                <!-- Tabla Caja -->
 	                <div class="table-responsive-xl">
 	                    
-	                    <table class="table table-striped table-dark">
+	                    <table class="table table-striped table-dark" style="width:100%">
 	                        
 	                        <thead>
 	                            <tr>

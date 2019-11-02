@@ -30,7 +30,7 @@
                              movimientos_caja.salida, 
                              movimientos_caja.saldo, 
                              tipos_pagos.descripcion as 'tipo_pago', 
-                             movimientos_caja.fecha, 
+                             DATE_FORMAT(movimientos_caja.fecha, '%d/%m/%Y') as 'fecha', 
                              usuarios.usuario
 
                       FROM movimientos_caja
@@ -40,7 +40,9 @@
                       LEFT OUTER JOIN tipos_pagos
                         ON movimientos_caja.id_pago = tipos_pagos.id
                       LEFT OUTER JOIN usuarios
-                        ON movimientos_caja.id_usuario = usuarios.id";
+                        ON movimientos_caja.id_usuario = usuarios.id
+                      
+                      ORDER BY movimientos_caja.id DESC";
             
             // Consulta el listado de caja.
             $movimientos_caja = consultar_listado($conexion, $query);

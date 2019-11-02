@@ -102,7 +102,7 @@ var caja =
                             )
                     });
 
-                    $(tablaStock).DataTable();
+                    $(tablaStock).DataTable({order:[]});
                 }
 
                 // Llena combo Registros.

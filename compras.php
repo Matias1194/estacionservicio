@@ -107,7 +107,7 @@
 	                <!-- Tabla Compras -->
 	                <div class="table-responsive-xl">
 	                    
-	                    <table class="table table-striped table-dark">
+	                    <table class="table table-striped table-dark" style="width:100%">
 	                        
 	                        <thead>
 	                            <tr>
@@ -251,7 +251,7 @@
                     <!-- Tabla cursos inscriptos -->
                     <div class="table-responsive-xl mt-2">
                         
-                        <table class="table table-striped table-dark">
+                        <table class="table table-striped table-dark" style="width:100%">
                             <thead>
                                 <tr>
                                     <th scope="col">
@@ -438,7 +438,7 @@
 						<!-- Tabla Subtotales -->
 						<div class="table-responsive-xl">
 							
-							<table class="table table-striped table-dark">
+							<table class="table table-striped table-dark" style="width:100%">
 								
 								<thead>
 									<tr>
@@ -659,7 +659,7 @@
 						<!-- Tabla Subtotales -->
 						<div class="table-responsive-xl">
 							
-							<table class="table table-striped table-dark">
+							<table class="table table-striped table-dark" style="width:100%">
 								
 								<thead>
 									<tr>

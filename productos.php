@@ -204,7 +204,7 @@
                     <!-- Tabla cursos inscriptos -->
                     <div class="table-responsive-xl mt-2">
                         
-                        <table class="table table-striped table-dark">
+                        <table class="table table-striped table-dark" style="width:100%">
                             <thead>
                                 <tr>
                                     <th scope="col">

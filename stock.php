@@ -64,7 +64,7 @@
 	                <!-- Tabla Stock -->
 	                <div class="table-responsive-xl">
 	                    
-	                    <table class="table table-striped table-dark">
+	                    <table class="table table-striped table-dark" style="width:100%">
 	                        
 	                        <thead>
 	                            <tr>

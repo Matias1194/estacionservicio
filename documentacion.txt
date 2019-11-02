@@ -150,7 +150,22 @@ Stock Mercado
 Tareas 
 
 1° Terminar módulo Ventas orientado a consumidor final.
-- Crear Módulo Caja (para ver el dinero)
+- (LISTO) Crear Módulo Caja
+
+Si la caja no está abierta
+    > Abrir Caja
+Si no
+    Si Turno no está abierto
+        > Abrir Turno
+        > Cerrar Caja
+    Si no
+        > Ticket
+        > Factura
+        > Cerrar Turno
+
+- Modificar pantalla Ventas
+
+
 - Analizar tablas para controlar los movimientos de Caja y Stock.
 - Diseñar Reportes
     - Stock (falta terminar)            reporte_stock.php

@@ -17,8 +17,157 @@
         
         $accion = $_POST['accion'];
 
+        if($accion == "caja_estado")
+        {
+            $query = "SELECT COUNT(*) as 'estado' 
+                      FROM movimientos_caja 
+                      WHERE (id_tipo_registro_caja = 1 OR id_tipo_registro_caja = 3) AND DATE(fecha) = CURDATE()";
+
+            // Consulta el estado de la caja (0 = CERRADO, 1 = ABIERTO).
+            $caja = consultar_registro($conexion, $query);
+
+            // Caja cerrada.
+            if($caja->estado % 2 == 0) 
+            {
+                $respuesta['exito'] = true;
+                $respuesta['caja_estado'] = false;
+            }
+            // Caja abierta.
+            else 
+            {
+                $query = "SELECT COUNT(*) as 'estado' 
+                      FROM movimientos_turnos 
+                      WHERE id_usuario = " . $_SESSION['usuario']->id . " AND DATE(fecha) = CURDATE()";
+
+                // Consulta el estado del turno (0 = CERRADO, 1 = ABIERTO).
+                $turno = consultar_registro($conexion, $query);
+
+                // Turno cerrado.
+                if($turno->estado % 2 == 0)
+                {
+                    $respuesta['exito'] = true;
+                    $respuesta['caja_estado'] = true;
+                    $respuesta['turno_estado'] = false;
+                }
+                // Turno abierto.
+                else {
+                    $respuesta['exito'] = true;
+                    $respuesta['caja_estado'] = true;
+                    $respuesta['turno_estado'] = true;
+                }
+            }
+        }
+
+        // Abrir Caja.
+        else if($accion == "abrir_caja")
+        {
+            $saldo = $_POST['saldo'];
+
+            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, salida, saldo, id_pago, id_usuario) 
+                      VALUES (
+                          1,
+                          0,
+                          0,
+                          $saldo,
+                          0, "
+                        . $_SESSION['usuario']->id . "
+                      )";
+            
+            // Abre la caja.
+            $apertura = ejecutar($conexion, $query);
+
+            // Si hubo error ejecutando la consulta.
+            if($apertura === false)
+            {
+                $respuesta['descripcion'] = "Ocurrió un error al abrir la caja (L 81).";
+            }
+            // Si la consulta fue exitosa.
+            else
+            {
+                $respuesta['exito'] = true;
+            }
+        }
+
+        // Cerrar Caja.
+        else if($accion == "cerrar_caja")
+        {
+            $saldo = $_POST['saldo'];
+
+            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, salida, saldo, id_pago, id_usuario) 
+                      VALUES (
+                          3,
+                          0,
+                          0,
+                          $saldo,
+                          0, "
+                        . $_SESSION['usuario']->id . "
+                      )";
+            
+            // Cierra la caja.
+            $cierre = ejecutar($conexion, $query);
+
+            // Si hubo error ejecutando la consulta.
+            if($cierre === false)
+            {
+                $respuesta['descripcion'] = "Ocurrió un error al cerrar la caja (L 108).";
+            }
+            // Si la consulta fue exitosa.
+            else
+            {
+                $respuesta['exito'] = true;
+            }
+        }
+
+        // Abrir Turno.
+        else if($accion == "abrir_turno")
+        {
+            $query = "INSERT INTO movimientos_turnos (id_tipo_registro_turno, id_usuario) 
+                      VALUES (
+                          1, "
+                        . $_SESSION['usuario']->id . "
+                      )";
+            
+            // Abre el turno.
+            $apertura = ejecutar($conexion, $query);
+
+            // Si hubo error ejecutando la consulta.
+            if($apertura === false)
+            {
+                $respuesta['descripcion'] = "Ocurrió un error al abrir el turno (L 132).";
+            }
+            // Si la consulta fue exitosa.
+            else
+            {
+                $respuesta['exito'] = true;
+            }
+        }
+
+        // Cerrar Turno.
+        else if($accion == "cerrar_turno")
+        {
+            $query = "INSERT INTO movimientos_turnos (id_tipo_registro_turno, id_usuario) 
+                      VALUES (
+                          2, "
+                        . $_SESSION['usuario']->id . "
+                      )";
+            
+            // Cierra el turno.
+            $cierre = ejecutar($conexion, $query);
+
+            // Si hubo error ejecutando la consulta.
+            if($cierre === false)
+            {
+                $respuesta['descripcion'] = "Ocurrió un error al cerrar el turno (L 160).";
+            }
+            // Si la consulta fue exitosa.
+            else
+            {
+                $respuesta['exito'] = true;
+            }
+        }
+
         // BUSCAR: Listado de ventas.
-        if($accion == "buscar_listado") 
+        else if($accion == "buscar_listado") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             //validarPermiso($conexion, $tabla, $accion, $respuesta, true);

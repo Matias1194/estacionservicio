@@ -34,29 +34,122 @@
 			
 			<!-- Inicio -->
 			<div id="inicio">
-				
+					
 				<div class="row mt-5">
-	                
-	                <!-- Título -->
-	                <div class="col-sm-6 text-center">
-	                    <h1 class="font-weight-normal">
-	                        Seleccione la opción
-	                    </h1>
-	                </div>
 
-	            </div>
+					<!-- Botón Abrir Caja -->
+					<div class="col-sm-2 pull-left">
+						<button class="btn btn-lg btn-success" name="abrir_caja" style="display:none; width:100%; line-height: 5.0">
+							<span class="fa fa-cash-register fa-5x mt-4"></span>
+							ABRIR CAJA
+						</button>
+					</div>
 
-	            <div class="row mt-5 text-center">
+					<!-- Botón Abrir Turno -->
+					<div class="col-sm-2 pull-left">
+						<button class="btn btn-lg btn-success" name="abrir_turno" style="display:none; width:100%; line-height: 5.0">
+							<span class="fa fa-user fa-5x mt-4"></span>
+							ABRIR TURNO
+						</button>
+					</div>
 
-                    <!-- Botón Tickets -->
-                    <div class="col-sm-3">
-                        <button class="btn btn-lg btn-primary" name="tickets">
-                            <span class="fa fa-receipt fa-lg"></span>
-                            Tickets
-                        </button>
-                    </div>
-                
-                </div>
+					<!-- Botón Ticket -->
+					<div class="col-sm-2">
+						<button class="btn btn-lg btn-primary" name="tickets" style="display:none; width:100%; line-height: 5.0">
+							<span class="fa fa-receipt fa-5x mt-4"></span>
+							TICKETS
+						</button>
+					</div>
+	
+					<!-- Botón Factura -->
+					<div class="col-sm-2">
+						<button class="btn btn-lg btn-info" name="factura" style="display:none; width:100%; line-height: 5.0">
+							<span class="fa fa-file-invoice-dollar fa-5x mt-4"></span>
+							FACTURA
+						</button>
+					</div>
+					
+					<!-- Botón Cerrar Turno -->
+					<div class="col-sm-2">
+						<button class="btn btn-lg btn-danger" name="cerrar_turno" style="display:none; width:100%; line-height: 5.0">
+							<span class="fa fa-user fa-5x mt-4"></span>
+							CERRAR TURNO
+						</button>
+					</div>
+
+					<!-- Botón Cerrar Caja -->
+					<div class="col-sm-2">
+						<button class="btn btn-lg btn-danger" name="cerrar_caja" style="display:none; width:100%; line-height: 5.0">
+							<span class="fa fa-cash-register fa-5x mt-4"></span>
+							CERRAR CAJA
+						</button>
+					</div>
+				
+				</div>
+
+				<!-- Formulario -->
+	            <form name="abrir_caja" class="mt-4" style="display:none">
+						
+					<!-- Primera fila -->
+					<div class="form-row">
+
+						<!-- Saldo -->
+	                	<div class="form-group col-md-2">
+	                        <label>
+	                            Saldo
+	                        </label>
+	                        <input type="text" class="form-control" name="saldo" data-requerido></select> 
+						</div>
+					
+					</div>
+
+					<!-- Primera fila -->
+					<div class="form-row">
+					
+						<!-- Botón confirmar -->
+						<div class="form-group col-md-2">
+
+							<button type="button" class="btn btn-success btn-block" name="confirmar">
+								<span class="fa fa-check"></span> 
+								Confirmar
+							</button>
+						</div>
+					
+					</div>
+
+				</form>
+					
+				<!-- Formulario -->
+				<form name="cerrar_caja" class="mt-4" style="display:none">
+						
+					<!-- Primera fila -->
+					<div class="form-row">
+	
+						<!-- Saldo -->
+						<div class="form-group col-md-2 offset-10">
+							<label>
+								Saldo
+							</label>
+							<input type="text" class="form-control" name="saldo" data-requerido></select> 
+						</div>
+					
+					</div>
+	
+					<!-- Primera fila -->
+					<div class="form-row">
+					
+						<!-- Botón confirmar -->
+						<div class="form-group col-md-2 offset-10">
+	
+							<button type="button" class="btn btn-success btn-block" name="confirmar">
+								<span class="fa fa-check"></span> 
+								Confirmar
+							</button>
+						</div>
+					
+					</div>
+				
+				</form>
 
 			</div>
 
@@ -141,7 +234,7 @@
 						<!-- Tabla Subtotales -->
 						<div class="table-responsive-xl">
 							
-							<table class="table table-striped table-dark">
+							<table class="table table-striped table-dark" style="width:100%">
 								
 								<thead>
 									<tr>
@@ -160,7 +253,7 @@
 										<th scope="col">
 											Precio Total
 										</th>
-										<th class="text-center" scope="col" colspan="4">
+										<th class="text-center" scope="col">
 											Acciones
 										</th>
 									</tr>

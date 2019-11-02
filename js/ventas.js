@@ -12,8 +12,7 @@ var ventas =
         this.inicio.$div = $('#inicio');
         this.tickets.$div = $('#tickets');
 
-        this.inicio.asignarEventos();
-        this.inicio.mostrar();
+        this.inicio.buscar();
     },
 
 	asignarEventos : function() 
@@ -43,24 +42,162 @@ var ventas =
             // Desasignar eventos.
             this.$div.find('button').unbind('click');
 
-            // Carga la pantalla para un nueva venta con factura A.
-            this.$div.find('button[name="factura"]').click(() => ventas.factura.mostrar());
+            // Abrir Caja > Ingresar saldo.
+            this.$div.find('button[name="abrir_caja"]').click(() => ventas.caja.abrir_mostrar());
 
-            // Carga la pantalla para un nueva venta con tarjeta.
-            this.$div.find('button[name="tarjeta"]').click(() => ventas.tarjeta.mostrar());
+            // Abrir Caja > Confirmar.
+            this.$div.find('form[name="abrir_caja"]').find('button[name="confirmar"]').click(() => ventas.caja.abrir_confirmar());
 
+            // Cerrar Caja > Ingresar saldo.
+            this.$div.find('button[name="cerrar_caja"]').click(() => ventas.caja.cerrar_mostrar());
+
+            // Cerrar Caja > Confirmar.
+            this.$div.find('form[name="cerrar_caja"]').find('button[name="confirmar"]').click(() => ventas.caja.cerrar_confirmar());
+
+            // Abre el turno.
+            this.$div.find('button[name="abrir_turno"]').click(() => ventas.turno.abrir());
+
+            // Cierra el turno.
+            this.$div.find('button[name="cerrar_turno"]').click(() => ventas.turno.cerrar());
+            
             // Carga la pantalla para un nueva venta con tickets.
             this.$div.find('button[name="tickets"]').click(() => ventas.tickets.buscar());
+
+            // Carga la pantalla para un nueva venta con factura A.
+            this.$div.find('button[name="factura"]').click(() => ventas.factura.mostrar());
         },
 
         mostrar : function()
         {
             ventas.ocultarPantallas();
             this.$div.fadeIn();
+        },
+
+        buscar : function() {
+            // Prepara los datos.
+            var datos = 
+            {
+                accion : 'caja_estado',
+            };
+
+            var $boton_tickets = this.$div.find('button[name="tickets"]');
+            var $boton_factura = this.$div.find('button[name="factura"]');
+            var $boton_abrir_caja = this.$div.find('button[name="abrir_caja"]');
+            var $boton_cerrar_caja = this.$div.find('button[name="cerrar_caja"]');
+            var $boton_abrir_turno = this.$div.find('button[name="abrir_turno"]');
+            var $boton_cerrar_turno = this.$div.find('button[name="cerrar_turno"]');
+
+            bd.enviar(datos, ventas.modulo, (respuesta) =>
+            {
+                if(respuesta.caja_estado)
+                {
+                    if(respuesta.turno_estado)
+                    {
+                        $boton_tickets.show();
+                        $boton_factura.show();
+                        $boton_cerrar_turno.show();
+                    }
+                    else 
+                    {
+                        $boton_abrir_turno.show();
+                        $boton_cerrar_caja.show();
+                    }
+                }
+                else
+                {
+                    $boton_abrir_caja.show();
+                }
+                
+                this.asignarEventos();
+                this.mostrar();
+            });
         }
     },
 
-    // Nueva venta con tickets.
+    caja: {
+        abrir_mostrar : function() {
+            $('form[name="abrir_caja"]').fadeIn();
+        },
+
+        abrir_confirmar : function() {
+            // Prepara los datos.
+            var datos = 
+            {
+                accion : 'abrir_caja',
+                saldo: 0,
+            };
+
+            var saldo = $('form[name="abrir_caja"]').find('input[name="saldo"]').val();
+
+            if(saldo == '') {
+                alertas.advertencia('Debe ingresar un saldo para abrir la caja');
+                return;
+            }
+
+            datos.saldo = saldo;
+
+            bd.enviar(datos, ventas.modulo, (respuesta) =>
+            {
+                redireccionar.ventas();
+            });
+        },
+
+        cerrar_mostrar : function() {
+            $('form[name="cerrar_caja"]').fadeIn();
+        },
+
+        cerrar_confirmar : function() {
+            // Prepara los datos.
+            var datos = 
+            {
+                accion : 'cerrar_caja',
+                saldo: 0,
+            };
+
+            var saldo = $('form[name="cerrar_caja"]').find('input[name="saldo"]').val();
+
+            if(saldo == '') {
+                alertas.advertencia('Debe ingresar un saldo para cerrar la caja');
+                return;
+            }
+
+            datos.saldo = saldo;
+
+            bd.enviar(datos, ventas.modulo, (respuesta) =>
+            {
+                redireccionar.ventas();
+            });
+        },
+    },
+
+    turno: {
+        abrir : function() {
+            // Prepara los datos.
+            var datos = 
+            {
+                accion : 'abrir_turno',
+            };
+
+            bd.enviar(datos, ventas.modulo, (respuesta) =>
+            {
+                redireccionar.ventas();
+            });
+        },
+
+        cerrar: function() {
+            // Prepara los datos.
+            var datos = 
+            {
+                accion : 'cerrar_turno',
+            };
+
+            bd.enviar(datos, ventas.modulo, (respuesta) =>
+            {
+                redireccionar.ventas();
+            });
+        }
+    },
+
     tickets :
     {
         $div : null,
@@ -302,5 +439,5 @@ var ventas =
                 ventas.tickets.descargar(respuesta.id_venta);
             });
         }
-    }    
+    }   
 }
