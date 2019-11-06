@@ -77,9 +77,6 @@
 	                                    CUIT
 	                                </th>
 	                                <th scope="col">
-	                                    Tipo
-	                                </th>
-	                                <th scope="col">
 	                                    Domicilio
 	                                </th>
 	                                <th scope="col">
@@ -147,14 +144,6 @@
 	                            CUIT
 	                        </label>
 	                        <input type="number" class="form-control" name="cuit">
-	                    </div>
-
-	                    <!-- Tipo Cliente -->
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                            Tipo Cliente
-	                        </label>
-	                        <select id="comboTipoClienteNuevo" class="form-control" name="id_tipo_cliente"> </select>
 	                    </div>
 
 	                </div>
@@ -246,14 +235,6 @@
 	                            CUIT
 	                        </label>
 	                        <input type="number" class="form-control" name="cuit">
-	                    </div>
-
-	                    <!-- Tipo Cliente -->
-	                    <div class="form-group col-md-3">
-	                        <label>
-	                            Tipo Cliente
-	                        </label>
-	                        <select id="comboTipoClienteEditar" class="form-control" name="id_tipo_cliente"> </select>
 	                    </div>
 
 	                </div>

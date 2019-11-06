@@ -124,9 +124,6 @@ var clientes =
                                 .append(cliente.cuit)
                             )
                             .append($('<td>')
-                                .append(cliente.tipo)
-                            )
-                            .append($('<td>')
                                 .append(cliente.domicilio)
                             )
                             .append($('<td>')
@@ -244,14 +241,6 @@ var clientes =
 
         buscarExito : function(respuesta)
         {
-            // lLeno combo Tipo Cliente.
-            var comboTipoCliente = $('#comboTipoClienteNuevo').html("");
-            $(comboTipoCliente).append($('<option>').html("Elegir").attr({'disabled': true, 'selected': true}));
-            $.each(respuesta.tipos_clientes, function(i, tipo_cliente)
-            {
-                $(comboTipoCliente).append($("<option>").val(tipo_cliente.id).html(tipo_cliente.descripcion));
-            });
-
             // Borro los datos en los campos.
             $('#divNuevoCliente form').find('input:not([readonly])').val("");
             
@@ -323,13 +312,6 @@ var clientes =
 
         buscarExito : function(respuesta)
         {
-            // Lleno combo Tipo Cliente.
-            var comboTipoCliente = $('#comboTipoClienteEditar').html("");
-            $.each(respuesta.tipos_clientes, function(i, opcion)
-            {
-                $(comboTipoCliente).append($("<option>").val(opcion.id).html(opcion.descripcion));
-            });
-
             // Lleno los campos.
             $.each(respuesta.cliente, function(campo, valor)
             {

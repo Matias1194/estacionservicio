@@ -152,21 +152,7 @@ Tareas
 1° Terminar módulo Ventas orientado a consumidor final.
 - (LISTO) Crear Módulo Caja
 
-Si la caja no está abierta
-    > Abrir Caja
-Si no
-    Si Turno no está abierto
-        > Abrir Turno
-        > Cerrar Caja
-    Si no
-        > Ticket
-        > Factura
-        > Cerrar Turno
-
-- Modificar pantalla Ventas
-
-
-- Analizar tablas para controlar los movimientos de Caja y Stock.
+- (LIST) Analizar tablas para controlar los movimientos de Caja y Stock.
 - Diseñar Reportes
     - Stock (falta terminar)            reporte_stock.php
     - Ticket al confirmar la venta      reporte_ticket.php

@@ -36,8 +36,8 @@
             else 
             {
                 $query = "SELECT COUNT(*) as 'estado' 
-                      FROM movimientos_turnos 
-                      WHERE id_usuario = " . $_SESSION['usuario']->id . " AND DATE(fecha) = CURDATE()";
+                      FROM movimientos_caja 
+                      WHERE (id_tipo_registro_caja = 8 OR id_tipo_registro_caja = 9) AND id_usuario = " . $_SESSION['usuario']->id . " AND DATE(fecha) = CURDATE()";
 
                 // Consulta el estado del turno (0 = CERRADO, 1 = ABIERTO).
                 $turno = consultar_registro($conexion, $query);
@@ -63,11 +63,9 @@
         {
             $saldo = $_POST['saldo'];
 
-            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, salida, saldo, id_pago, id_usuario) 
+            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
                       VALUES (
                           1,
-                          0,
-                          0,
                           $saldo,
                           0, "
                         . $_SESSION['usuario']->id . "
@@ -93,11 +91,9 @@
         {
             $saldo = $_POST['saldo'];
 
-            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, salida, saldo, id_pago, id_usuario) 
+            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
                       VALUES (
                           3,
-                          0,
-                          0,
                           $saldo,
                           0, "
                         . $_SESSION['usuario']->id . "
@@ -119,21 +115,21 @@
         }
 
         // Abrir Turno.
-        else if($accion == "abrir_turno")
+        else if($accion == "comenzar_turno")
         {
-            $query = "INSERT INTO movimientos_turnos (id_tipo_registro_turno, id_usuario) 
+            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, id_usuario) 
                       VALUES (
-                          1, "
+                          8, "
                         . $_SESSION['usuario']->id . "
                       )";
             
-            // Abre el turno.
+            // Comienza el turno.
             $apertura = ejecutar($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
             if($apertura === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al abrir el turno (L 132).";
+                $respuesta['descripcion'] = "Ocurrió un error al abrir el turno (L 136).";
             }
             // Si la consulta fue exitosa.
             else
@@ -143,15 +139,15 @@
         }
 
         // Cerrar Turno.
-        else if($accion == "cerrar_turno")
+        else if($accion == "finalizar_turno")
         {
-            $query = "INSERT INTO movimientos_turnos (id_tipo_registro_turno, id_usuario) 
+            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, id_usuario) 
                       VALUES (
-                          2, "
+                          9, "
                         . $_SESSION['usuario']->id . "
                       )";
             
-            // Cierra el turno.
+            // Finaliza el turno.
             $cierre = ejecutar($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
@@ -163,6 +159,70 @@
             else
             {
                 $respuesta['exito'] = true;
+            }
+        }
+
+        // Otros > Buscar.
+        else if($accion == "otros_buscar")
+        {
+            $query = "SELECT id, descripcion
+                      FROM tipos_registros_caja
+                      WHERE id = 5 OR id = 6";
+            
+            // Consulta los conceptos.
+            $conceptos = consultar_listado($conexion, $query);
+
+            // Si hubo error ejecutando la consulta.
+            if($conceptos === false)
+            {
+                $respuesta['descripcion'] = "Ocurrió un error buscando los conceptos (L 178).";
+            }
+            // Si la consulta fue exitosa.
+            else
+            {
+                $respuesta['exito'] = true;
+                $respuesta['conceptos'] = $conceptos;
+            }
+        }
+
+        // Otros > Confirmar.
+        else if($accion == "otros_confirmar")
+        {
+            $id_concepto = $_POST['id_concepto'];
+            $importe = $_POST['importe'];
+
+            // Prepara la consulta.
+            $query = "SELECT *
+                      FROM movimientos_caja
+                      WHERE saldo IS NOT NULL
+                      ORDER BY id DESC LIMIT 1";
+
+            // Consulta ultimo movimiento de caja.
+            $ultimo_movimiento_caja = consultar_registro($conexion, $query);
+
+            $saldo = $ultimo_movimiento_caja->saldo + ($id_concepto == 6 ? -$importe : $importe);
+            
+            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, " . ($id_concepto == 5 ? "entrada" : ($id_concepto == 6 ? "salida" : "")) . ", saldo, id_usuario) 
+                      VALUES (
+                          $id_concepto, 
+                          $importe, 
+                          $saldo, "
+                        . $_SESSION['usuario']->id . "
+                      )";
+            
+            // Registra el movimiento.
+            $movimiento = ejecutar($conexion, $query);
+
+            // Si hubo error ejecutando la consulta.
+            if($movimiento === false)
+            {
+                $respuesta['descripcion'] = "Ocurrió un error al guardar el movimiento (L 208).";
+            }
+            // Si la consulta fue exitosa.
+            else
+            {
+                $respuesta['exito'] = true;
+                $respuesta['descripcion'] = "El movimiento se registró exitosamente!";
             }
         }
 
@@ -253,7 +313,7 @@
             }
         }
 
-        // NUEVO: Buscar información para crear venta.
+        // Ticket > Nueva > Buscar.
         else if($accion == "nueva_buscar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
@@ -298,7 +358,7 @@
             }
         }
 
-        // NUEVO: Confirmar nueva venta.
+        // Ticket > Nueva > Confirmar.
         else if($accion == "nueva_confirmar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
@@ -386,6 +446,7 @@
                         // Prepara la consulta.
                         $query = "SELECT *
                                     FROM movimientos_caja
+                                    WHERE saldo IS NOT NULL
                                     ORDER BY id DESC LIMIT 1";
                         
                         // Consulta ultimo movimiento de caja.
@@ -421,6 +482,264 @@
             }
         }
         
+        // Factura > Nueva > Buscar.
+        else if($accion == "factura_nueva_buscar") 
+        {
+            // Valida si el perfil de usuario tiene permiso para realizar esa acción.
+            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+
+            // Prepara la consulta.
+            $query = "SELECT id, descripcion 
+                        FROM tipos_clientes";
+
+            // Consulta los clientes habilitados.
+            $tipos_clientes = consultar_listado($conexion, $query);
+
+            // Si hubo error ejecutando la consulta.
+            if($tipos_clientes === false)
+            {
+                $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de cliente (L 502).";
+            }
+            // Si la consulta fue exitosa.
+            else
+            {
+                // Prepara la consulta.
+                $query = "SELECT id, descripcion, precio_unitario 
+                            FROM productos
+                            WHERE habilitado = 1";
+
+                // Consulta los tipos de productos habilitados.
+                $productos = consultar_listado($conexion, $query);
+
+                // Si hubo error ejecutando la consulta.
+                if($productos === false)
+                {
+                    $respuesta['descripcion'] = "Ocurrió un error al buscar los productos (L 136).";
+                }
+                // Si la consulta fue exitosa.
+                else
+                {
+                    // Prepara la consulta.
+                    $query = "SELECT id, descripcion 
+                            FROM tipos_pagos
+                            WHERE habilitado = 1";
+
+                    // Consulta los tipos de pagos habilitados.
+                    $tipos_pagos = consultar_listado($conexion, $query);
+
+                    // Si hubo error ejecutando la consulta.
+                    if($tipos_pagos === false)
+                    {
+                        $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de pago(L 140).";
+                    }
+                    // Si la consulta fue exitosa.
+                    else
+                    {
+                        $respuesta['exito'] = true;
+                        $respuesta['tipos_clientes'] = $tipos_clientes;
+                        $respuesta['tipos_pagos'] = $tipos_pagos;
+                        $respuesta['productos'] = $productos;
+                    }
+                }
+            }
+        }
+
+        // Factura > Nueva > Buscar.
+        else if($accion == "factura_nueva_clientes_buscar") 
+        {
+            // Valida si el perfil de usuario tiene permiso para realizar esa acción.
+            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+
+            // Prepara la consulta.
+            $query = "SELECT id, razon_social 
+                        FROM clientes
+                        WHERE habilitado = 1 AND eliminado = 0";
+
+            // Consulta los clientes habilitados.
+            $clientes = consultar_listado($conexion, $query);
+
+            // Si hubo error ejecutando la consulta.
+            if($clientes === false)
+            {
+                $respuesta['descripcion'] = "Ocurrió un error al buscar los clientes (L 563).";
+            }
+            // Si la consulta fue exitosa.
+            else
+            {
+                $respuesta['exito'] = true;
+                $respuesta['clientes'] = $clientes;
+            }
+        }
+        
+        // Factura > Nueva > Confirmar.
+        else if($accion == "factura_nueva_confirmar")
+        {
+            // Valida si el perfil de usuario tiene permiso para realizar esa acción.
+            //validarPermiso($conexion, $tabla, "nueva_buscar", $respuesta, false);
+            
+            $venta = $_POST["venta"];
+            $productos = $venta["productos"];
+
+            $razon_social = "";
+            $cuit = "";
+            $domicilio = "";
+            $telefono = "";
+            $email = "";
+            
+            if($venta['id_tipo_cliente'] == 1) 
+            {
+                $query = "SELECT *
+                          FROM clientes
+                          WHERE id = " . $venta['id_cliente'];
+                
+                // Inserta un nueva venta.
+                $cliente = consultar_registro($conexion, $query);
+                
+                // Si hubo error ejecutando la consulta.
+                if($cliente === false)
+                {
+                    $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 184).";
+                }
+                // Si la consulta fue exitosa.
+                else
+                {
+                    $razon_social = $cliente->razon_social;
+                    $cuit = $cliente->cuit;
+                    $domicilio = $cliente->domicilio;
+                    $telefono = $cliente->telefono;
+                    $email = $cliente->email;
+                }
+            } 
+            else if($venta['id_tipo_cliente'] == 2) 
+            {
+                $razon_social = $venta['razon_social'];
+                    $cuit = $venta['cuit'];
+                    $domicilio = $venta['domicilio'];
+                    $telefono = $venta['telefono'];
+                    $email = $venta['email'];
+            }
+
+
+            // Prepara la consulta.
+            $query = "INSERT INTO ventas (razon_social, cuit, domicilio, telefono, email, id_tipo_pago, importe_total, id_usuario_vendedor) "
+            . "VALUES"
+            . "(
+                  '$razon_social', "
+                . $cuit . ", 
+                  '$domicilio',
+                  '$telefono',
+                  '$email', "
+                . $venta['id_tipo_pago'] . ", "
+                . $venta['importe_total'] . ", "
+                . $_SESSION['usuario']->id
+            . ")";
+            
+            // Inserta un nueva venta.
+            $resultado = ejecutar($conexion, $query);
+
+            // Si hubo error ejecutando la consulta.
+            if($resultado === false)
+            {
+                $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 184).";
+            }
+            // Si la consulta fue exitosa.
+            else
+            {
+                $id_venta = mysqli_insert_id($conexion);
+
+                $productos_stock = array();
+
+                // Prepara la consulta.
+                $query = "INSERT INTO ventas_detalles (id_venta, id_producto, cantidad, precio_unitario, precio_total) "
+                . "VALUES";
+                
+                for ($i = 0; $i < count($productos); $i++)
+                {
+                    $query .= "("
+                        . $id_venta . ", "
+                        . $productos[$i]['id_producto'] . ", "
+                        . $productos[$i]['cantidad'] . ", "
+                        . $productos[$i]['precio_unitario'] . ", "
+                        . $productos[$i]['precio_total'] 
+                    . ")";
+
+                    if($i < count($productos) - 1)
+                    {
+                        $query .= ', ';
+                    }
+
+                    $productos_stock[$i]['id_producto'] = $productos[$i]['id_producto'];
+                    $productos_stock[$i]['cantidad'] = $productos[$i]['cantidad'];
+                }
+                
+                // Inserta un nueva venta de venta.
+                $resultado = ejecutar($conexion, $query);
+                
+                // Si hubo error ejecutando la consulta.
+                if($resultado === false)
+                {
+                    $respuesta['descripcion'] = "Ocurrió un error al guardar nueva venta (L 217).";
+                }
+                // Si la consulta fue exitosa.
+                else
+                {
+                    for ($i = 0; $i < count($productos_stock); $i++) { 
+                        // Prepara la consulta.
+                        $query = "UPDATE stock 
+                                SET unidades = unidades - " . $productos_stock[$i]['cantidad'] . "
+                                WHERE id_producto = " . $productos_stock[$i]['id_producto'];
+                        
+                        // Edita stock.
+                        $resultado = ejecutar($conexion, $query);
+                    }
+                    
+                    // Si hubo error ejecutando la consulta.
+                    if($resultado === false)
+                    {
+                        $respuesta['descripcion'] = "Ocurrió un error al editar la venta (L 214).";
+                    }
+                    // Si la consulta fue exitosa.
+                    else
+                    {
+                        // Prepara la consulta.
+                        $query = "SELECT *
+                                    FROM movimientos_caja
+                                    WHERE saldo IS NOT NULL
+                                    ORDER BY id DESC LIMIT 1";
+                        
+                        // Consulta ultimo movimiento de caja.
+                        $ultimo_movimiento_caja = consultar_registro($conexion, $query);
+                        
+                        // Prepara la consulta.
+                        $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, saldo, id_pago, id_usuario)
+                                    VALUES ("
+                                    . 7 . ", "
+                                    . $venta['importe_total'] . ", "
+                                    . (floatval($ultimo_movimiento_caja->saldo) + floatval($venta['importe_total'])) . ", "
+                                    . $venta['id_tipo_pago'] . ", "
+                                    . $_SESSION['usuario']->id
+                                . ')';
+                        
+                        // Guarda un nuevo movimiento de caja.
+                        $resultado = ejecutar($conexion, $query);
+                        
+                        // Si hubo error ejecutando la consulta.
+                        if($resultado === false)
+                        {
+                            $respuesta['descripcion'] = "Ocurrió un error al regitrar el movimiento de caja (L 295).";
+                        }
+                        // Si la consulta fue exitosa.
+                        else
+                        {
+                            $respuesta['exito'] = true;
+                            $respuesta['descripcion'] = "Se registró correctamente la venta!";
+                            $respuesta['id_venta'] = $id_venta;
+                        }
+                    }
+                }
+            }
+        }
+
         // EDITAR: Buscar información para editar venta.
         else if($accion == "editar_buscar") 
         {

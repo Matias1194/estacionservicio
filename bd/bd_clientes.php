@@ -24,10 +24,8 @@
             //validarPermiso($conexion, $tabla, $accion, $respuesta, true);
 
             // Prepara la consulta.
-            $query = "SELECT clientes.id, tipos_clientes.descripcion as 'tipo', razon_social, cuit, domicilio, telefono, email, habilitado
+            $query = "SELECT clientes.id, razon_social, cuit, domicilio, telefono, email, habilitado
                       FROM clientes
-                      INNER JOIN tipos_clientes
-                        ON clientes.id_tipo_cliente = tipos_clientes.id
                       WHERE clientes.eliminado = 0";
 
             // Consulta el listado de clientes.
@@ -92,24 +90,7 @@
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
 
-            // Prepara la consulta.
-            $query = "SELECT id, descripcion 
-                      FROM tipos_clientes";
-
-            // Consulta los tipos de clientes habilitados.
-            $tipos_clientes = consultar_listado($conexion, $query);
-
-            // Si hubo error ejecutando la consulta.
-            if($tipos_clientes === false)
-            {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de clientes (L 103).";
-            }
-            // Si la consulta fue exitosa.
-            else
-            {
-                $respuesta['exito'] = true;
-                $respuesta['tipos_clientes'] = $tipos_clientes;
-            }
+            $respuesta['exito'] = true;
         }
 
         // NUEVO: Confirmar nuevo cliente.
@@ -145,7 +126,7 @@
                 $query = "INSERT INTO clientes (id_tipo_cliente, razon_social, cuit, domicilio, telefono, email) "
                        . "VALUES"
                        . "("
-                                  . $cliente["id_tipo_cliente"] . ", "
+                                  . 1 . ", "
                             . "'" . $cliente['razon_social'] . "', "
                                   . $cliente["cuit"] . ", "
                             . "'" . $cliente["domicilio"] . "', "
@@ -199,25 +180,8 @@
             // Si la consulta fue exitosa y existe el cliente.
             else
             {
-                // Prepara la consulta.
-                $query = "SELECT id, descripcion 
-                          FROM tipos_clientes";
-
-                // Consulta los tipos de clientes habilitados.
-                $tipos_clientes = consultar_listado($conexion, $query);
-
-                // Si hubo error ejecutando la consulta.
-                if($tipos_clientes === false)
-                {
-                    $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de clientes (L 212).";
-                }
-                // Si la consulta fue exitosa.
-                else
-                {
-                    $respuesta['exito'] = true;
-                    $respuesta['cliente'] = $cliente;
-                    $respuesta['tipos_clientes'] = $tipos_clientes;
-                }
+                $respuesta['exito'] = true;
+                $respuesta['cliente'] = $cliente;
             }
         }
 

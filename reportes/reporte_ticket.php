@@ -135,8 +135,8 @@
         $mpdf->WriteHTML($contenido);
 
         // Descarga PDF.
-        //$mpdf->Output('ticket-' . $id_venta . '.pdf', 'D');
-        $mpdf->Output();
+        $mpdf->Output('ticket-' . $id_venta . '.pdf', 'D');
+        //$mpdf->Output();
     }
     catch(Excepcion $e) {
         print('Esto es lo que pasó: ' . $e);
