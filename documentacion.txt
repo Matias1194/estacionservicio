@@ -145,27 +145,36 @@ Stock Mercado
 - Consultar Movimientos Mercado 			No				Si				No			No
 
 ---------------------------------------
+---------------------------------------
 
-01/10/2019
-Tareas 
+08/11/2019
 
-1° Terminar módulo Ventas orientado a consumidor final.
-- (LISTO) Crear Módulo Caja
+1° TAREA
+MERCADO
+    > Compra
+        + REPORTE: Ticket al registrar compra   reporte_playa_compra_factura.php
+        
+    > Venta     (Faltan reportes)
+        + REPORTE: Ticket al registrar venta    reporte_playa_venta_ticket.php
+        + REPORET: Factura al registrar venta   reporte_playa_venta_factura.php
 
-- (LIST) Analizar tablas para controlar los movimientos de Caja y Stock.
-- Diseñar Reportes
-    - Stock (falta terminar)            reporte_stock.php
-    - Ticket al confirmar la venta      reporte_ticket.php
-    - Compras por periodo (Totales)     reporte_compras_periodo.php     (parámetros: desde y hasta. EJ: 09/2019 a 10/2019)
-    - Compra individual (Detalles)      reporte_compras_detalles.php    (parámetros: id compra. EJ: 15)
-    - Ventas por periodo (Totales)      reporte_ventas_periodo.php      (parámetros: desde y hasta. EJ: 07/2019 a 11/2019)
-    - Venta individual (Detalles)       reporte_ventas_detalles.php     (parámetros: id venta. EJ: 29)
-    
-Secundarias 
-- (LISTO) Campos fecha type="date"
-- (LISTO) Campos BUSCAR en todas las tablas (DataTable)
-- (LISTO) Ordenar tablas descendente por fecha (DataTable)
-- Cuando se elige un producto repetido, que se sume si existía.
-- Dropdown MERCADO (Productos, Compras, Ventas, Stock)
-- Dropdown PLAYA (Productos, Compras, Ventas, Stock)
-- Permisos de perfil de usuario
+    > Stock
+        + REPORTE: Stock                        reporte_playa_stock.php
+
+2° TAREA
+PLAYA
+- Crear Módulos a partir de la lógica de MERCADO
+
+3° TAREA
+- Permisos por perfil
+
+4° TAREA
+REPORTES
+- Crear módulo
+    > Compras por periodo (Totales)     reporte_compras_periodo.php     (parámetros: desde y hasta. EJ: 09/2019 a 10/2019)
+    > Ventas por periodo (Totales)      reporte_ventas_periodo.php      (parámetros: desde y hasta. EJ: 07/2019 a 11/2019)
+
+
+TAREAS ADICIONALES
+- Dropdown menu para MERCADO (Productos, Compras, Ventas, Stock) para el perfil Administrador
+- Dropdown menu para PLAYA (Productos, Compras, Ventas, Stock) para el perfil Administrador
