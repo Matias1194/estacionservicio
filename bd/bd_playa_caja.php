@@ -3,7 +3,7 @@
     
     include 'bd_conexion.php';
 
-    $tabla = 'movimientos_caja';
+    $tabla = 'playa_movimientos_caja';
 
     // Prepara la respuesta.
     $respuesta = array(
@@ -24,25 +24,25 @@
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
 
             // Prepara la consulta.
-            $query = "SELECT movimientos_caja.id, 
+            $query = "SELECT playa_movimientos_caja.id, 
                              tipos_registros_caja.descripcion as 'registro', 
-                             movimientos_caja.entrada, 
-                             movimientos_caja.salida, 
-                             movimientos_caja.saldo, 
+                             playa_movimientos_caja.entrada, 
+                             playa_movimientos_caja.salida, 
+                             playa_movimientos_caja.saldo, 
                              tipos_pagos.descripcion as 'tipo_pago', 
-                             DATE_FORMAT(movimientos_caja.fecha, '%d/%m/%Y') as 'fecha', 
+                             DATE_FORMAT(playa_movimientos_caja.fecha, '%d/%m/%Y') as 'fecha', 
                              usuarios.usuario
 
-                      FROM movimientos_caja
+                      FROM playa_movimientos_caja
                       
                       LEFT OUTER JOIN tipos_registros_caja
-                        ON movimientos_caja.id_tipo_registro_caja = tipos_registros_caja.id
+                        ON playa_movimientos_caja.id_tipo_registro_caja = tipos_registros_caja.id
                       LEFT OUTER JOIN tipos_pagos
-                        ON movimientos_caja.id_pago = tipos_pagos.id
+                        ON playa_movimientos_caja.id_pago = tipos_pagos.id
                       LEFT OUTER JOIN usuarios
-                        ON movimientos_caja.id_usuario = usuarios.id
+                        ON playa_movimientos_caja.id_usuario = usuarios.id
                       
-                      ORDER BY movimientos_caja.id DESC";
+                      ORDER BY playa_movimientos_caja.id DESC";
             
             // Consulta el listado de caja.
             $movimientos_caja = consultar_listado($conexion, $query);

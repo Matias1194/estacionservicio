@@ -21,7 +21,7 @@
         if($accion == "buscar_listado")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, $accion, $respuesta, true);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
             
             // Prepara la consulta.
             $query = "SELECT usuarios.id, usuarios.usuario, perfiles.descripcion as 'perfil', usuarios.nombres, usuarios.apellidos, DATE_FORMAT(usuarios.fecha_registro, '%d/%m/%Y') as 'fecha_registro', usuarios.habilitado 
@@ -50,7 +50,7 @@
         else if($accion == "buscar_detalles")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 
@@ -86,7 +86,7 @@
         else if($accion == "nuevo_buscar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
 
             // Prepara la consulta.
             $query = "SELECT id, descripcion 
@@ -131,7 +131,7 @@
         else if($accion == "nuevo_confirmar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, "nuevo_buscar", $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, "nuevo_buscar", $respuesta, false);
 
             $usuario = $_POST["usuario"];
 
@@ -192,7 +192,7 @@
         else if($accion == "editar_buscar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 
@@ -262,7 +262,7 @@
         else if($accion == "editar_confirmar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, "editar_buscar", $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, "editar_buscar", $respuesta, false);
 
             $usuario = $_POST["usuario"];
 
@@ -376,7 +376,7 @@
         else if($accion == "eliminar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 
@@ -428,7 +428,7 @@
         else if($accion == "deshabilitar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 
@@ -480,7 +480,7 @@
         else if($accion == "habilitar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            //validarPermiso($conexion, $tabla, $accion, $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
 
             $id = $_POST['id'];
 

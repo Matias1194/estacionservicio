@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-11-2019 a las 01:47:32
+-- Tiempo de generación: 09-11-2019 a las 03:09:55
 -- Versión del servidor: 10.4.8-MariaDB
 -- Versión de PHP: 7.3.10
 
@@ -21,6 +21,26 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `estacion_servicio`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `areas`
+--
+
+CREATE TABLE `areas` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `areas`
+--
+
+INSERT INTO `areas` (`id`, `descripcion`, `habilitado`) VALUES
+(1, 'Mercado', 1),
+(2, 'Playa', 1);
 
 -- --------------------------------------------------------
 
@@ -106,6 +126,32 @@ INSERT INTO `compras_detalles` (`id`, `id_compra`, `id_producto`, `cantidad`, `p
 (6, 5, 11, 100, '90.00', '9000'),
 (7, 6, 1, 50, '45.00', '2250'),
 (8, 6, 2, 5, '60.00', '300');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `modulos`
+--
+
+CREATE TABLE `modulos` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `modulos`
+--
+
+INSERT INTO `modulos` (`id`, `descripcion`, `habilitado`) VALUES
+(1, 'Usuarios', 1),
+(2, 'Caja', 1),
+(3, 'Clientes', 1),
+(4, 'Compras', 1),
+(5, 'Productos', 1),
+(6, 'Proveedores', 1),
+(7, 'Stock', 1),
+(8, 'Ventas', 1);
 
 -- --------------------------------------------------------
 
@@ -206,38 +252,485 @@ INSERT INTO `perfiles_permisos` (`id_perfil`, `id_permiso`, `habilitado`) VALUES
 (1, 24, 1),
 (1, 25, 1),
 (1, 26, 1),
-(2, 1, 1),
-(2, 2, 1),
-(2, 3, 1),
-(2, 4, 1),
-(2, 8, 1),
-(2, 9, 1),
-(2, 10, 1),
-(2, 11, 1),
-(2, 15, 1),
-(2, 16, 1),
-(2, 17, 1),
-(2, 18, 1),
-(3, 1, 1),
-(3, 2, 1),
-(3, 3, 1),
-(3, 4, 1),
-(3, 8, 1),
-(3, 9, 1),
+(1, 27, 1),
+(1, 28, 1),
+(1, 29, 1),
+(1, 30, 1),
+(1, 31, 1),
+(1, 32, 1),
+(1, 33, 1),
+(1, 34, 1),
+(1, 35, 1),
+(1, 36, 1),
+(1, 37, 1),
+(1, 38, 1),
+(1, 39, 1),
+(1, 40, 1),
+(1, 41, 1),
+(1, 42, 1),
+(1, 43, 1),
+(1, 44, 1),
+(1, 45, 1),
+(1, 46, 1),
+(1, 47, 1),
+(1, 48, 1),
+(1, 49, 1),
+(1, 50, 1),
+(1, 51, 1),
+(1, 52, 1),
+(1, 53, 1),
+(1, 54, 1),
+(1, 55, 1),
+(1, 56, 1),
+(1, 57, 1),
+(1, 58, 1),
+(1, 59, 1),
+(1, 60, 1),
+(1, 61, 1),
+(1, 62, 1),
+(1, 63, 1),
+(1, 64, 1),
+(1, 65, 1),
+(1, 66, 1),
+(1, 67, 1),
+(1, 68, 1),
+(1, 69, 1),
+(1, 70, 1),
+(1, 71, 1),
+(1, 72, 1),
+(1, 73, 1),
+(1, 74, 1),
+(1, 75, 1),
+(1, 76, 1),
+(1, 77, 1),
+(1, 78, 1),
+(1, 79, 1),
+(1, 80, 1),
+(1, 81, 1),
+(1, 82, 1),
+(1, 83, 1),
+(1, 84, 1),
+(1, 85, 1),
+(1, 86, 1),
+(1, 87, 1),
+(1, 88, 1),
+(1, 89, 1),
+(1, 90, 1),
+(1, 91, 1),
+(1, 92, 1),
+(1, 93, 1),
+(1, 94, 1),
+(1, 95, 1),
+(1, 96, 1),
+(1, 97, 1),
+(1, 98, 1),
+(1, 99, 1),
+(1, 100, 1),
+(1, 101, 1),
+(2, 1, 0),
+(2, 2, 0),
+(2, 3, 0),
+(2, 4, 0),
+(2, 5, 0),
+(2, 6, 0),
+(2, 7, 0),
+(2, 8, 0),
+(2, 9, 0),
+(2, 10, 0),
+(2, 11, 0),
+(2, 12, 0),
+(2, 13, 0),
+(2, 14, 0),
+(2, 15, 0),
+(2, 16, 0),
+(2, 17, 0),
+(2, 18, 0),
+(2, 19, 0),
+(2, 20, 0),
+(2, 21, 0),
+(2, 22, 0),
+(2, 23, 0),
+(2, 24, 0),
+(2, 25, 0),
+(2, 26, 0),
+(2, 27, 0),
+(2, 28, 0),
+(2, 29, 0),
+(2, 30, 0),
+(2, 31, 0),
+(2, 32, 0),
+(2, 33, 0),
+(2, 34, 0),
+(2, 35, 0),
+(2, 36, 0),
+(2, 37, 0),
+(2, 38, 0),
+(2, 39, 0),
+(2, 40, 0),
+(2, 41, 0),
+(2, 42, 0),
+(2, 43, 0),
+(2, 44, 0),
+(2, 45, 0),
+(2, 46, 0),
+(2, 47, 0),
+(2, 48, 0),
+(2, 49, 0),
+(2, 50, 0),
+(2, 51, 0),
+(2, 52, 0),
+(2, 53, 0),
+(2, 54, 0),
+(2, 55, 0),
+(2, 56, 1),
+(2, 57, 1),
+(2, 58, 1),
+(2, 59, 1),
+(2, 60, 1),
+(2, 61, 1),
+(2, 62, 1),
+(2, 63, 1),
+(2, 64, 1),
+(2, 65, 1),
+(2, 66, 1),
+(2, 67, 1),
+(2, 68, 1),
+(2, 69, 1),
+(2, 70, 1),
+(2, 71, 1),
+(2, 72, 1),
+(2, 73, 1),
+(2, 74, 1),
+(2, 75, 1),
+(2, 76, 1),
+(2, 77, 1),
+(2, 78, 1),
+(2, 79, 1),
+(2, 80, 1),
+(2, 81, 1),
+(2, 82, 1),
+(2, 83, 1),
+(2, 84, 1),
+(2, 85, 1),
+(2, 86, 1),
+(2, 87, 1),
+(2, 88, 1),
+(2, 89, 1),
+(2, 90, 1),
+(2, 91, 1),
+(2, 92, 1),
+(2, 93, 1),
+(2, 94, 1),
+(2, 95, 1),
+(2, 96, 1),
+(2, 97, 1),
+(2, 98, 1),
+(2, 99, 1),
+(2, 100, 1),
+(2, 101, 1),
+(3, 1, 0),
+(3, 2, 0),
+(3, 3, 0),
+(3, 4, 0),
+(3, 5, 0),
+(3, 6, 0),
+(3, 7, 0),
+(3, 8, 0),
+(3, 9, 0),
 (3, 10, 1),
 (3, 11, 1),
+(3, 12, 1),
+(3, 13, 1),
+(3, 14, 1),
+(3, 15, 1),
+(3, 16, 1),
+(3, 17, 1),
+(3, 18, 1),
 (3, 19, 1),
 (3, 20, 1),
 (3, 21, 1),
 (3, 22, 1),
-(4, 23, 1),
-(4, 24, 1),
-(4, 25, 1),
-(4, 26, 1),
-(5, 23, 1),
-(5, 24, 1),
-(5, 25, 1),
-(5, 26, 1);
+(3, 23, 1),
+(3, 24, 1),
+(3, 25, 1),
+(3, 26, 1),
+(3, 27, 1),
+(3, 28, 1),
+(3, 29, 1),
+(3, 30, 1),
+(3, 31, 1),
+(3, 32, 1),
+(3, 33, 1),
+(3, 34, 1),
+(3, 35, 1),
+(3, 36, 1),
+(3, 37, 1),
+(3, 38, 1),
+(3, 39, 1),
+(3, 40, 1),
+(3, 41, 1),
+(3, 42, 1),
+(3, 43, 1),
+(3, 44, 1),
+(3, 45, 1),
+(3, 46, 1),
+(3, 47, 1),
+(3, 48, 1),
+(3, 49, 1),
+(3, 50, 1),
+(3, 51, 1),
+(3, 52, 1),
+(3, 53, 1),
+(3, 54, 1),
+(3, 55, 1),
+(3, 56, 0),
+(3, 57, 0),
+(3, 58, 0),
+(3, 59, 0),
+(3, 60, 0),
+(3, 61, 0),
+(3, 62, 0),
+(3, 63, 0),
+(3, 64, 0),
+(3, 65, 0),
+(3, 66, 0),
+(3, 67, 0),
+(3, 68, 0),
+(3, 69, 0),
+(3, 70, 0),
+(3, 71, 0),
+(3, 72, 0),
+(3, 73, 0),
+(3, 74, 0),
+(3, 75, 0),
+(3, 76, 0),
+(3, 77, 0),
+(3, 78, 0),
+(3, 79, 0),
+(3, 80, 0),
+(3, 81, 0),
+(3, 82, 0),
+(3, 83, 0),
+(3, 84, 0),
+(3, 85, 0),
+(3, 86, 0),
+(3, 87, 0),
+(3, 88, 0),
+(3, 89, 0),
+(3, 90, 0),
+(3, 91, 0),
+(3, 92, 0),
+(3, 93, 0),
+(3, 94, 0),
+(3, 95, 0),
+(3, 96, 0),
+(3, 97, 0),
+(3, 98, 0),
+(3, 99, 0),
+(3, 100, 0),
+(3, 101, 0),
+(4, 1, 0),
+(4, 2, 0),
+(4, 3, 0),
+(4, 4, 0),
+(4, 5, 0),
+(4, 6, 0),
+(4, 7, 0),
+(4, 8, 0),
+(4, 9, 0),
+(4, 10, 0),
+(4, 11, 0),
+(4, 12, 0),
+(4, 13, 0),
+(4, 14, 0),
+(4, 15, 0),
+(4, 16, 0),
+(4, 17, 0),
+(4, 18, 0),
+(4, 19, 0),
+(4, 20, 0),
+(4, 21, 0),
+(4, 22, 0),
+(4, 23, 0),
+(4, 24, 0),
+(4, 25, 0),
+(4, 26, 0),
+(4, 27, 0),
+(4, 28, 0),
+(4, 29, 0),
+(4, 30, 0),
+(4, 31, 0),
+(4, 32, 0),
+(4, 33, 0),
+(4, 34, 0),
+(4, 35, 0),
+(4, 36, 0),
+(4, 37, 0),
+(4, 38, 0),
+(4, 39, 0),
+(4, 40, 0),
+(4, 41, 0),
+(4, 42, 0),
+(4, 43, 0),
+(4, 44, 0),
+(4, 45, 0),
+(4, 46, 0),
+(4, 47, 0),
+(4, 48, 0),
+(4, 49, 0),
+(4, 50, 0),
+(4, 51, 0),
+(4, 52, 0),
+(4, 53, 0),
+(4, 54, 0),
+(4, 55, 0),
+(4, 56, 0),
+(4, 57, 0),
+(4, 58, 0),
+(4, 59, 0),
+(4, 60, 0),
+(4, 61, 0),
+(4, 62, 0),
+(4, 63, 0),
+(4, 64, 0),
+(4, 65, 0),
+(4, 66, 0),
+(4, 67, 0),
+(4, 68, 0),
+(4, 69, 0),
+(4, 70, 0),
+(4, 71, 0),
+(4, 72, 0),
+(4, 73, 0),
+(4, 74, 0),
+(4, 75, 0),
+(4, 76, 0),
+(4, 77, 0),
+(4, 78, 0),
+(4, 79, 0),
+(4, 80, 0),
+(4, 81, 0),
+(4, 82, 0),
+(4, 83, 0),
+(4, 84, 0),
+(4, 85, 0),
+(4, 86, 0),
+(4, 87, 0),
+(4, 88, 0),
+(4, 89, 1),
+(4, 90, 1),
+(4, 91, 1),
+(4, 92, 1),
+(4, 93, 1),
+(4, 94, 1),
+(4, 95, 0),
+(4, 96, 0),
+(4, 97, 1),
+(4, 98, 1),
+(4, 99, 0),
+(4, 100, 0),
+(4, 101, 0),
+(5, 1, 0),
+(5, 2, 0),
+(5, 3, 0),
+(5, 4, 0),
+(5, 5, 0),
+(5, 6, 0),
+(5, 7, 0),
+(5, 8, 0),
+(5, 9, 0),
+(5, 10, 0),
+(5, 11, 0),
+(5, 12, 0),
+(5, 13, 0),
+(5, 14, 0),
+(5, 15, 0),
+(5, 16, 0),
+(5, 17, 0),
+(5, 18, 0),
+(5, 19, 0),
+(5, 20, 0),
+(5, 21, 0),
+(5, 22, 0),
+(5, 23, 0),
+(5, 24, 0),
+(5, 25, 0),
+(5, 26, 0),
+(5, 27, 0),
+(5, 28, 0),
+(5, 29, 0),
+(5, 30, 0),
+(5, 31, 0),
+(5, 32, 0),
+(5, 33, 0),
+(5, 34, 0),
+(5, 35, 0),
+(5, 36, 0),
+(5, 37, 0),
+(5, 38, 0),
+(5, 39, 0),
+(5, 40, 0),
+(5, 41, 0),
+(5, 42, 0),
+(5, 43, 1),
+(5, 44, 1),
+(5, 45, 1),
+(5, 46, 1),
+(5, 47, 1),
+(5, 48, 1),
+(5, 49, 0),
+(5, 50, 0),
+(5, 51, 1),
+(5, 52, 1),
+(5, 53, 0),
+(5, 54, 0),
+(5, 55, 0),
+(5, 56, 0),
+(5, 57, 0),
+(5, 58, 0),
+(5, 59, 0),
+(5, 60, 0),
+(5, 61, 0),
+(5, 62, 0),
+(5, 63, 0),
+(5, 64, 0),
+(5, 65, 0),
+(5, 66, 0),
+(5, 67, 0),
+(5, 68, 0),
+(5, 69, 0),
+(5, 70, 0),
+(5, 71, 0),
+(5, 72, 0),
+(5, 73, 0),
+(5, 74, 0),
+(5, 75, 0),
+(5, 76, 0),
+(5, 77, 0),
+(5, 78, 0),
+(5, 79, 0),
+(5, 80, 0),
+(5, 81, 0),
+(5, 82, 0),
+(5, 83, 0),
+(5, 84, 0),
+(5, 85, 0),
+(5, 86, 0),
+(5, 87, 0),
+(5, 88, 0),
+(5, 89, 0),
+(5, 90, 0),
+(5, 91, 0),
+(5, 92, 0),
+(5, 93, 0),
+(5, 94, 0),
+(5, 95, 0),
+(5, 96, 0),
+(5, 97, 0),
+(5, 98, 0),
+(5, 99, 0),
+(5, 100, 0),
+(5, 101, 0);
 
 -- --------------------------------------------------------
 
@@ -247,7 +740,9 @@ INSERT INTO `perfiles_permisos` (`id_perfil`, `id_permiso`, `habilitado`) VALUES
 
 CREATE TABLE `permisos` (
   `id` int(11) UNSIGNED NOT NULL,
-  `descripcion` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `id_area` int(10) UNSIGNED NOT NULL,
+  `id_modulo` int(10) UNSIGNED NOT NULL,
+  `accion` varchar(50) CHARACTER SET utf8 NOT NULL,
   `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
@@ -255,33 +750,279 @@ CREATE TABLE `permisos` (
 -- Volcado de datos para la tabla `permisos`
 --
 
-INSERT INTO `permisos` (`id`, `descripcion`, `habilitado`) VALUES
-(1, 'Consultar Listado Usuarios', 1),
-(2, 'Consultar Detalles Usuario', 1),
-(3, 'Crear Usuario', 1),
-(4, 'Editar Usuario', 1),
-(5, 'Eliminar Usuario', 1),
-(6, 'Deshabilitar Usuario', 1),
-(7, 'Habilitar Usuario', 1),
-(8, 'Consultar Listado Productos', 1),
-(9, 'Consultar Detalles Producto', 1),
-(10, 'Crear Producto', 1),
-(11, 'Editar Producto', 1),
-(12, 'Eliminar Producto', 1),
-(13, 'Deshabilitar Producto', 1),
-(14, 'Habilitar Producto', 1),
-(15, 'Consultar Stock Playa', 1),
-(16, 'Consultar Pedidos a Proveedor Playa', 1),
-(17, 'Consultar Entrada de Stock Playa', 1),
-(18, 'Consultar Movimientos Playa', 1),
-(19, 'Consultar Stock Mercado', 1),
-(20, 'Consultar Pedidos a Proveedor Mercado', 1),
-(21, 'Consultar Entrada de Stock Mercado', 1),
-(22, 'Consultar Movimientos Mercado', 1),
-(23, 'Consultar Caja', 1),
-(24, 'Registrar Venta', 1),
-(25, 'Imprimir Factura', 1),
-(26, 'Cerrar Caja', 1);
+INSERT INTO `permisos` (`id`, `id_area`, `id_modulo`, `accion`, `habilitado`) VALUES
+(1, 0, 1, 'listado', 1),
+(2, 0, 1, 'detalles', 1),
+(3, 0, 1, 'nuevo_buscar', 1),
+(4, 0, 1, 'nuevo_confirmar', 1),
+(5, 0, 1, 'editar_buscar', 1),
+(6, 0, 1, 'editar_confirmar', 1),
+(7, 0, 1, 'eliminar', 1),
+(8, 0, 1, 'deshabilitar', 1),
+(9, 0, 1, 'habilitar', 1),
+(10, 1, 2, 'listado', 1),
+(11, 1, 3, 'listado', 1),
+(12, 1, 3, 'detalles', 1),
+(13, 1, 3, 'nuevo_buscar', 1),
+(14, 1, 3, 'nuevo_confirmar', 1),
+(15, 1, 3, 'editar_buscar', 1),
+(16, 1, 3, 'editar_confirmar', 1),
+(17, 1, 3, 'eliminar', 1),
+(18, 1, 3, 'deshabilitar', 1),
+(19, 1, 3, 'habilitar', 1),
+(20, 1, 4, 'listado', 1),
+(21, 1, 4, 'detalles', 1),
+(22, 1, 4, 'nuevo_buscar', 1),
+(23, 1, 4, 'nuevo_confirmar', 1),
+(24, 1, 4, 'editar_buscar', 1),
+(25, 1, 4, 'editar_confirmar', 1),
+(26, 1, 4, 'eliminar', 1),
+(27, 1, 5, 'listado', 1),
+(28, 1, 5, 'nuevo_buscar', 1),
+(29, 1, 5, 'nuevo_confirmar', 1),
+(30, 1, 5, 'editar_buscar', 1),
+(31, 1, 5, 'editar_confirmar', 1),
+(32, 1, 5, 'eliminar', 1),
+(33, 1, 6, 'listado', 1),
+(34, 1, 6, 'detalles', 1),
+(35, 1, 6, 'nuevo_buscar', 1),
+(36, 1, 6, 'nuevo_confirmar', 1),
+(37, 1, 6, 'editar_buscar', 1),
+(38, 1, 6, 'editar_confirmar', 1),
+(39, 1, 6, 'eliminar', 1),
+(40, 1, 6, 'deshabilitar', 1),
+(41, 1, 6, 'habilitar', 1),
+(42, 1, 7, 'listado', 1),
+(43, 1, 8, 'abrir_caja', 1),
+(44, 1, 8, 'cerrar_caja', 1),
+(45, 1, 8, 'comenzar_turno', 1),
+(46, 1, 8, 'finalizar_turno', 1),
+(47, 1, 8, 'otros_buscar', 1),
+(48, 1, 8, 'otros_confirmar', 1),
+(49, 1, 8, 'listado', 1),
+(50, 1, 8, 'detalles', 1),
+(51, 1, 8, 'nuevo_buscar', 1),
+(52, 1, 8, 'nuevo_confirmar', 1),
+(53, 1, 8, 'editar_buscar', 1),
+(54, 1, 8, 'editar_confirmar', 1),
+(55, 1, 8, 'eliminar', 1),
+(56, 2, 2, 'listado', 1),
+(57, 2, 3, 'listado', 1),
+(58, 2, 3, 'detalles', 1),
+(59, 2, 3, 'nuevo_buscar', 1),
+(60, 2, 3, 'nuevo_confirmar', 1),
+(61, 2, 3, 'editar_buscar', 1),
+(62, 2, 3, 'editar_confirmar', 1),
+(63, 2, 3, 'eliminar', 1),
+(64, 2, 3, 'deshabilitar', 1),
+(65, 2, 3, 'habilitar', 1),
+(66, 2, 4, 'listado', 1),
+(67, 2, 4, 'detalles', 1),
+(68, 2, 4, 'nuevo_buscar', 1),
+(69, 2, 4, 'nuevo_confirmar', 1),
+(70, 2, 4, 'editar_buscar', 1),
+(71, 2, 4, 'editar_confirmar', 1),
+(72, 2, 4, 'eliminar', 1),
+(73, 2, 5, 'listado', 1),
+(74, 2, 5, 'nuevo_buscar', 1),
+(75, 2, 5, 'nuevo_confirmar', 1),
+(76, 2, 5, 'editar_buscar', 1),
+(77, 2, 5, 'editar_confirmar', 1),
+(78, 2, 5, 'eliminar', 1),
+(79, 2, 6, 'listado', 1),
+(80, 2, 6, 'detalles', 1),
+(81, 2, 6, 'nuevo_buscar', 1),
+(82, 2, 6, 'nuevo_confirmar', 1),
+(83, 2, 6, 'editar_buscar', 1),
+(84, 2, 6, 'editar_confirmar', 1),
+(85, 2, 6, 'eliminar', 1),
+(86, 2, 6, 'deshabilitar', 1),
+(87, 2, 6, 'habilitar', 1),
+(88, 2, 7, 'listado', 1),
+(89, 2, 8, 'abrir_caja', 1),
+(90, 2, 8, 'cerrar_caja', 1),
+(91, 2, 8, 'comenzar_turno', 1),
+(92, 2, 8, 'finalizar_turno', 1),
+(93, 2, 8, 'otros_buscar', 1),
+(94, 2, 8, 'otros_confirmar', 1),
+(95, 2, 8, 'listado', 1),
+(96, 2, 8, 'detalles', 1),
+(97, 2, 8, 'nuevo_buscar', 1),
+(98, 2, 8, 'nuevo_confirmar', 1),
+(99, 2, 8, 'editar_buscar', 1),
+(100, 2, 8, 'editar_confirmar', 1),
+(101, 2, 8, 'eliminar', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_clientes`
+--
+
+CREATE TABLE `playa_clientes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `id_tipo_cliente` int(11) UNSIGNED NOT NULL,
+  `razon_social` varchar(50) NOT NULL,
+  `cuit` bigint(20) UNSIGNED NOT NULL,
+  `domicilio` varchar(50) NOT NULL,
+  `telefono` varchar(12) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
+  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_compras`
+--
+
+CREATE TABLE `playa_compras` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `id_proveedor` int(10) UNSIGNED NOT NULL,
+  `id_tipo_comprobante` int(10) UNSIGNED NOT NULL,
+  `numero_factura` int(11) UNSIGNED NOT NULL,
+  `orden_compra_numero` int(11) UNSIGNED NOT NULL,
+  `orden_compra_fecha` datetime NOT NULL,
+  `gastos_envio` decimal(8,2) UNSIGNED NOT NULL,
+  `gastos_envio_iva` decimal(8,2) UNSIGNED NOT NULL,
+  `gastos_envio_impuestos` decimal(8,2) UNSIGNED NOT NULL,
+  `importe_total` double(8,2) UNSIGNED NOT NULL,
+  `detalle` varchar(200) NOT NULL,
+  `fecha_compra` datetime NOT NULL DEFAULT current_timestamp(),
+  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_compras_detalles`
+--
+
+CREATE TABLE `playa_compras_detalles` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `id_compra` bigint(20) UNSIGNED NOT NULL,
+  `id_producto` int(10) UNSIGNED NOT NULL,
+  `cantidad` int(11) UNSIGNED NOT NULL,
+  `precio_unitario` decimal(8,2) UNSIGNED NOT NULL,
+  `precio_total` decimal(8,0) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_movimientos_caja`
+--
+
+CREATE TABLE `playa_movimientos_caja` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `id_tipo_registro_caja` int(10) UNSIGNED NOT NULL,
+  `entrada` decimal(8,2) UNSIGNED DEFAULT NULL,
+  `salida` decimal(8,2) UNSIGNED DEFAULT NULL,
+  `saldo` decimal(8,2) DEFAULT NULL,
+  `id_pago` int(10) UNSIGNED DEFAULT NULL,
+  `fecha` datetime NOT NULL DEFAULT current_timestamp(),
+  `id_usuario` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_productos`
+--
+
+CREATE TABLE `playa_productos` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `id_tipo_producto` int(11) UNSIGNED NOT NULL,
+  `descripcion` varchar(50) CHARACTER SET utf8 NOT NULL,
+  `precio_unitario` decimal(8,2) UNSIGNED NOT NULL,
+  `fecha_registro` datetime NOT NULL DEFAULT current_timestamp(),
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
+  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_proveedores`
+--
+
+CREATE TABLE `playa_proveedores` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `razon_social` varchar(50) NOT NULL,
+  `id_tipo_documento` int(11) UNSIGNED NOT NULL,
+  `documento` bigint(11) UNSIGNED NOT NULL,
+  `sucursal` varchar(50) NOT NULL,
+  `pais` varchar(50) NOT NULL,
+  `provincia` varchar(50) NOT NULL,
+  `localidad` varchar(50) NOT NULL,
+  `calle` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `telefono` int(11) UNSIGNED NOT NULL,
+  `fecha_modificacion` datetime DEFAULT NULL,
+  `fecha_creacion` datetime NOT NULL DEFAULT current_timestamp(),
+  `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
+  `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_stock`
+--
+
+CREATE TABLE `playa_stock` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `id_producto` int(10) UNSIGNED NOT NULL,
+  `unidades` int(10) UNSIGNED NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_tipos_productos`
+--
+
+CREATE TABLE `playa_tipos_productos` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_ventas`
+--
+
+CREATE TABLE `playa_ventas` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `razon_social` varchar(50) DEFAULT NULL,
+  `cuit` bigint(20) UNSIGNED DEFAULT NULL,
+  `domicilio` varchar(50) DEFAULT NULL,
+  `telefono` varchar(12) DEFAULT NULL,
+  `email` varchar(50) DEFAULT NULL,
+  `id_tipo_pago` int(10) UNSIGNED NOT NULL,
+  `importe_total` double(8,2) UNSIGNED NOT NULL,
+  `id_usuario_vendedor` int(11) NOT NULL,
+  `numero_factura` int(11) NOT NULL,
+  `fecha_venta` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `playa_ventas_detalles`
+--
+
+CREATE TABLE `playa_ventas_detalles` (
+  `id` int(11) NOT NULL,
+  `id_venta` bigint(20) NOT NULL,
+  `id_producto` int(10) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `precio_unitario` decimal(8,2) NOT NULL,
+  `precio_total` decimal(8,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -743,6 +1484,66 @@ ALTER TABLE `permisos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `playa_clientes`
+--
+ALTER TABLE `playa_clientes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `playa_compras`
+--
+ALTER TABLE `playa_compras`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `playa_compras_detalles`
+--
+ALTER TABLE `playa_compras_detalles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `playa_movimientos_caja`
+--
+ALTER TABLE `playa_movimientos_caja`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `playa_productos`
+--
+ALTER TABLE `playa_productos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `playa_proveedores`
+--
+ALTER TABLE `playa_proveedores`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `playa_stock`
+--
+ALTER TABLE `playa_stock`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `playa_tipos_productos`
+--
+ALTER TABLE `playa_tipos_productos`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `playa_ventas`
+--
+ALTER TABLE `playa_ventas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `playa_ventas_detalles`
+--
+ALTER TABLE `playa_ventas_detalles`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `productos`
 --
 ALTER TABLE `productos`
@@ -852,7 +1653,67 @@ ALTER TABLE `perfiles`
 -- AUTO_INCREMENT de la tabla `permisos`
 --
 ALTER TABLE `permisos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_clientes`
+--
+ALTER TABLE `playa_clientes`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_compras`
+--
+ALTER TABLE `playa_compras`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_compras_detalles`
+--
+ALTER TABLE `playa_compras_detalles`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_movimientos_caja`
+--
+ALTER TABLE `playa_movimientos_caja`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_productos`
+--
+ALTER TABLE `playa_productos`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_proveedores`
+--
+ALTER TABLE `playa_proveedores`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_stock`
+--
+ALTER TABLE `playa_stock`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_tipos_productos`
+--
+ALTER TABLE `playa_tipos_productos`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_ventas`
+--
+ALTER TABLE `playa_ventas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+
+--
+-- AUTO_INCREMENT de la tabla `playa_ventas_detalles`
+--
+ALTER TABLE `playa_ventas_detalles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`

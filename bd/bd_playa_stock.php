@@ -3,7 +3,7 @@
     
     include 'bd_conexion.php';
 
-    $tabla = 'stock';
+    $tabla = 'playa_stock';
 
     // Prepara la respuesta.
     $respuesta = array(
@@ -24,10 +24,10 @@
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
 
             // Prepara la consulta.
-            $query = "SELECT stock.id, stock.id_producto, productos.descripcion as 'producto', stock.unidades 
-                      FROM stock
-                      INNER JOIN productos
-                        ON stock.id_producto = productos.id";
+            $query = "SELECT playa_stock.id, playa_stock.id_producto, playa_productos.descripcion as 'producto', playa_stock.unidades 
+                      FROM playa_stock
+                      INNER JOIN playa_productos
+                        ON stock.id_producto = playa_productos.id";
             
             // Consulta el listado de stock.
             $stock = consultar_listado($conexion, $query);

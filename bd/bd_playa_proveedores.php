@@ -15,8 +15,6 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
         
-        $area = $_POST['area'];
-        $modulo = $_POST['modulo'];
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de proveedores.
@@ -27,7 +25,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM proveedores
+                      FROM playa_proveedores
                       WHERE eliminado = 0";
 
             // Consulta el listado de proveedores.
@@ -45,47 +43,7 @@
                 $respuesta['proveedores'] = $proveedores;
             }
         }
-
-        // BUSCAR: Detalles de proveedor por id.
-        else if($accion == "buscar_detalles")
-        {
-            // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
-
-            $id = $_POST['id'];
-
-            // Prepara la consulta.
-            $query = "SELECT proveedores.id, proveedores.nombres, proveedores.apellidos, DATE_FORMAT(proveedores.fecha_nacimiento, '%d/%m/%Y') as 'fecha_nacimiento', proveedores.ocupacion, tipo_nacionalidad.descripcion as 'nacionalidad_descripcion', tipo_estado_civil.descripcion as 'estado_civil_descripcion', tipo_documento.descripcion as 'tipo_documento_descripcion', proveedores.documento, proveedores.domicilio, proveedores.id_postal, proveedores.localidad, proveedores.provincia, proveedores.telefono_fijo, proveedores.telefono_celular, proveedores.email, proveedores.facebook, proveedores.instagram, DATE_FORMAT(proveedores.fecha_registro, '%d/%m/%Y') as 'fecha_registro' 
-                      FROM proveedores 
-                      INNER JOIN tipo_nacionalidad 
-                        ON proveedores.id_nacionalidad = tipo_nacionalidad.id 
-                      INNER JOIN tipo_estado_civil 
-                        ON proveedores.id_estado_civil = tipo_estado_civil.id 
-                      INNER JOIN tipo_documento 
-                        ON proveedores.id_tipo_documento = tipo_documento.id 
-                      WHERE proveedores.id = $id LIMIT 1";
-            
-            // Consulta los detalles de proveedor.
-            $proveedor = consultar_registro($conexion, $query);
-            
-            // Si hubo error ejecutando la consulta.
-            if($proveedor === false)
-            {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar los detalles del proveedor (L 63).";
-            }
-            // Si la consulta fue exitosa y no se encuentra el proveedor.
-            else if(empty($proveedor))
-            {
-                $respuesta['descripcion'] = "El proveedor no se encuentra.";
-            }
-            // Si la consulta fue exitosa y el proveedor se encuentra.
-            else 
-            {
-                $respuesta['exito'] = true;
-                $respuesta['proveedor'] = $proveedor;
-            }
-        }
-
+        
         // NUEVO: Buscar información para crear proveedor.
         else if($accion == "nuevo_buscar") 
         {
@@ -123,7 +81,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM proveedores 
+                      FROM playa_proveedores 
                       WHERE documento = " .$proveedor["documento"];
 
             // Consulta si existe un proveedor con mismo número de cuit antes de insertarlo.
@@ -143,7 +101,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "INSERT INTO proveedores (razon_social, id_tipo_documento, documento, sucursal, pais, provincia, localidad, calle, email, telefono) "
+                $query = "INSERT INTO playa_proveedores (razon_social, id_tipo_documento, documento, sucursal, pais, provincia, localidad, calle, email, telefono) "
                        . "VALUES"
                        . "("
                             . "'" . $proveedor['razon_social'] . "', "
@@ -185,7 +143,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM proveedores 
+                      FROM playa_proveedores 
                       WHERE id = $id LIMIT 1";
             
             // Consulta información del proveedor a editar.
@@ -237,8 +195,8 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM proveedores
-                      WHERE proveedores.id = " . $proveedor['id'] . " LIMIT 1";
+                      FROM playa_proveedores
+                      WHERE id = " . $proveedor['id'] . " LIMIT 1";
 
             // Consulta información del proveedor a editar.
             $proveedorDB = consultar_registro($conexion, $query);
@@ -257,7 +215,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE proveedores 
+                $query = "UPDATE playa_proveedores 
                           SET razon_social = '" . $proveedor['razon_social'] . "', 
                           id_tipo_documento = " . $proveedor['id_tipo_documento'] . ", 
                           documento = " . $proveedor['documento'] . ", 
@@ -297,7 +255,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM proveedores 
+                      FROM playa_proveedores 
                       WHERE id = $id LIMIT 1";
 
             // Consulta información del proveedor a eliminar.
@@ -317,7 +275,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE proveedores 
+                $query = "UPDATE playa_proveedores 
                           SET eliminado = 1 
                           WHERE id = $id LIMIT 1";
 
@@ -349,7 +307,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM proveedores 
+                      FROM playa_proveedores 
                       WHERE id = $id LIMIT 1";
 
             // Consulta información del proveedor a deshabilitar.
@@ -369,7 +327,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE proveedores 
+                $query = "UPDATE playa_proveedores 
                           SET habilitado = 0 
                           WHERE id = $id LIMIT 1";
 
@@ -401,7 +359,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM proveedores 
+                      FROM playa_proveedores 
                       WHERE id = $id LIMIT 1";
 
             // Consulta información del proveedor a habilitar.
@@ -421,7 +379,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE proveedores 
+                $query = "UPDATE playa_proveedores 
                           SET habilitado = 1 
                           WHERE id = $id";
 

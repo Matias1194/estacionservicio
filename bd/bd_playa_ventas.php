@@ -3,7 +3,7 @@
     
     include 'bd_conexion.php';
 
-    $tabla = 'ventas';
+    $tabla = 'playa_ventas';
 
     // Prepara la respuesta.
     $respuesta = array(
@@ -20,7 +20,7 @@
         if($accion == "caja_estado")
         {
             $query = "SELECT COUNT(*) as 'estado' 
-                      FROM movimientos_caja 
+                      FROM playa_movimientos_caja 
                       WHERE (id_tipo_registro_caja = 1 OR id_tipo_registro_caja = 3) AND DATE(fecha) = CURDATE()";
 
             // Consulta el estado de la caja (0 = CERRADO, 1 = ABIERTO).
@@ -36,7 +36,7 @@
             else 
             {
                 $query = "SELECT COUNT(*) as 'estado' 
-                      FROM movimientos_caja 
+                      FROM playa_movimientos_caja 
                       WHERE (id_tipo_registro_caja = 8 OR id_tipo_registro_caja = 9) AND id_usuario = " . $_SESSION['usuario']->id . " AND DATE(fecha) = CURDATE()";
 
                 // Consulta el estado del turno (0 = CERRADO, 1 = ABIERTO).
@@ -63,7 +63,7 @@
         {
             $saldo = $_POST['saldo'];
 
-            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
+            $query = "INSERT INTO playa_movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
                       VALUES (
                           1,
                           $saldo,
@@ -91,7 +91,7 @@
         {
             $saldo = $_POST['saldo'];
 
-            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
+            $query = "INSERT INTO playa_movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
                       VALUES (
                           3,
                           $saldo,
@@ -117,7 +117,7 @@
         // Abrir Turno.
         else if($accion == "comenzar_turno")
         {
-            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, id_usuario) 
+            $query = "INSERT INTO playa_movimientos_caja (id_tipo_registro_caja, id_usuario) 
                       VALUES (
                           8, "
                         . $_SESSION['usuario']->id . "
@@ -141,7 +141,7 @@
         // Cerrar Turno.
         else if($accion == "finalizar_turno")
         {
-            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, id_usuario) 
+            $query = "INSERT INTO playa_movimientos_caja (id_tipo_registro_caja, id_usuario) 
                       VALUES (
                           9, "
                         . $_SESSION['usuario']->id . "
@@ -193,7 +193,7 @@
 
             // Prepara la consulta.
             $query = "SELECT *
-                      FROM movimientos_caja
+                      FROM playa_movimientos_caja
                       WHERE saldo IS NOT NULL
                       ORDER BY id DESC LIMIT 1";
 
@@ -202,7 +202,7 @@
 
             $saldo = $ultimo_movimiento_caja->saldo + ($id_concepto == 6 ? -$importe : $importe);
             
-            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, " . ($id_concepto == 5 ? "entrada" : ($id_concepto == 6 ? "salida" : "")) . ", saldo, id_usuario) 
+            $query = "INSERT INTO playa_movimientos_caja (id_tipo_registro_caja, " . ($id_concepto == 5 ? "entrada" : ($id_concepto == 6 ? "salida" : "")) . ", saldo, id_usuario) 
                       VALUES (
                           $id_concepto, 
                           $importe, 
@@ -233,11 +233,15 @@
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
 
             // Prepara la consulta.
-            $query = "SELECT ventas.id, proveedores.razon_social as 'proveedor', ventas.importe_total, ventas.detalle, DATE_FORMAT(ventas.fecha_venta, '%d/%m/%Y') as 'fecha_venta' 
-                      FROM ventas
+            $query = "SELECT playa_ventas.id, 
+                             proveedores.razon_social as 'proveedor', 
+                             playa_ventas.importe_total, 
+                             playa_ventas.detalle, 
+                             DATE_FORMAT(playa_ventas.fecha_venta, '%d/%m/%Y') as 'fecha_venta' 
+                      FROM playa_ventas
                       INNER JOIN proveedores
-                        ON ventas.id_proveedor = proveedores.id
-                      WHERE ventas.eliminado = 0";
+                        ON playa_ventas.id_proveedor = proveedores.id
+                      WHERE playa_ventas.eliminado = 0";
 
             // Consulta el listado de ventas.
             $ventas = consultar_listado($conexion, $query);
@@ -264,13 +268,23 @@
             $id = $_POST['id'];
             
             // Prepara la consulta.
-            $query = "SELECT ventas.detalle, proveedores.razon_social as 'proveedor', tipos_comprobantes.descripcion as 'tipo_comprobante', ventas.numero_factura, ventas.orden_venta_numero, DATE_FORMAT(ventas.orden_venta_fecha, '%d/%m/%Y') as 'orden_venta_fecha', ventas.gastos_envio, ventas.gastos_envio_iva, ventas.gastos_envio_impuestos, ventas.importe_total, DATE_FORMAT(ventas.fecha_venta, '%d/%m/%Y') as 'fecha_venta' 
-                      FROM ventas 
-                      INNER JOIN proveedores 
-                        ON ventas.id_proveedor = proveedores.id 
+            $query = "SELECT playa_ventas.detalle, 
+                             playa_proveedores.razon_social as 'proveedor', 
+                             tipos_comprobantes.descripcion as 'tipo_comprobante', 
+                             playa_ventas.numero_factura, 
+                             playa_ventas.orden_venta_numero, 
+                             DATE_FORMAT(playa_ventas.orden_venta_fecha, '%d/%m/%Y') as 'orden_venta_fecha', 
+                             playa_ventas.gastos_envio, 
+                             playa_ventas.gastos_envio_iva, 
+                             playa_ventas.gastos_envio_impuestos, 
+                             playa_ventas.importe_total, 
+                             DATE_FORMAT(playa_ventas.fecha_venta, '%d/%m/%Y') as 'fecha_venta' 
+                      FROM playa_ventas 
+                      INNER JOIN playa_proveedores 
+                        ON playa_ventas.id_proveedor = playa_proveedores.id 
                       INNER JOIN tipos_comprobantes 
-                        ON ventas.id_tipo_comprobante = tipos_comprobantes.id
-                      WHERE ventas.id = $id AND ventas.eliminado = 0 LIMIT 1";
+                        ON playa_ventas.id_tipo_comprobante = tipos_comprobantes.id
+                      WHERE playa_ventas.id = $id AND playa_ventas.eliminado = 0 LIMIT 1";
             
             // Consulta los detalles de venta.
             $venta = consultar_registro($conexion, $query);
@@ -289,11 +303,14 @@
             else 
             {
                 // Prepara la consulta.
-                $query = "SELECT productos.descripcion, ventas_detalles.cantidad, ventas_detalles.precio_unitario, ventas_detalles.precio_total 
-                        FROM ventas_detalles
-                        INNER JOIN productos
-                        ON ventas_detalles.id_producto = productos.id
-                        WHERE ventas_detalles.id_venta = $id ";
+                $query = "SELECT playa_productos.descripcion, 
+                                 playa_ventas_detalles.cantidad, 
+                                 playa_ventas_detalles.precio_unitario, 
+                                 playa_ventas_detalles.precio_total 
+                        FROM playa_ventas_detalles
+                        INNER JOIN playa_productos
+                        ON playa_ventas_detalles.id_producto = playa_productos.id
+                        WHERE playa_ventas_detalles.id_venta = $id ";
                 
                 // Consulta los detalles de venta.
                 $detalles = consultar_listado($conexion, $query);
@@ -321,7 +338,7 @@
 
             // Prepara la consulta.
             $query = "SELECT id, descripcion, precio_unitario 
-                        FROM productos
+                        FROM playa_productos
                         WHERE habilitado = 1";
 
             // Consulta los tipos de productos habilitados.
@@ -368,7 +385,7 @@
             $productos = $venta["productos"];
             
             // Prepara la consulta.
-            $query = "INSERT INTO ventas (id_tipo_pago, importe_total, id_usuario_vendedor) "
+            $query = "INSERT INTO playa_ventas (id_tipo_pago, importe_total, id_usuario_vendedor) "
             . "VALUES"
             . "("
                 . $venta['id_tipo_pago'] . ", "
@@ -392,7 +409,7 @@
                 $productos_stock = array();
 
                 // Prepara la consulta.
-                $query = "INSERT INTO ventas_detalles (id_venta, id_producto, cantidad, precio_unitario, precio_total) "
+                $query = "INSERT INTO playa_ventas_detalles (id_venta, id_producto, cantidad, precio_unitario, precio_total) "
                 . "VALUES";
                 
                 for ($i = 0; $i < count($productos); $i++)
@@ -427,7 +444,7 @@
                 {
                     for ($i = 0; $i < count($productos_stock); $i++) { 
                         // Prepara la consulta.
-                        $query = "UPDATE stock 
+                        $query = "UPDATE playa_stock 
                                 SET unidades = unidades - " . $productos_stock[$i]['cantidad'] . "
                                 WHERE id_producto = " . $productos_stock[$i]['id_producto'];
                         
@@ -445,7 +462,7 @@
                     {
                         // Prepara la consulta.
                         $query = "SELECT *
-                                    FROM movimientos_caja
+                                    FROM playa_movimientos_caja
                                     WHERE saldo IS NOT NULL
                                     ORDER BY id DESC LIMIT 1";
                         
@@ -453,7 +470,7 @@
                         $ultimo_movimiento_caja = consultar_registro($conexion, $query);
                         
                         // Prepara la consulta.
-                        $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, saldo, id_pago, id_usuario)
+                        $query = "INSERT INTO playa_movimientos_caja (id_tipo_registro_caja, entrada, saldo, id_pago, id_usuario)
                                     VALUES ("
                                     . 7 . ", "
                                     . $venta['importe_total'] . ", "
@@ -505,7 +522,7 @@
             {
                 // Prepara la consulta.
                 $query = "SELECT id, descripcion, precio_unitario 
-                            FROM productos
+                            FROM playa_productos
                             WHERE habilitado = 1";
 
                 // Consulta los tipos de productos habilitados.
@@ -552,7 +569,7 @@
 
             // Prepara la consulta.
             $query = "SELECT id, razon_social 
-                        FROM clientes
+                        FROM playa_clientes
                         WHERE habilitado = 1 AND eliminado = 0";
 
             // Consulta los clientes habilitados.
@@ -589,7 +606,7 @@
             if($venta['id_tipo_cliente'] == 1) 
             {
                 $query = "SELECT *
-                          FROM clientes
+                          FROM playa_clientes
                           WHERE id = " . $venta['id_cliente'];
                 
                 // Inserta un nueva venta.
@@ -621,7 +638,7 @@
 
 
             // Prepara la consulta.
-            $query = "INSERT INTO ventas (razon_social, cuit, domicilio, telefono, email, id_tipo_pago, importe_total, id_usuario_vendedor) "
+            $query = "INSERT INTO playa_ventas (razon_social, cuit, domicilio, telefono, email, id_tipo_pago, importe_total, id_usuario_vendedor) "
             . "VALUES"
             . "(
                   '$razon_social', "
@@ -650,7 +667,7 @@
                 $productos_stock = array();
 
                 // Prepara la consulta.
-                $query = "INSERT INTO ventas_detalles (id_venta, id_producto, cantidad, precio_unitario, precio_total) "
+                $query = "INSERT INTO playa_ventas_detalles (id_venta, id_producto, cantidad, precio_unitario, precio_total) "
                 . "VALUES";
                 
                 for ($i = 0; $i < count($productos); $i++)
@@ -685,7 +702,7 @@
                 {
                     for ($i = 0; $i < count($productos_stock); $i++) { 
                         // Prepara la consulta.
-                        $query = "UPDATE stock 
+                        $query = "UPDATE playa_stock 
                                 SET unidades = unidades - " . $productos_stock[$i]['cantidad'] . "
                                 WHERE id_producto = " . $productos_stock[$i]['id_producto'];
                         
@@ -703,7 +720,7 @@
                     {
                         // Prepara la consulta.
                         $query = "SELECT *
-                                    FROM movimientos_caja
+                                    FROM playa_movimientos_caja
                                     WHERE saldo IS NOT NULL
                                     ORDER BY id DESC LIMIT 1";
                         
@@ -711,7 +728,7 @@
                         $ultimo_movimiento_caja = consultar_registro($conexion, $query);
                         
                         // Prepara la consulta.
-                        $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, entrada, saldo, id_pago, id_usuario)
+                        $query = "INSERT INTO playa_movimientos_caja (id_tipo_registro_caja, entrada, saldo, id_pago, id_usuario)
                                     VALUES ("
                                     . 7 . ", "
                                     . $venta['importe_total'] . ", "
@@ -749,9 +766,18 @@
             $id_venta = $_POST['id'];
 
             // Prepara la consulta.
-            $query = "SELECT id, id_proveedor, id_tipo_comprobante, numero_factura, orden_venta_numero, DATE_FORMAT(orden_venta_fecha, '%d/%m/%Y') as 'orden_venta_fecha', gastos_envio, gastos_envio_iva, gastos_envio_impuestos, detalle
-            FROM ventas
-            WHERE id = $id_venta AND eliminado = 0";
+            $query = "SELECT id, 
+                             id_proveedor,
+                             id_tipo_comprobante, 
+                             numero_factura, 
+                             orden_venta_numero, 
+                             DATE_FORMAT(orden_venta_fecha, '%d/%m/%Y') as 'orden_venta_fecha', 
+                             gastos_envio, 
+                             gastos_envio_iva, 
+                             gastos_envio_impuestos, 
+                             detalle
+                      FROM playa_ventas
+                      WHERE id = $id_venta AND eliminado = 0";
 
             // Consulta la venta a editar.
             $venta = consultar_registro($conexion, $query);
@@ -770,11 +796,16 @@
             else
             {
                 // Prepara la consulta.
-                $query = "SELECT ventas_detalles.id, ventas_detalles.id_producto, productos.descripcion, ventas_detalles.cantidad, ventas_detalles.precio_unitario, ventas_detalles.precio_total
-                          FROM ventas_detalles
-                          INNER JOIN productos
-                            ON ventas_detalles.id_producto = productos.id
-                          WHERE ventas_detalles.id_venta = $id_venta";
+                $query = "SELECT playa_ventas_detalles.id, 
+                                 playa_ventas_detalles.id_producto, 
+                                 playa_productos.descripcion, 
+                                 playa_ventas_detalles.cantidad, 
+                                 playa_ventas_detalles.precio_unitario, 
+                                 playa_ventas_detalles.precio_total
+                          FROM playa_ventas_detalles
+                          INNER JOIN playa_productos
+                            ON playa_ventas_detalles.id_producto = playa_productos.id
+                          WHERE playa_ventas_detalles.id_venta = $id_venta";
 
                 // Consulta detalles de la venta.
                 $detalles = consultar_listado($conexion, $query);
@@ -789,7 +820,7 @@
                 {
                     // Prepara la consulta.
                     $query = "SELECT id, razon_social 
-                            FROM proveedores
+                            FROM playa_proveedores
                             WHERE habilitado = 1";
 
                     // Consulta los tipos de proveedores habilitados.
@@ -821,7 +852,7 @@
                         {
                             // Prepara la consulta.
                             $query = "SELECT id, descripcion 
-                                    FROM productos
+                                    FROM playa_productos
                                     WHERE habilitado = 1";
 
                             // Consulta los tipos de productos habilitados.
@@ -858,7 +889,7 @@
             $productos = $venta["productos"];
             
             // Prepara la consulta.
-            $query = "UPDATE ventas 
+            $query = "UPDATE playa_ventas 
                       SET id_proveedor = " . $venta['id_proveedor'] . ",
                       id_tipo_comprobante = " . $venta['id_tipo_comprobante'] . ",
                       numero_factura = " . $venta["numero_factura"] . ",
@@ -897,7 +928,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM ventas 
+                      FROM playa_ventas 
                       WHERE id = $id LIMIT 1";
 
             // Consulta información del venta a eliminar.
@@ -917,7 +948,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE ventas 
+                $query = "UPDATE playa_ventas 
                           SET eliminado = 1 
                           WHERE id = $id LIMIT 1";
 

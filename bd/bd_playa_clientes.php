@@ -3,7 +3,7 @@
     
     include 'bd_conexion.php';
 
-    $tabla = 'clientes';
+    $tabla = 'playa_clientes';
 
     // Prepara la respuesta.
     $respuesta = array(
@@ -24,9 +24,15 @@
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
 
             // Prepara la consulta.
-            $query = "SELECT clientes.id, razon_social, cuit, domicilio, telefono, email, habilitado
-                      FROM clientes
-                      WHERE clientes.eliminado = 0";
+            $query = "SELECT id, 
+                             razon_social, 
+                             cuit, 
+                             domicilio, 
+                             telefono, 
+                             email, 
+                             habilitado
+                      FROM playa_clientes
+                      WHERE eliminado = 0";
 
             // Consulta el listado de clientes.
             $clientes = consultar_listado($conexion, $query);
@@ -41,46 +47,6 @@
             {
                 $respuesta['exito'] = true;
                 $respuesta['clientes'] = $clientes;
-            }
-        }
-
-        // BUSCAR: Detalles de cliente por id.
-        else if($accion == "buscar_detalles")
-        {
-            // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
-
-            $id = $_POST['id'];
-
-            // Prepara la consulta.
-            $query = "SELECT clientes.id, clientes.nombres, clientes.apellidos, DATE_FORMAT(clientes.fecha_nacimiento, '%d/%m/%Y') as 'fecha_nacimiento', clientes.ocupacion, tipo_nacionalidad.descripcion as 'nacionalidad_descripcion', tipo_estado_civil.descripcion as 'estado_civil_descripcion', tipo_documento.descripcion as 'tipo_documento_descripcion', clientes.documento, clientes.domicilio, clientes.id_postal, clientes.localidad, clientes.provincia, clientes.telefono_fijo, clientes.telefono_celular, clientes.email, clientes.facebook, clientes.instagram, DATE_FORMAT(clientes.fecha_registro, '%d/%m/%Y') as 'fecha_registro' 
-                      FROM clientes 
-                      INNER JOIN tipo_nacionalidad 
-                        ON clientes.id_nacionalidad = tipo_nacionalidad.id 
-                      INNER JOIN tipo_estado_civil 
-                        ON clientes.id_estado_civil = tipo_estado_civil.id 
-                      INNER JOIN tipo_documento 
-                        ON clientes.id_tipo_documento = tipo_documento.id 
-                      WHERE clientes.id = $id LIMIT 1";
-            
-            // Consulta los detalles de cliente.
-            $cliente = consultar_registro($conexion, $query);
-            
-            // Si hubo error ejecutando la consulta.
-            if($cliente === false)
-            {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar los detalles del cliente (L 63).";
-            }
-            // Si la consulta fue exitosa y no se encuentra el cliente.
-            else if(empty($cliente))
-            {
-                $respuesta['descripcion'] = "El cliente no se encuentra.";
-            }
-            // Si la consulta fue exitosa y el cliente se encuentra.
-            else 
-            {
-                $respuesta['exito'] = true;
-                $respuesta['cliente'] = $cliente;
             }
         }
 
@@ -103,7 +69,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM clientes 
+                      FROM playa_clientes 
                       WHERE cuit = " .$cliente["cuit"] . " LIMIT 1";
 
             // Consulta si existe un cliente con mismo número de cuit antes de insertarlo.
@@ -123,7 +89,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "INSERT INTO clientes (id_tipo_cliente, razon_social, cuit, domicilio, telefono, email) "
+                $query = "INSERT INTO playa_clientes (id_tipo_cliente, razon_social, cuit, domicilio, telefono, email) "
                        . "VALUES"
                        . "("
                                   . 1 . ", "
@@ -161,7 +127,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM clientes 
+                      FROM playa_clientes 
                       WHERE id = $id LIMIT 1";
             
             // Consulta información del cliente a editar.
@@ -195,8 +161,8 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM clientes
-                      WHERE clientes.id = " . $cliente['id'] . " LIMIT 1";
+                      FROM playa_clientes
+                      WHERE id = " . $cliente['id'] . " LIMIT 1";
 
             // Consulta información del cliente a editar.
             $clienteDB = consultar_registro($conexion, $query);
@@ -215,7 +181,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE clientes 
+                $query = "UPDATE playa_clientes 
                           SET id_tipo_cliente = " . $cliente['id_tipo_cliente'] . ", 
                           razon_social = '" . $cliente['razon_social'] . "', 
                           domicilio = '" . $cliente["domicilio"] . "', 
@@ -251,7 +217,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM clientes 
+                      FROM playa_clientes 
                       WHERE id = $id LIMIT 1";
 
             // Consulta información del cliente a eliminar.
@@ -271,7 +237,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE clientes 
+                $query = "UPDATE playa_clientes 
                           SET eliminado = 1 
                           WHERE id = $id LIMIT 1";
 
@@ -303,7 +269,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM clientes 
+                      FROM playa_clientes 
                       WHERE id = $id LIMIT 1";
 
             // Consulta información del cliente a deshabilitar.
@@ -323,7 +289,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE clientes 
+                $query = "UPDATE playa_clientes 
                           SET habilitado = 0 
                           WHERE id = $id LIMIT 1";
 
@@ -355,7 +321,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM clientes 
+                      FROM playa_clientes 
                       WHERE id = $id LIMIT 1";
 
             // Consulta información del cliente a habilitar.
@@ -375,7 +341,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE clientes 
+                $query = "UPDATE playa_clientes 
                           SET habilitado = 1 
                           WHERE id = $id";
 

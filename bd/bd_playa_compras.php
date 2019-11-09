@@ -3,7 +3,7 @@
     
     include 'bd_conexion.php';
 
-    $tabla = 'compras';
+    $tabla = 'playa_compras';
 
     // Prepara la respuesta.
     $respuesta = array(
@@ -24,11 +24,14 @@
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
 
             // Prepara la consulta.
-            $query = "SELECT compras.id, proveedores.razon_social as 'proveedor', compras.importe_total, compras.detalle, DATE_FORMAT(compras.fecha_compra, '%d/%m/%Y') as 'fecha_compra' 
-                      FROM compras
-                      INNER JOIN proveedores
-                        ON compras.id_proveedor = proveedores.id
-                      WHERE compras.eliminado = 0";
+            $query = "SELECT playa_compras.id, 
+                             playa_proveedores.razon_social as 'proveedor', 
+                             playa_compras.importe_total, playa_compras.detalle, 
+                             DATE_FORMAT(playa_compras.fecha_compra, '%d/%m/%Y') as 'fecha_compra' 
+                      FROM playa_compras
+                      INNER JOIN playa_proveedores
+                        ON playa_compras.id_proveedor = playa_proveedores.id
+                      WHERE playa_compras.eliminado = 0";
 
             // Consulta el listado de compras.
             $compras = consultar_listado($conexion, $query);
@@ -55,13 +58,23 @@
             $id = $_POST['id'];
             
             // Prepara la consulta.
-            $query = "SELECT compras.detalle, proveedores.razon_social as 'proveedor', tipos_comprobantes.descripcion as 'tipo_comprobante', compras.numero_factura, compras.orden_compra_numero, DATE_FORMAT(compras.orden_compra_fecha, '%d/%m/%Y') as 'orden_compra_fecha', compras.gastos_envio, compras.gastos_envio_iva, compras.gastos_envio_impuestos, compras.importe_total, DATE_FORMAT(compras.fecha_compra, '%d/%m/%Y') as 'fecha_compra' 
-                      FROM compras 
-                      INNER JOIN proveedores 
-                        ON compras.id_proveedor = proveedores.id 
+            $query = "SELECT playa_compras.detalle, 
+                             playa_proveedores.razon_social as 'proveedor', 
+                             tipos_comprobantes.descripcion as 'tipo_comprobante', 
+                             playa_compras.numero_factura, 
+                             playa_compras.orden_compra_numero, 
+                             DATE_FORMAT(playa_compras.orden_compra_fecha, '%d/%m/%Y') as 'orden_compra_fecha', 
+                             playa_compras.gastos_envio, 
+                             playa_compras.gastos_envio_iva, 
+                             playa_compras.gastos_envio_impuestos, 
+                             playa_compras.importe_total, 
+                             DATE_FORMAT(playa_compras.fecha_compra, '%d/%m/%Y') as 'fecha_compra' 
+                      FROM playa_compras 
+                      INNER JOIN playa_proveedores 
+                        ON playa_compras.id_proveedor = playa_proveedores.id 
                       INNER JOIN tipos_comprobantes 
-                        ON compras.id_tipo_comprobante = tipos_comprobantes.id
-                      WHERE compras.id = $id AND compras.eliminado = 0 LIMIT 1";
+                        ON playa_compras.id_tipo_comprobante = tipos_comprobantes.id
+                      WHERE playa_compras.id = $id AND playa_compras.eliminado = 0 LIMIT 1";
             
             // Consulta los detalles de compra.
             $compra = consultar_registro($conexion, $query);
@@ -80,11 +93,14 @@
             else 
             {
                 // Prepara la consulta.
-                $query = "SELECT productos.descripcion, compras_detalles.cantidad, compras_detalles.precio_unitario, compras_detalles.precio_total 
-                        FROM compras_detalles
-                        INNER JOIN productos
-                        ON compras_detalles.id_producto = productos.id
-                        WHERE compras_detalles.id_compra = $id ";
+                $query = "SELECT playa_productos.descripcion, 
+                                 playa_compras_detalles.cantidad, 
+                                 playa_compras_detalles.precio_unitario, 
+                                 playa_compras_detalles.precio_total 
+                        FROM playa_compras_detalles
+                        INNER JOIN playa_productos
+                        ON playa_compras_detalles.id_producto = playa_productos.id
+                        WHERE playa_compras_detalles.id_compra = $id ";
                 
                 // Consulta los detalles de compra.
                 $detalles = consultar_listado($conexion, $query);
@@ -112,7 +128,7 @@
 
             // Prepara la consulta.
             $query = "SELECT id, razon_social 
-                      FROM proveedores
+                      FROM playa_proveedores
                       WHERE habilitado = 1";
 
             // Consulta los tipos de proveedores habilitados.
@@ -144,7 +160,7 @@
                 {
                     // Prepara la consulta.
                     $query = "SELECT id, descripcion 
-                              FROM productos
+                              FROM playa_productos
                               WHERE habilitado = 1";
 
                     // Consulta los tipos de productos habilitados.
@@ -177,7 +193,7 @@
             $productos = $compra["productos"];
             
             // Prepara la consulta.
-            $query = "INSERT INTO compras (id_proveedor, id_tipo_comprobante, numero_factura, orden_compra_numero, orden_compra_fecha, gastos_envio, gastos_envio_iva, gastos_envio_impuestos, importe_total, detalle) "
+            $query = "INSERT INTO playa_compras (id_proveedor, id_tipo_comprobante, numero_factura, orden_compra_numero, orden_compra_fecha, gastos_envio, gastos_envio_iva, gastos_envio_impuestos, importe_total, detalle) "
             . "VALUES"
             . "("
                 . $compra['id_proveedor'] . ", "
@@ -209,7 +225,7 @@
                 $productos_stock = array();
 
                 // Prepara la consulta.
-                $query = "INSERT INTO compras_detalles (id_compra, id_producto, cantidad, precio_unitario, precio_total) "
+                $query = "INSERT INTO playa_compras_detalles (id_compra, id_producto, cantidad, precio_unitario, precio_total) "
                 . "VALUES";
                 
                 for ($i = 0; $i < count($productos); $i++)
@@ -244,7 +260,7 @@
                 {
                     for ($i = 0; $i < count($productos_stock); $i++) { 
                         // Prepara la consulta.
-                        $query = "UPDATE stock 
+                        $query = "UPDATE playa_stock 
                                   SET unidades = unidades + " . $productos_stock[$i]['cantidad'] . "
                                   WHERE id_producto = " . $productos_stock[$i]['id_producto'];
                         
@@ -276,9 +292,18 @@
             $id_compra = $_POST['id'];
 
             // Prepara la consulta.
-            $query = "SELECT id, id_proveedor, id_tipo_comprobante, numero_factura, orden_compra_numero, DATE_FORMAT(orden_compra_fecha, '%Y-%m-%d') as 'orden_compra_fecha', gastos_envio, gastos_envio_iva, gastos_envio_impuestos, detalle
-            FROM compras
-            WHERE id = $id_compra AND eliminado = 0";
+            $query = "SELECT id, 
+                             id_proveedor, 
+                             id_tipo_comprobante, 
+                             numero_factura, 
+                             orden_compra_numero, 
+                             DATE_FORMAT(orden_compra_fecha, '%Y-%m-%d') as 'orden_compra_fecha', 
+                             gastos_envio, 
+                             gastos_envio_iva, 
+                             gastos_envio_impuestos, 
+                             detalle
+                      FROM playa_compras
+                      WHERE id = $id_compra AND eliminado = 0";
 
             // Consulta la compra a editar.
             $compra = consultar_registro($conexion, $query);
@@ -297,11 +322,16 @@
             else
             {
                 // Prepara la consulta.
-                $query = "SELECT compras_detalles.id, compras_detalles.id_producto, productos.descripcion, compras_detalles.cantidad, compras_detalles.precio_unitario, compras_detalles.precio_total
-                          FROM compras_detalles
-                          INNER JOIN productos
-                            ON compras_detalles.id_producto = productos.id
-                          WHERE compras_detalles.id_compra = $id_compra";
+                $query = "SELECT playa_compras_detalles.id, 
+                                 playa_compras_detalles.id_producto, 
+                                 playa_productos.descripcion, 
+                                 playa_compras_detalles.cantidad, 
+                                 playa_compras_detalles.precio_unitario, 
+                                 playa_compras_detalles.precio_total
+                          FROM playa_compras_detalles
+                          INNER JOIN playa_productos
+                            ON playa_compras_detalles.id_producto = playa_productos.id
+                          WHERE playa_compras_detalles.id_compra = $id_compra";
 
                 // Consulta detalles de la compra.
                 $detalles = consultar_listado($conexion, $query);
@@ -316,7 +346,7 @@
                 {
                     // Prepara la consulta.
                     $query = "SELECT id, razon_social 
-                            FROM proveedores
+                            FROM playa_proveedores
                             WHERE habilitado = 1";
 
                     // Consulta los tipos de proveedores habilitados.
@@ -348,7 +378,7 @@
                         {
                             // Prepara la consulta.
                             $query = "SELECT id, descripcion 
-                                    FROM productos
+                                    FROM playa_productos
                                     WHERE habilitado = 1";
 
                             // Consulta los tipos de productos habilitados.
@@ -385,7 +415,7 @@
             $productos = $compra["productos"];
             
             // Prepara la consulta.
-            $query = "UPDATE compras 
+            $query = "UPDATE playa_compras 
                       SET id_proveedor = " . $compra['id_proveedor'] . ",
                       id_tipo_comprobante = " . $compra['id_tipo_comprobante'] . ",
                       numero_factura = " . $compra["numero_factura"] . ",
@@ -424,7 +454,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM compras 
+                      FROM playa_compras 
                       WHERE id = $id LIMIT 1";
 
             // Consulta información del compra a eliminar.
@@ -444,7 +474,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE compras 
+                $query = "UPDATE playa_compras 
                           SET eliminado = 1 
                           WHERE id = $id LIMIT 1";
 

@@ -11,10 +11,11 @@
 
     function tienePermiso($id_permiso)
     {
-		if(array_search($id_permiso, array_column($_SESSION['usuario']->permisos, 'codigo_permiso')) !== false)
-		{
-			return true;
-		}
-		return false;
+        if(array_search($id_permiso, array_column($_SESSION['usuario']->permisos, 'codigo_permiso')) !== false)
+        {
+            return true;
+        }
+        
+        return false;
     }
 ?>

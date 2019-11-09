@@ -3,7 +3,7 @@
     
     include 'bd_conexion.php';
 
-    $tabla = 'productos';
+    $tabla = 'playa_productos';
 
     // Prepara la respuesta.
     $respuesta = array(
@@ -24,11 +24,13 @@
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
 
             // Prepara la consulta.
-            $query = "SELECT productos.id, productos.descripcion, tipos_productos.descripcion as 'tipo_producto'
-                      FROM productos
-                      INNER JOIN tipos_productos
-                        ON productos.id_tipo_producto = tipos_productos.id
-                      WHERE productos.habilitado = 1 AND productos.eliminado = 0";
+            $query = "SELECT playa_productos.id, 
+                             playa_productos.descripcion, 
+                             playa_tipos_productos.descripcion as 'tipo_producto'
+                      FROM playa_productos
+                      INNER JOIN playa_tipos_productos
+                        ON playa_productos.id_tipo_producto = playa_tipos_productos.id
+                      WHERE playa_productos.habilitado = 1 AND playa_productos.eliminado = 0";
 
             // Consulta el listado de productos.
             $productos = consultar_listado($conexion, $query);
@@ -54,7 +56,7 @@
             
             // Prepara la consulta.
             $query = "SELECT id, descripcion 
-                        FROM tipos_productos";
+                        FROM playa_tipos_productos";
 
             // Consulta los tipos de comprobantes habilitados.
             $tipos_productos = consultar_listado($conexion, $query);
@@ -81,7 +83,7 @@
             $producto = $_POST["producto"];
             
             // Prepara la consulta.
-            $query = "INSERT INTO productos (id_tipo_producto, descripcion) "
+            $query = "INSERT INTO playa_productos (id_tipo_producto, descripcion) "
             . "VALUES"
             . "("
                 . $producto['id_tipo_producto'] . ", "
@@ -102,7 +104,7 @@
                 $id_producto = mysqli_insert_id($conexion);
 
                 // Prepara la consulta.
-                $query = "INSERT INTO stock (id_producto) "
+                $query = "INSERT INTO playa_stock (id_producto) "
                 . "VALUES (" . $id_producto . ")";
                 
                 // Inserta un nuevo producto en stock.
@@ -131,8 +133,17 @@
             $id_producto = $_POST['id'];
 
             // Prepara la consulta.
-            $query = "SELECT id, id_proveedor, id_tipo_comprobante, numero_factura, orden_producto_numero, DATE_FORMAT(orden_producto_fecha, '%d/%m/%Y') as 'orden_producto_fecha', gastos_envio, gastos_envio_iva, gastos_envio_impuestos, detalle
-            FROM productos
+            $query = "SELECT id, 
+                             id_proveedor, 
+                             id_tipo_comprobante, 
+                             numero_factura, 
+                             orden_producto_numero, 
+                             DATE_FORMAT(orden_producto_fecha, '%d/%m/%Y') as 'orden_producto_fecha', 
+                             gastos_envio, 
+                             gastos_envio_iva, 
+                             gastos_envio_impuestos, 
+                             detalle
+            FROM playa_productos
             WHERE id = $id_producto AND eliminado = 0";
 
             // Consulta la producto a editar.
@@ -152,11 +163,16 @@
             else
             {
                 // Prepara la consulta.
-                $query = "SELECT productos_detalles.id, productos_detalles.id_producto, productos.descripcion, productos_detalles.cantidad, productos_detalles.precio_unitario, productos_detalles.precio_total
-                          FROM productos_detalles
-                          INNER JOIN productos
-                            ON productos_detalles.id_producto = productos.id
-                          WHERE productos_detalles.id_producto = $id_producto";
+                $query = "SELECT playa_productos_detalles.id, 
+                                 playa_productos_detalles.id_producto, 
+                                 playa_productos.descripcion, 
+                                 playa_productos_detalles.cantidad, 
+                                 playa_productos_detalles.precio_unitario, 
+                                 playa_productos_detalles.precio_total
+                          FROM playa_productos_detalles
+                          INNER JOIN playa_productos
+                            ON playa_productos_detalles.id_producto = playa_productos.id
+                          WHERE playa_productos_detalles.id_producto = $id_producto";
 
                 // Consulta detalles de la producto.
                 $detalles = consultar_listado($conexion, $query);
@@ -171,7 +187,7 @@
                 {
                     // Prepara la consulta.
                     $query = "SELECT id, razon_social 
-                            FROM proveedores
+                            FROM playa_proveedores
                             WHERE habilitado = 1";
 
                     // Consulta los tipos de proveedores habilitados.
@@ -203,7 +219,7 @@
                         {
                             // Prepara la consulta.
                             $query = "SELECT id, descripcion 
-                                    FROM productos
+                                    FROM playa_productos
                                     WHERE habilitado = 1";
 
                             // Consulta los tipos de productos habilitados.
@@ -240,7 +256,7 @@
             $productos = $producto["productos"];
             
             // Prepara la consulta.
-            $query = "UPDATE productos 
+            $query = "UPDATE playa_productos 
                       SET id_proveedor = " . $producto['id_proveedor'] . ",
                       id_tipo_comprobante = " . $producto['id_tipo_comprobante'] . ",
                       numero_factura = " . $producto["numero_factura"] . ",
@@ -279,7 +295,7 @@
 
             // Prepara la consulta.
             $query = "SELECT * 
-                      FROM productos 
+                      FROM playa_productos 
                       WHERE id = $id LIMIT 1";
 
             // Consulta información del producto a eliminar.
@@ -299,7 +315,7 @@
             else
             {
                 // Prepara la consulta.
-                $query = "UPDATE productos 
+                $query = "UPDATE playa_productos 
                           SET eliminado = 1 
                           WHERE id = $id LIMIT 1";
 

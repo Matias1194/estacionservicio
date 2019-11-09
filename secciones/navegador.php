@@ -10,55 +10,55 @@
     <div class="collapse navbar-collapse" id="navbarContenido">
         <?php if (isset($_SESSION['usuario'])) { ?>
         <ul class="navbar-nav mr-auto">
-            <!--<?php //if(tienePermiso(18)) { ?>-->
+            <?php if(tienePermiso(33)) { ?>
             <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/proveedores.php' ? 'active' : '') ?>">
                 <a href="javascript:void(0)" class="nav-link" data-url="proveedores">
                     Proveedores
                 </a>
             </li>
-            <!--<?php //} if(tienePermiso(8)) { ?>-->
+            <?php } if(tienePermiso(11)) { ?>
             <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/clientes.php' ? 'active' : '') ?>">
                 <a href="javascript:void(0)" class="nav-link" data-url="clientes">
                     Clientes
                 </a>
             </li>
-            <!--<?php //} if(tienePermiso(1)) { ?>-->
+            <?php } if(tienePermiso(1)) { ?>
             <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/usuarios.php' ? 'active' : '') ?>">
                 <a href="javascript:void(0)" class="nav-link" data-url="usuarios">
                     Usuarios
                 </a>
             </li>
-            <!--<?php //} if(tienePermiso(1)) { ?>-->
+            <?php } if(tienePermiso(20)) { ?>
             <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/compras.php' ? 'active' : '') ?>">
                 <a href="javascript:void(0)" class="nav-link" data-url="compras">
                     Compras
                 </a>
             </li>
-            <!--<?php //} if(tienePermiso(15)) { ?>-->
+            <?php } if(tienePermiso(43)) { ?>
             <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/ventas.php' ? 'active' : '') ?>">
                 <a href="javascript:void(0)" class="nav-link" data-url="ventas">
                     Ventas
                 </a>
             </li>
-            <!--<?php //} if(tienePermiso(15)) { ?>-->
+            <?php } if(tienePermiso(27)) { ?>
             <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/productos.php' ? 'active' : '') ?>">
                 <a href="javascript:void(0)" class="nav-link" data-url="productos">
                     Productos
                 </a>
             </li>
-            <!--<?php //} if(tienePermiso(15)) { ?>-->
+            <?php } if(tienePermiso(42)) { ?>
             <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/stock.php' ? 'active' : '') ?>">
                 <a href="javascript:void(0)" class="nav-link" data-url="stock">
                     Stock
                 </a>
             </li>
-            <!--<?php //} if(tienePermiso(15)) { ?>-->
+            <?php } if(tienePermiso(10)) { ?>
                 <li class="nav-item <?php echo ($_SERVER['PHP_SELF'] == '/estacionservicio/caja.php' ? 'active' : '') ?>">
                 <a href="javascript:void(0)" class="nav-link" data-url="caja">
                     Caja
                 </a>
             </li>
-            <!--<?php //} ?>-->
+            <?php } ?>
         </ul>
         <?php } ?>
         <ul class="navbar-nav ml-auto">

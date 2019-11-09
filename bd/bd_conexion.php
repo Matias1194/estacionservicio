@@ -63,9 +63,9 @@
         return false;
 	}
 
-	function validarPermiso($conexion, $tabla, $accion, $respuesta, $redireccionar)
+	function validarPermiso($conexion, $area, $modulo, $accion, $respuesta, $redireccionar)
 	{
-		if(!tienePermiso($conexion, $tabla, $accion, $respuesta))
+		if(!tienePermiso($conexion, $area, $modulo, $accion, $respuesta))
         {
             $respuesta['descripcion'] = "No tiene permiso para realizar esa acción.";
         	$respuesta['redireccionar'] = $redireccionar;
@@ -76,16 +76,22 @@
         }
 	}
 
-	function tienePermiso($conexion, $tabla, $accion, $respuesta)
+	function tienePermiso($conexion, $area, $modulo, $accion, $respuesta)
 	{
-		$accion = $tabla . '_' . $accion;
-
 		// Prepara la consulta.
         $query = "SELECT * 
+                  
                   FROM perfiles_permisos 
-                  INNER JOIN permisos
-                  	ON perfiles_permisos.codigo_permiso = permisos.codigo
-                  WHERE perfiles_permisos.habilitado = 1 AND permisos.accion = '$accion' AND perfiles_permisos.codigo_perfil = " . $_SESSION['usuario']->codigo_tipo_perfil . " LIMIT 1";
+                  
+                  LEFT OUTER JOIN permisos ON perfiles_permisos.id_permiso = permisos.id
+
+                  WHERE perfiles_permisos.habilitado = 1 
+                    AND permisos.accion = 'listado' 
+                    AND permisos.id_modulo = $modulo
+                    AND permisos.id_area = $area
+                    AND perfiles_permisos.id_perfil = 1 
+                    AND perfiles_permisos.id_perfil = " . $_SESSION['usuario']->codigo_tipo_perfil . " 
+                    LIMIT 1";
 
         // Consulta el permiso.
         $permiso = consultar_registro($conexion, $query);
