@@ -596,7 +596,7 @@ var ventas =
 
         descargar : function(id)
         {   
-            redireccionar.pagina('reportes/reporte_ticket.php?id=' + id);
+            redireccionar.pagina('reportes/reporte_factura.php?id=' + id);
         },
 
         productos: [],
