@@ -58,23 +58,31 @@
         
         // Contenido.
         $contenido = '
-            <b style="font-size:100%">FACTURA A</b>
-            <br>
-            <b style="font-size:100%">DARUMA S.A</b>
-            <br>
-            <b style="font-size:100%">C.U.I.T.: 30-20203030-3</b>
-            <br>
-            <b style="font-size:100%">CORONEL CHAMIZO N° 3345</b>
-            <br>
-            <b style="font-size:100%">GERLI, CP: 3343</b>
-            <br>
-            <b style="font-size:100%">IVA RESP. INSCRIPTO</b>
-            <br>
-            <b style="font-size:100%">A CONSUMIDOR FINAL</b>
-            <br>
-            <b style="font-size:100%">INI ACT: 01/03/2019</b>
-            <br>
-            <br>
+            <h6 style="text-align: center;font-size:100%"><strong>Factura A</strong></h6>            
+            
+            <h6 style="text-align: left;"><strong>DARUMA S.At</strong></h6>
+            
+            <h6 style="text-align: left;"><strong>C.U.I.T.: 30-20203030-3</strong></h6>
+            
+            <h6 style="text-align: left;"><strong>CORONEL CHAMIZO N° 3345</strong></h6>
+            
+            <h6 style="text-align: left;"><strong>GERLI, CP: 3343</strong></h6>
+            
+            <h6 style="text-align: left;"><strong>IVA RESP. INSCRIPTO</strong></h6>
+            
+            <h6 style="text-align: left;"><strong>CONSUMIDOR FINAL</strong></h6>
+            
+            <h6 style="text-align: left;"><strong>INI ACT: 01/03/2019</strong></h6>
+            
+            <b style="font-size:100%">Razon social:</b>
+            
+            <b style="font-size:100%">CUIT:</b>
+            
+            <b style="font-size:100%"><Domicilio:</b>
+            
+            <b style="font-size:100%">Telefono:</b>
+            
+            
             <div class="row">
                 <div class="col-md-6">
                     Fecha: <b>' . date("d/m/y") . '</b>
