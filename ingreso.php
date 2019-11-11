@@ -31,7 +31,7 @@
         <div class="container">
 
         	<!-- Ingreso -->
-            <div class="row p-5">
+            <div class="row m-5">
                 <div class="col-md-4 mx-auto">
 
                     <!-- Título -->
@@ -40,7 +40,7 @@
                     </h2>
 					
 					<!-- Formulario -->
-                    <form>
+                    <form class="mt-4">
                         
                         <!-- Usuario -->
                         <div class="form-group">
