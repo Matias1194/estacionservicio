@@ -7,23 +7,34 @@
     $conexion = AbrirConexion();
     
     try {
+        $tabla_productos= "productos";
+        
+        $tabla_ventas_detalle= "ventas_detalle";
+
+        $id_area = $_GET["id_area"];
+
+        if ($id_area == 1){
+
+            $tabla="playa_".$tabla;
+        
+        }
 
         // Prepara la consulta.
-        $query = "SELECT productos.descripcion as 'producto', 
-                     compras_detalles.cantidad,
-                     compras_detalles.precio_unitario,
-                     compras_detalles.precio_total 
-             FROM compras_detalles
-             INNER JOIN productos
-                ON compras_detalles.id_producto = productos.id";
+        $query = "SELECT $tabla_productos.descripcion as 'producto', 
+                     $tabla_ventas_detalle.cantidad,
+                     $tabla_ventas_detalle.precio_unitario,
+                     $tabla_ventas_detalle.precio_total 
+             FROM $tabla_ventas_detalle
+             INNER JOIN $tabla_productos
+                ON $tabla_ventas_detalle.id_producto = $tabla_productos.id";
 
         // Consulta el listado de compras_detalle.
-        $compras_detalles = consultar_listado($conexion, $query);
+        $tabla_ventas_detalle = consultar_listado($conexion, $query);
         
         // Si hubo error ejecutando la consulta.
-        if($compras_detalles === false)
+        if($tabla_ventas_detalle === false)
         {
-            die("Ocurrió un error al buscar el listado de compras_detalles");
+            die("Ocurrió un error al buscar el listado de ventas_detalles");
         }
         
         // Instancia del PDF.
@@ -32,9 +43,13 @@
         // Contenido.
         $contenido = '
         
-        <h1>Ventas individuales</h1>
-        <h2>Este sería un titulo</h2>
-        <h3>Este sería subtitulo</h3>
+        <h6 style="text-align: center;font-size:100%"><strong>Ventas individual</strong></h6>
+        <div class="row">
+            <div class="col-md-6">
+                Fecha: <b>' . date("d/m/y") . '</b>
+            </div>
+
+        </div>
         
         <hr>
         
@@ -53,7 +68,7 @@
             {
                 $contenido .='
                 <tr>
-                <td>' . $producto['producto'] . '</td>
+                    <td>' . $producto['producto'] . '</td>
                     <td>' . $producto['cantidad'] . '</td>
                     <td>' . $producto['precio_unitario'] . '</td>
                     <td>' . $producto['precio_total'] . '</td>
