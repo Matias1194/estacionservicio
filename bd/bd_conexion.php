@@ -92,7 +92,7 @@
                     AND perfiles_permisos.id_perfil = 1 
                     AND perfiles_permisos.id_perfil = " . $_SESSION['usuario']->codigo_tipo_perfil . " 
                     LIMIT 1";
-
+        print_r($query);exit;
         // Consulta el permiso.
         $permiso = consultar_registro($conexion, $query);
 
