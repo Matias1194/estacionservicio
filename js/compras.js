@@ -74,9 +74,6 @@ var compras =
         {
             // Desasignar eventos.
             this.$div.find('button').unbind('click');
-            
-            // Descargar.
-            this.$div.find('button[name="descargar"]').click(() => compras.listado.descargar());
 
             // Vuelve a la pantalla anterior.
             this.$div.find('button[name="volver"]').click(() => compras.inicio.mostrar());

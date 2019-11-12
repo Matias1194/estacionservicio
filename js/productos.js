@@ -11,6 +11,10 @@ var productos =
     inicializar : function()
     {
         this.area = $('#area').val();
+        if(this.area == "1")
+        {
+            this.modulo = 'playa_' + this.modulo;
+        }
 
         this.listado.$div = $('#listado');
         this.nuevo.$div = $('#nuevo');
@@ -240,7 +244,7 @@ var productos =
             // Envía los datos.
             bd.enviar(datos, productos.modulo, (respuesta) =>
             {
-                alertas.exito(respuesta.descripcion, '' , redireccionar.productos);
+                alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('productos.php?area=' + productos.area));
             });
         }
     },
@@ -360,7 +364,7 @@ var productos =
             // Envía los datos.
             bd.enviar(datos, productos.modulo, (respuesta) =>
             {
-                alertas.exito(respuesta.descripcion, '' , redireccionar.productos);
+                alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('productos.php?area=' + productos.area));
             });
         }
     },

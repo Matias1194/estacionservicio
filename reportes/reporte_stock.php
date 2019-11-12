@@ -1,5 +1,5 @@
 <?php
-    header('Content-Type: application/pdf');
+    //header('Content-Type: application/pdf');
 
     require_once __DIR__ . '/../vendor/autoload.php';
     require_once __DIR__ . '/../bd/bd_conexion.php';

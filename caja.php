@@ -42,7 +42,8 @@
 	                <!-- Título -->
 	                <div class="col-sm-6">
 	                    <h1 class="font-weight-normal">
-	                        Movimientos de Caja
+							<span class="fa fa-cash-register"></span>
+							Movimientos de Caja
 	                    </h1>
 	                </div>
 

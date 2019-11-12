@@ -42,7 +42,8 @@
 	                <!-- Título -->
 	                <div class="col-sm-6">
 	                    <h1 class="font-weight-normal">
-	                        Listado de Productos
+							<span class="fa fa-box"></span>	
+							Productos
 	                    </h1>
                     </div>
                     

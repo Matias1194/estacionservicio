@@ -15,6 +15,8 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
         
+        $area = $_POST['area'];
+        $modulo = 9;
         $accion = $_POST['accion'];
 
         if($accion == "caja_estado")
@@ -314,7 +316,7 @@
         }
 
         // Ticket > Nueva > Buscar.
-        else if($accion == "nueva_buscar") 
+        else if($accion == "nuevo_buscar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
@@ -359,10 +361,10 @@
         }
 
         // Ticket > Nueva > Confirmar.
-        else if($accion == "nueva_confirmar")
+        else if($accion == "nuevo_confirmar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, "nueva_buscar", $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
             
             $venta = $_POST["venta"];
             $productos = $venta["productos"];
@@ -486,7 +488,7 @@
         else if($accion == "factura_nueva_buscar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, "nuevo_buscar", $respuesta, false);
 
             // Prepara la consulta.
             $query = "SELECT id, descripcion 
@@ -548,7 +550,7 @@
         else if($accion == "factura_nueva_clientes_buscar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, "nuevo_buscar", $respuesta, false);
 
             // Prepara la consulta.
             $query = "SELECT id, razon_social 
@@ -575,7 +577,7 @@
         else if($accion == "factura_nueva_confirmar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, "nueva_buscar", $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, "nuevo_buscar", $respuesta, false);
             
             $venta = $_POST["venta"];
             $productos = $venta["productos"];
@@ -852,7 +854,7 @@
         else if($accion == "editar_confirmar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, "nueva_buscar", $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, "nuevo_buscar", $respuesta, false);
             
             $venta = $_POST["venta"];
             $productos = $venta["productos"];

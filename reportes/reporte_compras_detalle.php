@@ -86,7 +86,7 @@
         $mpdf->WriteHTML($contenido);
 
         // Salida al navegador.
-        $mpdf->Output(/*'reporte_compras_detalle.pdf', 'D'*/);
+        $mpdf->Output('reporte_compras_detalle.pdf', 'D');
     }
     catch(Excepcion $e) {
         print('Esto es lo que pasó: ' . $e);

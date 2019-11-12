@@ -11,6 +11,11 @@ var caja =
     inicializar : function()
     {
         this.area = $('#area').val();
+        if(this.area == "1")
+        {
+            this.modulo = 'playa_' + this.modulo;
+        }
+        
         this.listado.$div = $('#listado');
 
         this.listado.buscar();

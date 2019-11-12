@@ -15,6 +15,8 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
         
+        $area = $_POST['area'];
+        $modulo = 8;
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de stock.
@@ -27,7 +29,7 @@
             $query = "SELECT playa_stock.id, playa_stock.id_producto, playa_productos.descripcion as 'producto', playa_stock.unidades 
                       FROM playa_stock
                       INNER JOIN playa_productos
-                        ON stock.id_producto = playa_productos.id";
+                        ON playa_stock.id_producto = playa_productos.id";
             
             // Consulta el listado de stock.
             $stock = consultar_listado($conexion, $query);

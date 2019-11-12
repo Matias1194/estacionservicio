@@ -187,7 +187,7 @@
                 . $compra['id_tipo_comprobante'] . ", "
                 . $compra['numero_factura'] . ", "
                 . $compra['orden_compra_numero'] . ", "
-                . "STR_TO_DATE('" . $compra['orden_compra_fecha'] . "', '%d/%m/%Y'), "
+                . "STR_TO_DATE('" . $compra['orden_compra_fecha'] . "', '%Y-%m-%d'), "
                 . $compra['gastos_envio'] . ", "
                 . $compra['gastos_envio_iva'] . ", "
                 . $compra['gastos_envio_impuestos'] . ", "

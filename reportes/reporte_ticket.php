@@ -1,5 +1,5 @@
 <?php
-    header('Content-Type: application/pdf');
+    //header('Content-Type: application/pdf');
 
     require_once __DIR__ . '/../vendor/autoload.php';
     require_once __DIR__ . '/../bd/bd_conexion.php';
@@ -43,8 +43,7 @@
         // Si la consulta fue exitosa y la venta se encuentra.
         else 
         {
-            $tabla_ventas_detalles = "ventas_detalle";
-
+            $tabla_ventas_detalles = "ventas_detalles";
             $tabla_productos = "productos";
 
             $id_area = $_GET["id_area"];
@@ -70,7 +69,7 @@
             // Si hubo error ejecutando la consulta.
             if($tabla_ventas_detalles === false)
             {
-                die("Ocurrió un error al buscar el listado de ventas_detalles");
+                die("Ocurrió un error al buscar el listado de ventas_detalles. " . $query);
             }    
         }
         

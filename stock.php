@@ -42,16 +42,9 @@
 	                <!-- Título -->
 	                <div class="col-sm-6">
 	                    <h1 class="font-weight-normal">
-	                        Listado de Stock
+                            <span class="fa fa-warehouse"></span>
+                            Stock
 	                    </h1>
-                    </div>
-                    
-                    <!-- Descargar PDF -->
-	                <div class="col-md-6 text-right">
-                        <button class="btn btn-success mt-2" name="descargar">
-                            <span class="fa fa-file-pdf"></span>
-                            Descargar
-                        </button>
                     </div>
 
 	            </div>

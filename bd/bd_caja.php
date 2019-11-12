@@ -15,6 +15,8 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
         
+        $area = $_POST['area'];
+        $modulo = 8;
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de caja.

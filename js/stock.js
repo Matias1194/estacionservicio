@@ -11,6 +11,10 @@ var stock =
     inicializar : function()
     {
         this.area = $('#area').val();
+        if(this.area == "1")
+        {
+            this.modulo = 'playa_' + this.modulo;
+        }
 
         this.listado.$div = $('#listado');
         this.detalles.$div = $('#detalles');
@@ -40,9 +44,6 @@ var stock =
         {
             // Desasignar eventos.
             this.$div.find('button').unbind('click');
-
-            // Descargar.
-            this.$div.find('button[name="descargar"]').click(() => stock.listado.descargar());
         },
 
         mostrar : function()

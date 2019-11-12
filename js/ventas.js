@@ -11,6 +11,10 @@ var ventas =
     inicializar : function()
     {
         this.area = $('#area').val();
+        if(this.area == "1")
+        {
+            this.modulo = 'playa_' + this.modulo;
+        }
 
         this.inicio.$div = $('#inicio');
         this.tickets.$div = $('#tickets');
@@ -153,7 +157,7 @@ var ventas =
 
             bd.enviar(datos, ventas.modulo, (respuesta) =>
             {
-                redireccionar.ventas();
+                redireccionar.pagina('ventas.php?area=' + ventas.area);
             });
         },
 
@@ -181,7 +185,7 @@ var ventas =
 
             bd.enviar(datos, ventas.modulo, (respuesta) =>
             {
-                redireccionar.ventas();
+                redireccionar.pagina('ventas.php?area=' + ventas.area);
             });
         },
     },
@@ -197,7 +201,7 @@ var ventas =
 
             bd.enviar(datos, ventas.modulo, (respuesta) =>
             {
-                redireccionar.ventas();
+                redireccionar.pagina('ventas.php?area=' + ventas.area);
             });
         },
 
@@ -211,7 +215,7 @@ var ventas =
 
             bd.enviar(datos, ventas.modulo, (respuesta) =>
             {
-                redireccionar.ventas();
+                redireccionar.pagina('ventas.php?area=' + ventas.area);
             });
         }
     },
@@ -258,7 +262,7 @@ var ventas =
             // Prepara los datos.
             var datos = {
                 area : ventas.area,
-                accion : 'nueva_buscar'
+                accion : 'nuevo_buscar'
             };
 
             // Envía los datos.
@@ -301,7 +305,7 @@ var ventas =
 
         descargar : function(id)
         {   
-            redireccionar.pagina('reportes/reporte_ticket.php?id=' + id);
+            redireccionar.pagina('reportes/reporte_ticket.php?id=' + id + '&id_area=' + ventas.area);
         },
 
         productos: [],
@@ -411,7 +415,7 @@ var ventas =
             var datos = 
             {
                 area : ventas.area,
-                accion : 'nueva_confirmar',
+                accion : 'nuevo_confirmar',
                 venta : {
                     importe_total : 0,
                     productos : {}
@@ -455,7 +459,7 @@ var ventas =
             // Envía los datos.
             bd.enviar(datos, ventas.modulo, (respuesta) =>
             {
-                alertas.exito(respuesta.descripcion, '' , redireccionar.ventas);
+                alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('ventas.php?area=' + ventas.area));
                 ventas.tickets.descargar(respuesta.id_venta);
             });
         }
@@ -608,7 +612,7 @@ var ventas =
 
         descargar : function(id)
         {   
-            redireccionar.pagina('reportes/reporte_factura.php?id=' + id);
+            redireccionar.pagina('reportes/reporte_factura.php?id=' + id + '&id_area=' + ventas.area);
         },
 
         productos: [],
@@ -717,6 +721,7 @@ var ventas =
             // Prepara los datos.
             var datos = 
             {
+                area : ventas.area,
                 accion : 'factura_nueva_confirmar',
                 venta : {
                     importe_total : 0,
@@ -776,7 +781,7 @@ var ventas =
             // Envía los datos.
             bd.enviar(datos, ventas.modulo, (respuesta) =>
             {
-                alertas.exito(respuesta.descripcion, '' , redireccionar.ventas);
+                alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('ventas.php?area=' + ventas.area));
                 ventas.factura.descargar(respuesta.id_venta);
             });
         }
