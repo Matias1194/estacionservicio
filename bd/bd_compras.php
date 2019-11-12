@@ -15,6 +15,8 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
         
+        $area = $_POST['area'];
+        $modulo = 5;
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de compras.
@@ -43,6 +45,7 @@
             {
                 $respuesta['exito'] = true;
                 $respuesta['compras'] = $compras;
+                $respuesta['permisos'] = $_SESSION['usuario']->permisos;
             }
         }
 
@@ -105,7 +108,7 @@
         }
 
         // NUEVO: Buscar información para crear compra.
-        else if($accion == "nueva_buscar") 
+        else if($accion == "nuevo_buscar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
@@ -168,10 +171,10 @@
         }
 
         // NUEVO: Confirmar nueva compra.
-        else if($accion == "nueva_confirmar")
+        else if($accion == "nuevo_confirmar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, "nueva_buscar", $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
             
             $compra = $_POST["compra"];
             $productos = $compra["productos"];
@@ -379,7 +382,7 @@
         else if($accion == "editar_confirmar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, "nueva_buscar", $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
             
             $compra = $_POST["compra"];
             $productos = $compra["productos"];

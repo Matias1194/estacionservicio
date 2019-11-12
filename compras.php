@@ -58,13 +58,15 @@
                         </button>
                     </div>
 
-                    <!-- Botón Nueva Compra -->
+					<?php if(tienePermiso(23) || tienePermiso((80))) { ?>
+					<!-- Botón Nueva Compra -->
                     <div class="col-sm-3 text-center">
                         <button class="btn btn-lg btn-primary mt-2" name="nueva">
                             <span class="fa fa-shopping-cart"></span>
                             Nueva Compra
                         </button>
-                    </div>
+					</div>
+					<?php } ?>
                 
                 </div>
 
@@ -76,19 +78,13 @@
 	            <div class="row mt-5">
 	                
 	                <!-- Título -->
-	                <div class="col-sm-6">
+	                <div class="col-sm-9">
 	                    <h1 class="font-weight-normal">
-	                        Listado de Compras
+							<span class="fa fa-shopping-cart"></span>
+	                    	Compras
 	                    </h1>
 	                </div>
-					<!-- Descargar PDF -->
-	                <div class="col-md-3 text-right">
-                        <button class="btn btn-success mt-2" name="descargar">
-                            <span class="fa fa-file-pdf"></span>
-                            Descargar
-                        </button>
-                    </div>
-
+					
 	                <!-- Volver al listado -->
 	                <div class="col-md-3 text-right">
                         <button class="btn btn-secondary mt-2" name="volver" data-pantalla="inicio">

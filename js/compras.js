@@ -11,6 +11,10 @@ var compras =
     inicializar : function()
     {
         this.area = $('#area').val();
+        if(this.area == "1")
+        {
+            this.modulo = 'playa_' + this.modulo;
+        }
 
         this.inicio.$div = $('#inicio');
         this.listado.$div = $('#listado');
@@ -199,6 +203,7 @@ var compras =
                 this.mostrar();
             });
         },
+        
         descargar : function()
         {            
             // Envía los datos.
@@ -305,7 +310,7 @@ var compras =
             // Prepara los datos.
             var datos = {
                 area : compras.area,
-                accion : 'nueva_buscar'
+                accion : 'nuevo_buscar'
             };
 
             // Envía los datos.
@@ -475,7 +480,7 @@ var compras =
             var datos = 
             {
                 area : compras.area,
-                accion : 'nueva_confirmar',
+                accion : 'nuevo_confirmar',
                 compra : {
                     importe_total : 0,
                     productos : {}
@@ -519,7 +524,7 @@ var compras =
             // Envía los datos.
             bd.enviar(datos, compras.modulo, (respuesta) =>
             {
-                alertas.exito(respuesta.descripcion, '' , redireccionar.compras);
+                alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('compras.php?area=' + compras.area));
             });
         }
     },
@@ -777,7 +782,7 @@ var compras =
             // Envía los datos.
             bd.enviar(datos, compras.modulo, (respuesta) =>
             {
-                alertas.exito(respuesta.descripcion, '' , redireccionar.compras);
+                alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('compras.php?area=' + compras.area));
             });
         }
     },

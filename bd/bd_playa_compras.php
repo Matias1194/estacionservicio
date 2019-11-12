@@ -15,6 +15,8 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
         
+        $area = $_POST['area'];
+        $modulo = 5;
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de compras.
@@ -121,7 +123,7 @@
         }
 
         // NUEVO: Buscar información para crear compra.
-        else if($accion == "nueva_buscar") 
+        else if($accion == "nuevo_buscar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
@@ -184,10 +186,10 @@
         }
 
         // NUEVO: Confirmar nueva compra.
-        else if($accion == "nueva_confirmar")
+        else if($accion == "nuevo_confirmar")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, "nueva_buscar", $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
             
             $compra = $_POST["compra"];
             $productos = $compra["productos"];
@@ -200,7 +202,7 @@
                 . $compra['id_tipo_comprobante'] . ", "
                 . $compra['numero_factura'] . ", "
                 . $compra['orden_compra_numero'] . ", "
-                . "STR_TO_DATE('" . $compra['orden_compra_fecha'] . "', '%d/%m/%Y'), "
+                . "STR_TO_DATE('" . $compra['orden_compra_fecha'] . "', '%Y-%m-%d'), "
                 . $compra['gastos_envio'] . ", "
                 . $compra['gastos_envio_iva'] . ", "
                 . $compra['gastos_envio_impuestos'] . ", "
@@ -409,7 +411,7 @@
         else if($accion == "editar_confirmar") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
-            validarPermiso($conexion, $area, $modulo, "nueva_buscar", $respuesta, false);
+            validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
             
             $compra = $_POST["compra"];
             $productos = $compra["productos"];
