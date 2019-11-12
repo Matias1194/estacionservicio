@@ -10,26 +10,37 @@
 
         $id =  $_GET['id'];
         $fecha =  $_GET['fecha'];
+        $tabla_productos = "productos";
+        $tabla_compras = "compras";
+        $tabla_compras_detalles = "compras_detalles";
+    
+        $id_area = $_GET["id_area"];
+    
+        if ($id_area == 1){
+    
+            $tabla_productos="playa_".$tabla_productos;
+        
+        }
 
         // Prepara la consulta.
-        $query = "SELECT productos.descripcion as 'producto', 
-                     compras_detalles.cantidad,
-                     compras_detalles.precio_unitario,
-                     compras_detalles.precio_total,
-                     compras.fecha_compra 
-             FROM compras_detalles
-             INNER JOIN productos
-                ON compras_detalles.id_producto = productos.id
-             INNER JOIN compras
-                on compras_detalles.id_compra = compras.id
-                WHERE compras_detalles.id = $id and DATE (compras.fecha_compra) = $fecha";
+        $query = "SELECT $tabla_productos.descripcion as 'producto', 
+                     $tabla_compras_detalles.cantidad,
+                     $tabla_compras_detalles.precio_unitario,
+                     $tabla_compras_detalles.precio_total,
+                     $tabla_compras.fecha_compra 
+             FROM $tabla_compras_detalles
+             INNER JOIN $tabla_productos
+                ON $tabla_compras_detalles.id_producto = $tabla_productos.id
+             INNER JOIN $tabla_compras
+                on $tabla_compras_detalles.id_compra = $tabla_compras.id
+                WHERE $tabla_compras_detalles.id = $id and DATE ($tabla_compras.fecha_compra) = $fecha";
                 
 
         // Consulta el listado de compras_detalle.
-        $compras_detalles = consultar_listado($conexion, $query);
+        $tabla_compras_detalles = consultar_listado($conexion, $query);
         
         // Si hubo error ejecutando la consulta.
-        if($compras_detalles === false)
+        if($tabla_compras_detalles === false)
         {
             die("Ocurrió un error al buscar el listado de compras_detalles");
         }
@@ -40,9 +51,13 @@
         // Contenido.
         $contenido = '
         
-        <h1>Compras periodo</h1>
-        <h2>Este sería un titulo</h2>
-        <h3>Este sería subtitulo</h3>
+        <h6 style="text-align: center;font-size:100%"><strong>Compras periodo</strong></h6>
+        <div class="row">
+            <div class="col-md-6">
+                Fecha: <b>' . date("d/m/y") . '</b>
+            </div>
+
+        </div>
         
         <hr>
         
@@ -57,14 +72,14 @@
             </thead>
             <tbody>';
             
-            foreach ($compras_detalles as $producto)
+            foreach ($tabla_compras_detalles as $tabla_producto)
             {
                 $contenido .='
                 <tr>
-                <td>' . $producto['producto'] . '</td>
-                    <td>' . $producto['cantidad'] . '</td>
-                    <td>' . $producto['precio_unitario'] . '</td>
-                    <td>' . $producto['precio_total'] . '</td>
+                    <td>' . $tabla_producto['producto'] . '</td>
+                    <td>' . $tabla_producto['cantidad'] . '</td>
+                    <td>' . $tabla_producto['precio_unitario'] . '</td>
+                    <td>' . $tabla_producto['precio_total'] . '</td>
                 </tr>';
             }
             

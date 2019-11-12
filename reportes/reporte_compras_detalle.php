@@ -7,24 +7,35 @@
     $conexion = AbrirConexion();
     
     try {
-        
+        $tabla_productos = "productos";
+
         $id =  $_GET['id'];
 
+        $tabla_compras_detalles = "compras_detalles";
+    
+        $id_area = $_GET["id_area"];
+    
+        if ($id_area == 1){
+    
+            $tabla_productos="playa_".$tabla_productos;
+        
+        }
+
         // Prepara la consulta.
-        $query = "SELECT productos.descripcion as 'producto', 
-                     compras_detalles.cantidad,
-                     compras_detalles.precio_unitario,
-                     compras_detalles.precio_total 
-             FROM compras_detalles
-             INNER JOIN productos
-                ON compras_detalles.id_producto = productos.id
-              WHERE compras_detalles.id = $id";
+        $query = "SELECT $tabla_productos.descripcion as 'producto', 
+                     $tabla_compras_detalles.cantidad,
+                     $tabla_compras_detalles.precio_unitario,
+                     $tabla_compras_detalles.precio_total 
+             FROM $tabla_compras_detalles
+             INNER JOIN $tabla_productos
+                ON $tabla_compras_detalles.id_producto = $tabla_productos.id
+              WHERE $tabla_compras_detalles.id = $id";
 
         // Consulta el listado de compras_detalle.
-        $compras_detalles = consultar_listado($conexion, $query);
+        $tabla_compras_detalles = consultar_listado($conexion, $query);
         
         // Si hubo error ejecutando la consulta.
-        if($compras_detalles === false)
+        if($tabla_compras_detalles === false)
         {
             die("Ocurrió un error al buscar el listado de compras_detalles");
         }
@@ -35,9 +46,13 @@
         // Contenido.
         $contenido = '
         
-        <h1>Compras detalle</h1>
-        <h2>Este sería un titulo</h2>
-        <h3>Este sería subtitulo</h3>
+        <h6 style="text-align: center;font-size:100%"><strong>Compras detalle</strong></h6>
+        <div class="row">
+            <div class="col-md-6">
+                Fecha: <b>' . date("d/m/y") . '</b>
+            </div>
+
+        </div>
         
         <hr>
         
@@ -52,14 +67,14 @@
             </thead>
             <tbody>';
             
-            foreach ($compras_detalles as $producto)
+            foreach ($tabla_compras_detalles as $tabla_producto)
             {
                 $contenido .='
                 <tr>
-                <td>' . $producto['producto'] . '</td>
-                    <td>' . $producto['cantidad'] . '</td>
-                    <td>' . $producto['precio_unitario'] . '</td>
-                    <td>' . $producto['precio_total'] . '</td>
+                    <td>' . $tabla_producto['producto'] . '</td>
+                    <td>' . $tabla_producto['cantidad'] . '</td>
+                    <td>' . $tabla_producto['precio_unitario'] . '</td>
+                    <td>' . $tabla_producto['precio_total'] . '</td>
                 </tr>';
             }
             

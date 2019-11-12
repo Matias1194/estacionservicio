@@ -9,45 +9,66 @@
     try {
 
         $id_venta = $_GET['id'];
+        
+        $tabla_ventas= "ventas";
+
+        $id_area = $_GET["id_area"];
+
+        if ($id_area == 1){
+
+            $tabla="playa_".$tabla;
+        
+        }
 
         // Prepara la consulta.
-        $query = "SELECT ventas.numero_factura, 
-                         ventas.fecha_venta,
+        $query = "SELECT $tabla_ventas.numero_factura, 
+                         $tabla_ventas.fecha_venta,
                          tipos_pagos.descripcion as 'tipo_pago',
                          CONCAT(usuarios.nombres, ' ', usuarios.apellidos) as 'vendedor'
-                  FROM ventas
+                  FROM $tabla_ventas
                   INNER JOIN tipos_pagos
-                    ON tipos_pagos.id = ventas.id_tipo_pago
+                    ON tipos_pagos.id = $tabla_ventas.id_tipo_pago
                   INNER JOIN usuarios
-                    ON ventas.id_usuario_vendedor = usuarios.id
-                  WHERE ventas.id = $id_venta";
+                    ON $tabla_ventas.id_usuario_vendedor = usuarios.id
+                  WHERE $tabla_ventas.id = $id_venta";
 
         // Consulta una venta.
-        $venta = consultar_registro($conexion, $query);
+        $tabla_ventas = consultar_registro($conexion, $query);
             
         // Si hubo error ejecutando la consulta.
-        if($venta === false)
+        if($tabla_ventas === false)
         {
             $respuesta['descripcion'] = "Ocurrió un error al buscar la venta (L 31).";
         }
         // Si la consulta fue exitosa y la venta se encuentra.
         else 
         {
+            $tabla_ventas_detalles = "ventas_detalle";
+
+            $tabla_productos = "productos";
+
+            $id_area = $_GET["id_area"];
+    
+            if ($id_area == 1){
+    
+                $tabla_ventas_detalles="playa_".$tabla_ventas_detalles;
+            
+            }
             // Prepara la consulta.
-            $query = "SELECT productos.descripcion as 'producto', 
-                        ventas_detalles.cantidad,
-                        ventas_detalles.precio_unitario,
-                        ventas_detalles.precio_total 
-                FROM ventas_detalles
-                INNER JOIN productos
-                    ON ventas_detalles.id_producto = productos.id
-                WHERE ventas_detalles.id_venta = $id_venta";
+            $query = "SELECT $tabla_productos.descripcion as 'producto', 
+                        $tabla_ventas_detalles.cantidad,
+                        $tabla_ventas_detalles.precio_unitario,
+                        $tabla_ventas_detalles.precio_total 
+                FROM $tabla_ventas_detalles
+                INNER JOIN $tabla_productos
+                    ON $tabla_ventas_detalles.id_producto = $tabla_productos.id
+                WHERE $tabla_ventas_detalles.id_venta = $id_venta";
 
             // Consulta el listado de ventas_detalle.
-            $ventas_detalles = consultar_listado($conexion, $query);
+            $tabla_ventas_detalles = consultar_listado($conexion, $query);
             
             // Si hubo error ejecutando la consulta.
-            if($ventas_detalles === false)
+            if($tabla_ventas_detalles === false)
             {
                 die("Ocurrió un error al buscar el listado de ventas_detalles");
             }    
@@ -82,20 +103,20 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    Medio de pago: <b>' . $venta->tipo_pago . '</b>
+                    Medio de pago: <b>' . $tabla_ventas->tipo_pago . '</b>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
-                    Vendedor: <b>' . $venta->vendedor . '</b>
+                    Vendedor: <b>' . $tabla_ventas->vendedor . '</b>
                 </div>
             </div>
 
             <br>
             <br>
             <hr>
-            <h3>Numero de Ticket: ' . $venta->numero_factura . '</h3>
+            <h3>Numero de Ticket: ' . $tabla_ventas->numero_factura . '</h3>
             
             <hr>
 
@@ -115,14 +136,14 @@
 
                 <tbody>';
                 
-                foreach ($ventas_detalles as $producto)
+                foreach ($tabla_ventas_detalles as $tabla_producto)
                 {
                     $contenido .='
                     <tr>
-                    <td>' . $producto['producto'] . '</td>
-                        <td>' . $producto['cantidad'] . '</td>
-                        <td align="right"> $' . $producto['precio_unitario'] . '</td>
-                        <td align="right"> $' . $producto['precio_total'] . '</td>
+                        <td>' . $tabla_producto['producto'] . '</td>
+                        <td>' . $tabla_producto['cantidad'] . '</td>
+                        <td align="right"> $' . $tabla_producto['precio_unitario'] . '</td>
+                        <td align="right"> $' . $tabla_producto['precio_total'] . '</td>
                     </tr>';
                 }
                 
