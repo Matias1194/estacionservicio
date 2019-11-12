@@ -13,7 +13,7 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
 
-        $area = $_POST['area'];
+        $area = isset($_POST['area']) ? $_POST['area'] : 0;
         $modulo = 1;
         $accion = $_POST['accion'];
 
