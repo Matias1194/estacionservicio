@@ -219,38 +219,31 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 }
 
 @media only screen and (max-width: 1200px) {
-	table td:nth-child(7), 
-	table th:nth-child(7) {display: none;}
+	table td.ocultable:nth-child(6),
+	table th.ocultable:nth-child(6) {display: none;}
 }
 
 @media only screen and (max-width: 1100px) {
-	table td:nth-child(6), 
-	table th:nth-child(6) {display: none;}
+	table td.ocultable:nth-child(5),
+	table th.ocultable:nth-child(5) {display: none;}
 }
 
 @media only screen and (max-width: 1000px) {
-	table td:nth-child(5), 
-	table th:nth-child(5) {display: none;}
+	table td.ocultable:nth-child(4),
+	table th.ocultable:nth-child(4) {display: none;}
 }
 
 @media only screen and (max-width: 900px) {
-	table td:nth-child(4), 
-	table th:nth-child(4) {display: none;}
+	table td.ocultable:nth-child(3),
+	table th.ocultable:nth-child(3) {display: none;}
 }
 
 @media only screen and (max-width: 800px) {
-	table td:nth-child(3), 
-	table th:nth-child(3) {display: none;}
+	table td.ocultable:nth-child(2),
+	table th.ocultable:nth-child(2) {display: none;}
 }
 
 @media only screen and (max-width: 600px) {
-	table td:nth-child(2), 
-	table th:nth-child(2) {display: none;}
-}
-
-@media only screen {
-  table td:last-child,
-  table th:last-child {
-    display: block;
-  }
+	table td.ocultable:nth-child(1),
+	table th.ocultable:nth-child(1) {display: none;}
 }
