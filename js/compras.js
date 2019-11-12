@@ -5,10 +5,13 @@ $(function()
 
 var compras =
 {
+    area : null,
     modulo : 'compras',
 
     inicializar : function()
     {
+        this.area = $('#area').val();
+
         this.inicio.$div = $('#inicio');
         this.listado.$div = $('#listado');
         this.detalles.$div = $('#detalles');
@@ -94,7 +97,8 @@ var compras =
         {
             // Prepara los datos.
             var datos = {
-                accion : 'buscar_listado'
+                area : compras.area,
+                accion : 'listado'
             };
             
             // Envía los datos.
@@ -225,7 +229,8 @@ var compras =
         buscar : function(id)
         {
             var datos = {
-                accion : 'buscar_detalles',
+                area : compras.area,
+                accion : 'detalles',
                 id : id
             };
             
@@ -299,6 +304,7 @@ var compras =
         {
             // Prepara los datos.
             var datos = {
+                area : compras.area,
                 accion : 'nueva_buscar'
             };
 
@@ -468,6 +474,7 @@ var compras =
             // Prepara los datos.
             var datos = 
             {
+                area : compras.area,
                 accion : 'nueva_confirmar',
                 compra : {
                     importe_total : 0,
@@ -551,6 +558,7 @@ var compras =
         {
             // Prepara los datos.
             var datos = {
+                area : compras.area,
                 accion : 'editar_buscar',
                 id: id
             };
@@ -724,6 +732,7 @@ var compras =
             // Prepara los datos.
             var datos = 
             {
+                area : compras.area,
                 accion : 'editar_confirmar',
                 compra : {
                     importe_total : 0,
@@ -780,6 +789,7 @@ var compras =
         {
             // Prepara los datos.
             var datos = {
+                area : compras.area,
                 accion : 'eliminar',
                 id : id
             };

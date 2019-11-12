@@ -5,6 +5,7 @@ $(function()
 
 var permisos =
 {
+    area : 1,
     modulo : 'permisos',
 
     inicializar : function()
@@ -92,7 +93,7 @@ var permisos =
                             .find('tbody')
                             .append($('<tr>')
                                 .append($('<td>')
-                                    .append(fila.id)
+                                    .append(fila.id_permiso)
                                     .attr('class', 'ocultable')
                                 )
                                 .append($('<td>')

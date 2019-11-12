@@ -83,23 +83,25 @@
                   
                   FROM perfiles_permisos 
                   
-                  LEFT OUTER JOIN permisos ON perfiles_permisos.id_permiso = permisos.id
-
+                  INNER JOIN permisos
+                    ON perfiles_permisos.id_permiso = permisos.id
+                  INNER JOIN modulos
+                    ON permisos.id_modulo = modulos.id
+                  INNER JOIN areas
+                    ON permisos.id_area = areas.id
+                  
                   WHERE perfiles_permisos.habilitado = 1 
-                    AND permisos.accion = 'listado' 
-                    AND permisos.id_modulo = $modulo
-                    AND permisos.id_area = $area
-                    AND perfiles_permisos.id_perfil = 1 
-                    AND perfiles_permisos.id_perfil = " . $_SESSION['usuario']->codigo_tipo_perfil . " 
+                    AND permisos.accion = '$accion'
+                    AND perfiles_permisos.id_perfil = " . $_SESSION['usuario']->id_perfil . " 
                     LIMIT 1";
-        print_r($query);exit;
+        
         // Consulta el permiso.
         $permiso = consultar_registro($conexion, $query);
 
         // Si hubo error ejecutando la consulta.
         if($permiso === false)
         {
-            $respuesta['descripcion'] = 'Ocurrió un error al buscar el permiso (L 98).';
+            $respuesta['descripcion'] = 'Ocurrió un error al buscar el permiso (L 98). ' . $query;
             // Devuelve la respuesta.
             echo json_encode($respuesta);
             exit;

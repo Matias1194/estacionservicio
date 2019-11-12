@@ -8,7 +8,7 @@ var navegador =
     asignarEventos : function() 
     {
         // Botones del Menú.
-        $('nav a[data-url]').unbind('click').click((event) => redireccionar.pagina($(event.currentTarget).data('url') + '.php'))
+        $('nav a[data-url]').unbind('click').click((e) => redireccionar.pagina($(e.target).data('url') + '.php?area=' + $(e.target).data('area')))
 
         // Cerrar Sesión.
         $('nav #botonCerrarSesion').unbind('click').click(navegador.cerrarSesion);

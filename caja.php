@@ -17,7 +17,7 @@
 
         <!-- Scripts -->
         <?php include('secciones/scripts.php'); ?>
-        <script src="js/caja.js"></script>
+		<script src="js/caja.js"></script>
         
     </head>
 
@@ -35,6 +35,8 @@
 			<!-- Listado de caja-->
 			<div id="listado" style="display:none">
 
+				<input type="hidden" id="area" value="<?php echo $_GET['area']; ?>">
+				
 	            <div class="row mt-5">
 	                
 	                <!-- Título -->

@@ -16,8 +16,8 @@
         <?php include('secciones/estilos.php'); ?>
 
         <!-- Scripts -->
-        <?php include('secciones/scripts.php'); ?>
-        <script src="js/usuarios.js"></script>
+		<?php include('secciones/scripts.php'); ?>
+		<script src="js/usuarios.js"></script>
         
     </head>
 
@@ -32,6 +32,8 @@
 		<!-- Contenido -->
 		<div class="container">
 			
+			<input type="hidden" id="area" value="<?php echo $_GET['area']; ?>">
+
 			<!-- Listado de Usuarios -->
 			<div id="divListadoUsuarios">
 
@@ -40,19 +42,20 @@
 	                <!-- Título -->
 	                <div class="col-sm-6">
 	                    <h1 class="font-weight-normal">
-	                        Listado de Usuarios
+							<span class="fa fa-user"></span>
+	                        Usuarios
 	                    </h1>
 	                </div>
 
-	                <?php //if(tienePermiso(10)) { ?>
-	                <!-- Nuevo curso -->
+	                <?php if(tienePermiso(3) || tienePermiso(60)) { ?>
+	                <!-- Nuevo Usuario -->
                     <div class="col-sm-6 text-right">
                         <button type="button" id="botonNuevoUsuario" class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Nuevo Usuario">
                             <span class="fa fa-plus"></span>
                             <span class="fa fa-user fa-lg"></span>
                         </button>
                     </div>
-	            	<?php //} ?>
+	            	<?php } ?>
 
 	            </div>
 
@@ -85,7 +88,7 @@
 	                                <th scope="col">
 	                                    Registro
 	                                </th>
-	                                <th class="text-center" scope="col" colspan="4">
+	                                <th class="text-center" scope="col">
 	                                    Acciones
 	                                </th>
 	                            </tr>

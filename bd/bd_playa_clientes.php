@@ -15,10 +15,12 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
         
+        $area = $_POST['area'];
+        $modulo = 4;
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de clientes.
-        if($accion == "buscar_listado") 
+        if($accion == "listado") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
@@ -47,6 +49,7 @@
             {
                 $respuesta['exito'] = true;
                 $respuesta['clientes'] = $clientes;
+                $respuesta['permisos'] = $_SESSION['usuario']->permisos;
             }
         }
 
@@ -182,8 +185,7 @@
             {
                 // Prepara la consulta.
                 $query = "UPDATE playa_clientes 
-                          SET id_tipo_cliente = " . $cliente['id_tipo_cliente'] . ", 
-                          razon_social = '" . $cliente['razon_social'] . "', 
+                          SET razon_social = '" . $cliente['razon_social'] . "', 
                           domicilio = '" . $cliente["domicilio"] . "', 
                           telefono = " . $cliente['telefono'] . ",  
                           email = '" . $cliente['email'] . "', 

@@ -1,11 +1,23 @@
 $(function() 
 {
-	clientes.buscar.listado();
+	clientes.inicializar();
 });
 
 var clientes =
 {
+    area : null,
     modulo : 'clientes',
+
+    inicializar : function() 
+    {
+        this.area = $('#area').val();
+        if(this.area == "1")
+        {
+            this.modulo = 'playa_' + this.modulo;
+        }
+        
+        this.buscar.listado();
+    },
 
 	asignarEventos : function() 
 	{
@@ -13,7 +25,7 @@ var clientes =
         $('[data-toggle="tooltip"]').tooltip();
 
         // Vuelve a la pantalla anterior.
-        $('.botonVolver').unbind('click').click((event) => clientes.mostrar($(event.currentTarget).data('pantalla')));
+        $('.botonVolver').unbind('click').click((e) => clientes.mostrar($(e.target).data('pantalla')));
         
     /* Nuevo cliente */
         // Carga la pantalla para crear un nuevo cliente.
@@ -28,22 +40,22 @@ var clientes =
 
     /* Editar cliente */
         // Carga la pantalla para editar al cliente.
-        $('.botonEditarCliente').unbind('click').click((event) => clientes.editar.buscar($(event.currentTarget).closest('tr').data('id')));
+        $('button[name="editar"]').unbind('click').click((e) => clientes.editar.buscar($(e.target).closest('tr').data('id')));
 
         // Confirmar editar cliente.
         $('#botonConfirmarEditar').unbind('click').click(() => alertas.confirmar('¿Está seguro?', 'Confirmar Edición', clientes.editar.confirmar));
     
     /* Eliminar cliente */
         // Confirmar uliminar cliente.
-        $('.botonEliminarCliente').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => clientes.eliminar.confirmar($(event.currentTarget).closest('tr').data('id'))));
+        $('button[name="eliminar"]').unbind('click').click((e) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => clientes.eliminar.confirmar($(e.target).closest('tr').data('id'))));
     
     /* Deshabilitar cliente */
         // Confirmar deshabilitar cliente.
-        $('.botonDeshabilitarCliente').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => clientes.deshabilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
+        $('button[name="deshabilitar"]').unbind('click').click((e) => alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => clientes.deshabilitar.confirmar($(e.target).closest('tr').data('id'))));
 
     /* Habilitar cliente */
         // Confirmar uabilitar cliente.
-        $('.botonHabilitarCliente').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => clientes.habilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
+        $('button[name="habilitar"]').unbind('click').click((e) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => clientes.habilitar.confirmar($(e.target).closest('tr').data('id'))));
 
 	},
 	
@@ -86,7 +98,8 @@ var clientes =
         listado : function()
         {
             var datos = {
-                accion : 'buscar_listado'
+                area : clientes.area,
+                accion : 'listado'
             };
 
             bd.enviar(datos, clientes.modulo, clientes.buscar.listadoExito);
@@ -112,7 +125,7 @@ var clientes =
             }
             else
             {
-                $.each(respuesta.clientes, function(indice, cliente) 
+                $.each(respuesta.clientes, function(i, cliente) 
                 {
                     $(tablaClientes)
                         .find('tbody')
@@ -132,90 +145,48 @@ var clientes =
                             .append($('<td>')
                                 .append(cliente.telefono)
                             )
-                            .attr('data-id', cliente.id)
-                        )
-                });
-                $(tablaClientes).DataTable();
-
-                $.each(respuesta.clientes, function(indice, cliente)
-                {
-
-                    // Botón Detalles Cliente.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 2))
-                    //{
-                        /*$(tablaClientes)
-                            .find('tbody tr:last')
                             .append($('<td>')
-                                .append('<button type="button" class="botonDetallesCliente btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Detalles">'
-                                        + '<span class="fa fa-eye"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );*/
-                    //}
-                    
-                    // Botón Editar Cliente.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 4))
-                    //{
-                        $(tablaClientes)
-                            .find('tbody tr[data-id=' + cliente.id + ']')
-                            .append($('<td>')
-                                .append('<button type="button" class="botonEditarCliente btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar">'
-                                        + '<span class="fa fa-pencil-alt"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );
-                    //}
-
-                    // Botón Eliminar Cliente.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 7))
-                    //{
-                        $(tablaClientes)
-                            .find('tbody tr[data-id=' + cliente.id + ']')
-                            .append($('<td>')
-                                .append('<button type="button" class="botonEliminarCliente btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
-                                        + '<span class="fa fa-trash"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );
-                    //}
-
-                    // Si el cliente está habilitado.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 6) && cliente.habilitado == "1")
-                    //{
-                    if(cliente.habilitado == "1")
-                    {
-                        $(tablaClientes)
-                            .find('tbody tr[data-id=' + cliente.id + ']')
-                            .append($('<td>')
-                                // Botón Deshabilitar Cliente.
-                                .append('<button type="button" class="botonDeshabilitarCliente btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
-                                        + '<span class="fa fa-ban"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );
-                    }
-                    // Si el cliente está deshabilitado.
-                    //else if(utilidades.tienePermiso(respuesta.permisos, 5))
-                    //{
-                    else
-                    {
-                        $(tablaClientes)
-                            .find('tbody tr[data-id=' + cliente.id + ']')
-                            .append($('<td>')
-                                // Botón Habilitar Cliente.
-                                .append('<button type="button" class="botonHabilitarCliente btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
-                                        + '<span class="fa fa-check"></span>'
-                                    + ' </button>'
-                                )
                                 .attr('class', 'text-center')
                             )
-                        // Fila de color rojo.
-                        .attr('class', 'table-danger');
+                            .attr('data-id', cliente.id)
+                        );
+
+                    
+                    let acciones = "";
+                    
+                    // Botón Editar.
+                    if(utilidades.tienePermiso(respuesta.permisos, 16) || utilidades.tienePermiso(respuesta.permisos, 73))
+                    {
+                        acciones += '<button type="button" name="editar" class="btn btn-sm btn-warning" title="Editar">'
+                                        + '<span class="fa fa-pencil-alt"></span>'
+                                + '</button>';
                     }
+                    // Botón Eliminar.
+                    if(utilidades.tienePermiso(respuesta.permisos, 18) || utilidades.tienePermiso(respuesta.permisos, 75))
+                    {
+                        acciones += '&nbsp;<button type="button" name="eliminar" class="btn btn-sm btn-secondary" title="Eliminar">'
+                                        + '<span class="fa fa-trash"></span>'
+                                + '</button>';
+                    }
+
+                    // Botón Deshabilitar.
+                    if((utilidades.tienePermiso(respuesta.permisos, 19) || utilidades.tienePermiso(respuesta.permisos, 76)) && cliente.habilitado == "1")
+                    {
+                        acciones += '&nbsp;<button type="button" name="deshabilitar" class="btn btn-sm btn-danger" title="Deshabilitar">'
+                                        + '<span class="fa fa-ban"></span>'
+                                + '</button>';
+                    }
+                    // Botón Habilitar.
+                    else if(utilidades.tienePermiso(respuesta.permisos, 20) || utilidades.tienePermiso(respuesta.permisos, 77)) 
+                    {
+                        acciones += '&nbsp;<button type="button" name="habilitar" class="btn btn-sm btn-success" title="Habilitar">'
+                                        + '<span class="fa fa-check"></span>'
+                                + '</button>';
+                        
+                        $(tablaClientes).find('tbody tr:last').addClass('table-danger');
+                    }
+
+                    $(tablaClientes).find('tbody tr:last td:last').append(acciones);
                 });
             }
 
@@ -233,6 +204,7 @@ var clientes =
         buscar : function()
         {
             var datos = {
+                area : clientes.area,
                 accion : 'nuevo_buscar'
             };
 
@@ -252,6 +224,7 @@ var clientes =
         {
             var datos = 
             {
+                area : clientes.area,
                 accion: 'nuevo_confirmar',
                 cliente: {}
             };
@@ -291,7 +264,7 @@ var clientes =
 
         confirmarExito : function(respuesta)
         {
-            alertas.exito(respuesta.descripcion, '' , redireccionar.clientes);
+            alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('clientes.php?area=' + clientes.area));
         }
     },
 
@@ -303,6 +276,7 @@ var clientes =
         {
             var datos = 
             {
+                area : clientes.area,
                 accion : 'editar_buscar',
                 id : id
             };
@@ -326,6 +300,7 @@ var clientes =
         {
             var datos = 
             {
+                area : clientes.area,
                 accion: 'editar_confirmar',
                 cliente: {}
             };
@@ -363,7 +338,7 @@ var clientes =
 
         confirmarExito : function(respuesta)
         {
-            alertas.exito(respuesta.descripcion, '' , redireccionar.clientes);
+            alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('clientes.php?area=' + clientes.area));
         }
     },
 
@@ -374,6 +349,7 @@ var clientes =
         confirmar : function(id)
         {
             var datos = {
+                area : clientes.area,
                 accion : 'eliminar',
                 id : id
             };
@@ -405,6 +381,7 @@ var clientes =
         confirmar : function(id)
         {
             var datos = {
+                area : clientes.area,
                 accion : 'deshabilitar',
                 id : id
             };
@@ -416,15 +393,17 @@ var clientes =
         {
             // Actualizar fila.
             var id = respuesta.id;
-            var fila = $('#divListadoClientes tr[data-id="' + id + '"]');
             
-            $(fila).addClass("table-danger");
-            $(fila).find('td:last').html
-            (
-                '<button type="button" class="botonHabilitarCliente btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
-                    + '<span class="fa fa-check"></span>'
-                + ' </button>'
-            );
+            var $fila = $('#divListadoClientes tr[data-id="' + id + '"]');
+            var $boton = $fila.find('td:last button[name="deshabilitar"]');
+            
+            $fila.addClass('table-danger');
+            $boton.empty();
+            $boton.removeClass('btn-danger').addClass('btn-success');
+            $boton.attr('name', 'habilitar');
+            $boton.attr('title', 'Habilitar');
+            $boton.append($('<span>').addClass('fa fa-check'));
+            
             clientes.asignarEventos();
 
             alertas.exito(respuesta.descripcion);
@@ -438,6 +417,7 @@ var clientes =
         confirmar : function(id)
         {
             var datos = {
+                area : clientes.area,
                 accion : 'habilitar',
                 id : id
             };
@@ -449,15 +429,16 @@ var clientes =
         {
             // Actualizar fila.
             var id = respuesta.id;
-            var fila = $('#divListadoClientes tr[data-id="' + id + '"]');
             
-            $(fila).removeClass();
-            $(fila).find('td:last').html
-            (
-                '<button type="button" class="botonDeshabilitarCliente btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
-                    + '<span class="fa fa-ban"></span>'
-                + ' </button>'
-            );
+            var $fila = $('#divListadoClientes tr[data-id="' + id + '"]');
+            var $boton = $fila.find('td:last button[name="habilitar"]');
+            
+            $fila.removeClass('table-danger');
+            $boton.empty();
+            $boton.removeClass('btn-success').addClass('btn-danger');
+            $boton.attr('name', 'deshabilitar');
+            $boton.attr('title', 'Deshabilitar');
+            $boton.append($('<span>').addClass('fa fa-ban'));
             
             clientes.asignarEventos();
 

@@ -32,6 +32,8 @@
 		<!-- Contenido -->
 		<div class="container">
 			
+			<input type="hidden" id="area" value="<?php echo $_GET['area']; ?>">
+			
 			<!-- Listado de Clientes -->
 			<div id="divListadoClientes">
 
@@ -40,19 +42,20 @@
 	                <!-- Título -->
 	                <div class="col-sm-6">
 	                    <h1 class="font-weight-normal">
-	                        Listado de Clientes
+							<span class="fa fa-address-book"></span>
+	                        Clientes
 	                    </h1>
 	                </div>
 
-	                <?php //if(tienePermiso(10)) { ?>
-	                <!-- Nuevo curso -->
+	                <?php if(tienePermiso(14) || tienePermiso(71)) { ?>
+	                <!-- Nuevo Cliente -->
                     <div class="col-sm-6 text-right">
                         <button type="button" id="botonNuevoCliente" class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Nuevo Cliente">
                             <span class="fa fa-plus"></span>
                             <span class="fa fa-address-book fa-lg"></span>
                         </button>
                     </div>
-	            	<?php //} ?>
+	            	<?php } ?>
 
 	            </div>
 
@@ -73,16 +76,16 @@
 	                                <th scope="col">
 	                                    Razón Social
 	                                </th>
-	                                <th scope="col">
+	                                <th scope="col" class="ocultable">
 	                                    CUIT
 	                                </th>
-	                                <th scope="col">
+	                                <th scope="col" class="ocultable">
 	                                    Domicilio
 	                                </th>
-	                                <th scope="col">
+	                                <th scope="col" class="ocultable">
 	                                    Email
 	                                </th>
-	                                <th scope="col">
+	                                <th scope="col" class="ocultable">
 	                                    Teléfono
 	                                </th>
 	                                <th class="text-center" scope="col" colspan="4">

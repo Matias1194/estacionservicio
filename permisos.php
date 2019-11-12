@@ -110,7 +110,7 @@
 	                        <thead>
 	                            <tr>
 	                                <th scope="col" class="ocultable">
-	                                    id
+	                                    id permiso
 	                                </th>
 									<th scope="col" class="ocultable">
 	                                    Perfil

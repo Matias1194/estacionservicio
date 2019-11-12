@@ -17,7 +17,7 @@
 
         <!-- Scripts -->
         <?php include('secciones/scripts.php'); ?>
-        <script src="js/stock.js"></script>
+		<script src="js/stock.js"></script>
         
     </head>
 
@@ -31,6 +31,8 @@
 
 		<!-- Contenido -->
 		<div class="container">
+
+            <input type="hidden" id="area" value="<?php echo $_GET['area']; ?>">
 
 			<!-- Listado de stock-->
 			<div id="listado" style="display:none">

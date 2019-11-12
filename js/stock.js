@@ -5,10 +5,13 @@ $(function()
 
 var stock =
 {
+    area : null,
     modulo : 'stock',
 
     inicializar : function()
     {
+        this.area = $('#area').val();
+
         this.listado.$div = $('#listado');
         this.detalles.$div = $('#detalles');
 
@@ -52,7 +55,8 @@ var stock =
         {
             // Prepara los datos.
             var datos = {
-                accion : 'buscar_listado'
+                area : stock.area,
+                accion : 'listado'
             };
             
             // Envía los datos.
@@ -152,7 +156,8 @@ var stock =
         buscar : function(id)
         {
             var datos = {
-                accion : 'buscar_detalles',
+                area : stock.area,
+                accion : 'detalles',
                 id : id
             };
             

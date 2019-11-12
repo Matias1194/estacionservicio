@@ -1,11 +1,23 @@
 $(function() 
 {
-	proveedores.buscar.listado();
+	proveedores.inicializar();
 });
 
 var proveedores =
 {
+    area : null,
     modulo : 'proveedores',
+
+    inicializar : function() 
+    {
+        this.area = $('#area').val();
+        if(this.area == "1")
+        {
+            this.modulo = 'playa_' + this.modulo;
+        }
+        
+        this.buscar.listado();
+    },
 
 	asignarEventos : function() 
 	{
@@ -13,7 +25,7 @@ var proveedores =
         $('[data-toggle="tooltip"]').tooltip();
 
         // Vuelve a la pantalla anterior.
-        $('.botonVolver').unbind('click').click((event) => proveedores.mostrar($(event.currentTarget).data('pantalla')));
+        $('.botonVolver').unbind('click').click((e) => proveedores.mostrar($(e.target).data('pantalla')));
         
     /* Nuevo proveedor */
         // Carga la pantalla para crear un nuevo proveedor.
@@ -28,22 +40,22 @@ var proveedores =
 
     /* Editar proveedor */
         // Carga la pantalla para editar al proveedor.
-        $('.botonEditarProveedor').unbind('click').click((event) => proveedores.editar.buscar($(event.currentTarget).closest('tr').data('id')));
+        $('button[name="editar"]').unbind('click').click((e) => proveedores.editar.buscar($(e.target).closest('tr').data('id')));
 
         // Confirmar editar proveedor.
         $('#botonConfirmarEditar').unbind('click').click(() => alertas.confirmar('¿Está seguro?', 'Confirmar Edición', proveedores.editar.confirmar));
     
     /* Eliminar proveedor */
         // Confirmar uliminar proveedor.
-        $('.botonEliminarProveedor').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => proveedores.eliminar.confirmar($(event.currentTarget).closest('tr').data('id'))));
+        $('button[name="eliminar"]').unbind('click').click((e) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => proveedores.eliminar.confirmar($(e.target).closest('tr').data('id'))));
     
     /* Deshabilitar proveedor */
         // Confirmar deshabilitar proveedor.
-        $('.botonDeshabilitarProveedor').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => proveedores.deshabilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
+        $('button[name="deshabilitar"]').unbind('click').click((e) => alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => proveedores.deshabilitar.confirmar($(e.target).closest('tr').data('id'))));
 
     /* Habilitar proveedor */
         // Confirmar uabilitar proveedor.
-        $('.botonHabilitarProveedor').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => proveedores.habilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
+        $('button[name="habilitar"]').unbind('click').click((e) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => proveedores.habilitar.confirmar($(e.target).closest('tr').data('id'))));
 
 	},
 	
@@ -86,7 +98,8 @@ var proveedores =
         listado : function()
         {
             var datos = {
-                accion : 'buscar_listado'
+                area : proveedores.area,
+                accion : 'listado'
             };
 
             bd.enviar(datos, proveedores.modulo, proveedores.buscar.listadoExito);
@@ -112,7 +125,7 @@ var proveedores =
             }
             else
             {
-                $.each(respuesta.proveedores, function(indice, proveedor) 
+                $.each(respuesta.proveedores, function(i, proveedor) 
                 {
                     $(tablaProveedores)
                         .find('tbody')
@@ -132,90 +145,47 @@ var proveedores =
                             .append($('<td>')
                                 .append(proveedor.telefono)
                             )
-                            .attr('data-id', proveedor.id)
-                        )
-                });
-
-                $(tablaProveedores).DataTable();
-
-                $.each(respuesta.proveedores, function(indice, proveedor) 
-                {
-                    // Botón Detalles Proveedor.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 2))
-                    //{
-                        /*$(tablaProveedores)
-                            .find('tbody tr:last')
                             .append($('<td>')
-                                .append('<button type="button" class="botonDetallesProveedor btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Detalles">'
-                                        + '<span class="fa fa-eye"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );*/
-                    //}
-                    
-                    // Botón Editar Proveedor.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 4))
-                    //{
-                        $(tablaProveedores)
-                            .find('tbody tr[data-id=' + proveedor.id + ']')
-                            .append($('<td>')
-                                .append('<button type="button" class="botonEditarProveedor btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar">'
-                                        + '<span class="fa fa-pencil-alt"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );
-                    //}
-
-                    // Botón Eliminar Proveedor.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 7))
-                    //{
-                        $(tablaProveedores)
-                            .find('tbody tr[data-id=' + proveedor.id + ']')
-                            .append($('<td>')
-                                .append('<button type="button" class="botonEliminarProveedor btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
-                                        + '<span class="fa fa-trash"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );
-                    //}
-
-                    // Si el proveedor está habilitado.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 6) && proveedor.habilitado == "1")
-                    //{
-                    if(proveedor.habilitado == "1")
-                    {
-                        $(tablaProveedores)
-                            .find('tbody tr[data-id=' + proveedor.id + ']')
-                            .append($('<td>')
-                                // Botón Deshabilitar Proveedor.
-                                .append('<button type="button" class="botonDeshabilitarProveedor btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
-                                        + '<span class="fa fa-ban"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );
-                    }
-                    // Si el proveedor está deshabilitado.
-                    //else if(utilidades.tienePermiso(respuesta.permisos, 5))
-                    //{
-                    else
-                    {
-                        $(tablaProveedores)
-                            .find('tbody tr[data-id=' + proveedor.id + ']')
-                            .append($('<td>')
-                                // Botón Habilitar Proveedor.
-                                .append('<button type="button" class="botonHabilitarProveedor btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
-                                        + '<span class="fa fa-check"></span>'
-                                    + ' </button>'
-                                )
                                 .attr('class', 'text-center')
                             )
-                        // Fila de color rojo.
-                        .attr('class', 'table-danger');
-                    }
+                            .attr('data-id', proveedor.id)
+                        );
+
+                        let acciones = "";
+                    
+                        // Botón Editar.
+                        if(utilidades.tienePermiso(respuesta.permisos, 5) || utilidades.tienePermiso(respuesta.permisos, 62))
+                        {
+                            acciones += '<button type="button" name="editar" class="btn btn-sm btn-warning" title="Editar">'
+                                            + '<span class="fa fa-pencil-alt"></span>'
+                                    + '</button>';
+                        }
+                        // Botón Eliminar.
+                        if(utilidades.tienePermiso(respuesta.permisos, 7) || utilidades.tienePermiso(respuesta.permisos, 64))
+                        {
+                            acciones += '&nbsp;<button type="button" name="eliminar" class="btn btn-sm btn-secondary" title="Eliminar">'
+                                            + '<span class="fa fa-trash"></span>'
+                                    + '</button>';
+                        }
+    
+                        // Botón Deshabilitar.
+                        if((utilidades.tienePermiso(respuesta.permisos, 8) || utilidades.tienePermiso(respuesta.permisos, 65)) && proveedor.habilitado == "1")
+                        {
+                            acciones += '&nbsp;<button type="button" name="deshabilitar" class="btn btn-sm btn-danger" title="Deshabilitar">'
+                                            + '<span class="fa fa-ban"></span>'
+                                    + '</button>';
+                        }
+                        // Botón Habilitar.
+                        else if(utilidades.tienePermiso(respuesta.permisos, 9) || utilidades.tienePermiso(respuesta.permisos, 66)) 
+                        {
+                            acciones += '&nbsp;<button type="button" name="habilitar" class="btn btn-sm btn-success" title="Habilitar">'
+                                            + '<span class="fa fa-check"></span>'
+                                    + '</button>';
+                            
+                            $(tablaProveedores).find('tbody tr:last').addClass('table-danger');
+                        }
+    
+                        $(tablaProveedores).find('tbody tr:last td:last').append(acciones);
                 });
             }
 
@@ -233,6 +203,7 @@ var proveedores =
         buscar : function()
         {
             var datos = {
+                area : proveedores.area,
                 accion : 'nuevo_buscar'
             };
 
@@ -261,6 +232,7 @@ var proveedores =
         {
             var datos = 
             {
+                area : proveedores.area,
                 accion: 'nuevo_confirmar',
                 proveedor: {}
             };
@@ -300,7 +272,7 @@ var proveedores =
 
         confirmarExito : function(respuesta)
         {
-            alertas.exito(respuesta.descripcion, '' , redireccionar.proveedores);
+            alertas.exito(respuesta.descripcion, '' , redireccionar.pagina('proveedores.php?area=' + proveedores.area));
         }
     },
 
@@ -312,6 +284,7 @@ var proveedores =
         {
             var datos = 
             {
+                area : proveedores.area,
                 accion : 'editar_buscar',
                 id : id
             };
@@ -344,6 +317,7 @@ var proveedores =
         {
             var datos = 
             {
+                area : proveedores.area,
                 accion: 'editar_confirmar',
                 proveedor: {}
             };
@@ -381,7 +355,7 @@ var proveedores =
 
         confirmarExito : function(respuesta)
         {
-            alertas.exito(respuesta.descripcion, '' , redireccionar.proveedores);
+            alertas.exito(respuesta.descripcion, '' , redireccionar.pagina('proveedores.php?area=' + proveedores.area));
         }
     },
 
@@ -392,6 +366,7 @@ var proveedores =
         confirmar : function(id)
         {
             var datos = {
+                area : proveedores.area,
                 accion : 'eliminar',
                 id : id
             };
@@ -423,6 +398,7 @@ var proveedores =
         confirmar : function(id)
         {
             var datos = {
+                area : proveedores.area,
                 accion : 'deshabilitar',
                 id : id
             };
@@ -434,15 +410,17 @@ var proveedores =
         {
             // Actualizar fila.
             var id = respuesta.id;
-            var fila = $('#divListadoProveedores tr[data-id="' + id + '"]');
             
-            $(fila).addClass("table-danger");
-            $(fila).find('td:last').html
-            (
-                '<button type="button" class="botonHabilitarProveedor btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
-                    + '<span class="fa fa-check"></span>'
-                + ' </button>'
-            );
+            var $fila = $('#divListadoProveedores tr[data-id="' + id + '"]');
+            var $boton = $fila.find('td:last button[name="deshabilitar"]');
+            
+            $fila.addClass('table-danger');
+            $boton.empty();
+            $boton.removeClass('btn-danger').addClass('btn-success');
+            $boton.attr('name', 'habilitar');
+            $boton.attr('title', 'Habilitar');
+            $boton.append($('<span>').addClass('fa fa-check'));
+            
             proveedores.asignarEventos();
 
             alertas.exito(respuesta.descripcion);
@@ -456,6 +434,7 @@ var proveedores =
         confirmar : function(id)
         {
             var datos = {
+                area : proveedores.area,
                 accion : 'habilitar',
                 id : id
             };
@@ -467,15 +446,17 @@ var proveedores =
         {
             // Actualizar fila.
             var id = respuesta.id;
-            var fila = $('#divListadoProveedores tr[data-id="' + id + '"]');
             
-            $(fila).removeClass();
-            $(fila).find('td:last').html
-            (
-                '<button type="button" class="botonDeshabilitarProveedor btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
-                    + '<span class="fa fa-ban"></span>'
-                + ' </button>'
-            );
+            var $fila = $('#divListadoProveedores tr[data-id="' + id + '"]');
+            var $boton = $fila.find('td:last button[name="habilitar"]');
+            
+            $fila.removeClass('table-danger');
+            $boton.empty();
+            $boton.removeClass('btn-success').addClass('btn-danger');
+            $boton.attr('name', 'deshabilitar');
+            $boton.attr('title', 'Deshabilitar');
+            $boton.append($('<span>').addClass('fa fa-ban'));
+            
             proveedores.asignarEventos();
 
             alertas.exito(respuesta.descripcion);

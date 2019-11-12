@@ -32,6 +32,8 @@
 		<!-- Contenido -->
 		<div class="container">
 
+			<input type="hidden" id="area" value="<?php echo $_GET['area']; ?>">
+
 			<!-- Listado de productos-->
 			<div id="listado" style="display:none">
 

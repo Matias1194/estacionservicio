@@ -5,10 +5,12 @@ $(function()
 
 var caja =
 {
+    area : null,
     modulo : 'caja',
 
     inicializar : function()
     {
+        this.area = $('#area').val();
         this.listado.$div = $('#listado');
 
         this.listado.buscar();
@@ -48,6 +50,7 @@ var caja =
         {
             // Prepara los datos.
             var datos = {
+                area : caja.area,
                 accion : 'listado'
             };
             

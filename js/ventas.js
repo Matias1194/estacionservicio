@@ -5,10 +5,13 @@ $(function()
 
 var ventas =
 {
+    area : null,
     modulo : 'ventas',
 
     inicializar : function()
     {
+        this.area = $('#area').val();
+
         this.inicio.$div = $('#inicio');
         this.tickets.$div = $('#tickets');
         this.factura.$div = $('#factura');
@@ -84,6 +87,7 @@ var ventas =
             // Prepara los datos.
             var datos = 
             {
+                area : ventas.area,
                 accion : 'caja_estado',
             };
 
@@ -133,6 +137,7 @@ var ventas =
             // Prepara los datos.
             var datos = 
             {
+                area : ventas.area,
                 accion : 'abrir_caja',
                 saldo: 0,
             };
@@ -160,6 +165,7 @@ var ventas =
             // Prepara los datos.
             var datos = 
             {
+                area : ventas.area,
                 accion : 'cerrar_caja',
                 saldo: 0,
             };
@@ -185,6 +191,7 @@ var ventas =
             // Prepara los datos.
             var datos = 
             {
+                area : ventas.area,
                 accion : 'comenzar_turno',
             };
 
@@ -198,6 +205,7 @@ var ventas =
             // Prepara los datos.
             var datos = 
             {
+                area : ventas.area,
                 accion : 'finalizar_turno',
             };
 
@@ -249,6 +257,7 @@ var ventas =
         {
             // Prepara los datos.
             var datos = {
+                area : ventas.area,
                 accion : 'nueva_buscar'
             };
 
@@ -401,6 +410,7 @@ var ventas =
             // Prepara los datos.
             var datos = 
             {
+                area : ventas.area,
                 accion : 'nueva_confirmar',
                 venta : {
                     importe_total : 0,
@@ -513,6 +523,7 @@ var ventas =
         {
             // Prepara los datos.
             var datos = {
+                area : ventas.area,
                 accion : 'factura_nueva_buscar'
             };
 
@@ -569,6 +580,7 @@ var ventas =
         buscar_clientes : function() {
              // Prepara los datos.
              var datos = {
+                area : ventas.area,
                 accion : 'factura_nueva_clientes_buscar'
             };
 
@@ -775,6 +787,7 @@ var ventas =
             // Prepara los datos.
             var datos = 
             {
+                area : ventas.area,
                 accion : 'otros_buscar',
             };
 
@@ -802,6 +815,7 @@ var ventas =
             // Prepara los datos.
             var datos = 
             {
+                area : ventas.area,
                 accion : 'otros_confirmar',
                 id_concepto: 0,
                 importe: 0

@@ -10,8 +10,8 @@ var utilidades =
 		return valor.replace('$ ', '').replace(/\./gi, '').replace(',', '.');
 	},
 
-	tienePermiso : function(permisos, codigo)
+	tienePermiso : function(permisos, id)
 	{
-		return permisos.find(permiso => permiso.codigo_permiso == codigo) != undefined;
+		return permisos.find(permiso => permiso.id_permiso == id) != undefined;
 	}
 }

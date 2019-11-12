@@ -3,8 +3,6 @@
     
     include 'bd_conexion.php';
 
-    $tabla = 'clientes';
-
     // Prepara la respuesta.
     $respuesta = array(
         'exito' => false
@@ -15,10 +13,12 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
         
+        $area = $_POST['area'];
+        $modulo = 4;
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de clientes.
-        if($accion == "buscar_listado") 
+        if($accion == "listado") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
@@ -41,11 +41,12 @@
             {
                 $respuesta['exito'] = true;
                 $respuesta['clientes'] = $clientes;
+                $respuesta['permisos'] = $_SESSION['usuario']->permisos;
             }
         }
 
         // BUSCAR: Detalles de cliente por id.
-        else if($accion == "buscar_detalles")
+        else if($accion == "detalles")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
@@ -216,8 +217,7 @@
             {
                 // Prepara la consulta.
                 $query = "UPDATE clientes 
-                          SET id_tipo_cliente = " . $cliente['id_tipo_cliente'] . ", 
-                          razon_social = '" . $cliente['razon_social'] . "', 
+                          SET razon_social = '" . $cliente['razon_social'] . "', 
                           domicilio = '" . $cliente["domicilio"] . "', 
                           telefono = " . $cliente['telefono'] . ",  
                           email = '" . $cliente['email'] . "', 

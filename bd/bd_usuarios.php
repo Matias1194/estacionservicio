@@ -3,8 +3,6 @@
     
     include 'bd_conexion.php';
 
-    $tabla = 'usuarios';
-
     // Prepara la respuesta.
     $respuesta = array(
         'exito' => false
@@ -15,10 +13,12 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
 
+        $area = $_POST['area'];
+        $modulo = 1;
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de usuarios.
-        if($accion == "buscar_listado")
+        if($accion == "listado")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
@@ -29,6 +29,15 @@
                       INNER JOIN perfiles
                         ON usuarios.id_perfil = perfiles.id
                       WHERE usuarios.eliminado = 0";
+
+            if($area == 1) 
+            {
+                $query .= " AND (usuarios.id_perfil = 2 OR usuarios.id_perfil = 4)";
+            }
+            else if($area == 2)
+            {
+                $query .= " AND (usuarios.id_perfil = 3 OR usuarios.id_perfil = 5)";
+            }
 
             // Consulta el listado de usuarios.
             $usuarios = consultar_listado($conexion, $query);
@@ -43,11 +52,12 @@
             {
                 $respuesta['exito'] = true;
                 $respuesta['usuarios'] = $usuarios;
+                $respuesta['permisos'] = $_SESSION['usuario']->permisos;
             }
         }
 
         // BUSCAR: Detalles de usuario por id.
-        else if($accion == "buscar_detalles")
+        else if($accion == "detalles")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
@@ -556,11 +566,9 @@
             else
             {
                 // Prepara la consulta.
-                $query = "SELECT perfiles_permisos.id_permiso
-                          FROM perfiles_permisos 
-                          INNER JOIN permisos
-                            ON perfiles_permisos.id_permiso = permisos.id
-                          WHERE perfiles_permisos.habilitado = 1 AND perfiles_permisos.id_perfil = " . $usuario->id_perfil;
+                $query = "SELECT id_permiso
+                          FROM perfiles_permisos
+                          WHERE habilitado = 1 AND id_perfil = " . $usuario->id_perfil;
 
                 // Consulta los permisos de usuario.
                 $permisos = consultar_listado($conexion, $query);

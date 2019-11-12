@@ -31,6 +31,8 @@
 
 		<!-- Contenido -->
 		<div class="container">
+
+			<input type="hidden" id="area" value="<?php echo $_GET['area']; ?>">
 			
 			<!-- Inicio -->
 			<div id="inicio">

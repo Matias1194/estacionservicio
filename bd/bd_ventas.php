@@ -227,7 +227,7 @@
         }
 
         // BUSCAR: Listado de ventas.
-        else if($accion == "buscar_listado") 
+        else if($accion == "listado") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
@@ -256,7 +256,7 @@
         }
 
         // BUSCAR: Detalles de venta por id.
-        else if($accion == "buscar_detalles")
+        else if($accion == "detalles")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);

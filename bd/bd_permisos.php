@@ -27,7 +27,7 @@
             $id_area = $_POST['id_area'] ? $_POST['id_area'] : 1;
 
             // Prepara la consulta.
-            $query = "SELECT perfiles_permisos.id, 
+            $query = "SELECT permisos.id as 'id_permiso', 
                              perfiles.descripcion as 'perfil',
                              areas.descripcion as 'area',
                              modulos.descripcion as 'modulo',

@@ -5,10 +5,13 @@ $(function()
 
 var productos =
 {
+    area : null,
     modulo : 'productos',
 
     inicializar : function()
     {
+        this.area = $('#area').val();
+
         this.listado.$div = $('#listado');
         this.nuevo.$div = $('#nuevo');
         this.editar.$div = $('#editar');
@@ -59,7 +62,8 @@ var productos =
         {
             // Prepara los datos.
             var datos = {
-                accion : 'buscar_listado'
+                area : productos.area,
+                accion : 'listado'
             };
             
             // Envía los datos.
@@ -172,6 +176,7 @@ var productos =
         {
             // Prepara los datos.
             var datos = {
+                area : productos.area,
                 accion : 'nuevo_buscar'
             };
 
@@ -203,6 +208,7 @@ var productos =
             // Prepara los datos.
             var datos = 
             {
+                area : productos.area,
                 accion : 'nuevo_confirmar',
                 producto : {}
             };
@@ -273,6 +279,7 @@ var productos =
         {
             // Prepara los datos.
             var datos = {
+                area : productos.area,
                 accion : 'editar_buscar',
                 id: id
             };
@@ -308,6 +315,7 @@ var productos =
             // Prepara los datos.
             var datos = 
             {
+                area : productos.area,
                 accion : 'editar_confirmar',
                 producto : {
                     importe_total : 0,
@@ -364,6 +372,7 @@ var productos =
         {
             // Prepara los datos.
             var datos = {
+                area : productos.area,
                 accion : 'eliminar',
                 id : id
             };

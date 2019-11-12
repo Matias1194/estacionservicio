@@ -1,11 +1,18 @@
 $(function() 
 {
-	usuarios.buscar.listado();
+	usuarios.inicializar();
 });
 
 var usuarios =
 {
-    tabla : 'usuarios',
+    area : null,
+    modulo : 'usuarios',
+
+    inicializar : function() 
+    {
+        this.area = $('#area').val();
+        this.buscar.listado();
+    },
 
 	asignarEventos : function() 
 	{
@@ -26,28 +33,24 @@ var usuarios =
         $('#campoClave')
             .keypress((k) => k.keyCode && k.keyCode == '13' ? this.nuevo.confirmar() : k.which && k.which == '13' ? this.nuevo.confirmar() : null);
 
-    /* Detalles usuario*/
-        // Carga la pantalla parar ver los detalles de usuario.
-        $('.botonDetallesUsuario').unbind('click').click((event) => usuarios.buscar.detalles($(event.currentTarget).closest('tr').data('id')));
-
     /* Editar usuario */
         // Carga la pantalla para editar al usuario.
-        $('.botonEditarUsuario').unbind('click').click((event) => usuarios.editar.buscar($(event.currentTarget).closest('tr').data('id')));
+        $('button[name="editar"]').unbind('click').click((event) => usuarios.editar.buscar($(event.currentTarget).closest('tr').data('id')));
 
         // Confirmar editar usuario.
         $('#botonConfirmarEditar').unbind('click').click(() => alertas.confirmar('¿Está seguro?', 'Confirmar Edición', usuarios.editar.confirmar));
     
     /* Eliminar usuario */
         // Confirmar uliminar usuario.
-        $('.botonEliminarUsuario').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => usuarios.eliminar.confirmar($(event.currentTarget).closest('tr').data('id'))));
+        $('button[name="eliminar"]').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Eliminación', () => usuarios.eliminar.confirmar($(event.currentTarget).closest('tr').data('id'))));
     
     /* Deshabilitar usuario */
         // Confirmar deshabilitar usuario.
-        $('.botonDeshabilitarUsuario').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => usuarios.deshabilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
+        $('button[name="deshabilitar"]').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Deshabilitación', () => usuarios.deshabilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
 
     /* Habilitar usuario */
         // Confirmar uabilitar usuario.
-        $('.botonHabilitarUsuario').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => usuarios.habilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
+        $('button[name="habilitar"]').unbind('click').click((event) => alertas.confirmar('¿Está seguro?', 'Confirmar Habilitación', () => usuarios.habilitar.confirmar($(event.currentTarget).closest('tr').data('id'))));
 
 	},
 	
@@ -97,10 +100,11 @@ var usuarios =
         listado : function()
         {
             var datos = {
-                accion : 'buscar_listado'
+                area : usuarios.area,
+                accion : 'listado'
             };
 
-            bd.enviar(datos, usuarios.tabla, usuarios.buscar.listadoExito);
+            bd.enviar(datos, usuarios.modulo, usuarios.buscar.listadoExito);
         },
 
         listadoExito : function(respuesta)
@@ -122,7 +126,7 @@ var usuarios =
                 var barraCargando = $('#divListadoUsuarios .barraCargando');
                 $(tablaUsuarios).find('tbody').html("");
 
-                $.each(respuesta.usuarios, function(indice, usuario) 
+                $.each(respuesta.usuarios, function(i, usuario) 
                 {
                     $(tablaUsuarios)
                         .find('tbody')
@@ -142,87 +146,47 @@ var usuarios =
                             .append($('<td>')
                                 .append(usuario.fecha_registro)
                             )
-                            .attr('data-id', usuario.id)
-                        );
-                });
-                $(tablaUsuarios).DataTable();
-
-                $.each(respuesta.usuarios, function(indice, usuario) 
-                {
-                    // Botón Detalles Usuario.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 2))
-                    //{
-                        /*$(tablaUsuarios)
-                            .find('tbody tr:last')
                             .append($('<td>')
-                                .append('<button type="button" class="botonDetallesUsuario btn btn-sm btn-info" data-toggle="tooltip" data-placement="top" title="Detalles">'
-                                        + '<span class="fa fa-eye"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );*/
-                    //}
-                    
-                    // Botón Editar Usuario.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 4))
-                    //{
-                        $(tablaUsuarios)
-                            .find('tbody tr[data-id=' + usuario.id + ']')
-                            .append($('<td>')
-                                .append('<button type="button" class="botonEditarUsuario btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Editar">'
-                                        + '<span class="fa fa-pencil-alt"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );
-                    //}
-
-                    // Botón Eliminar Usuario.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 7))
-                    //{
-                        $(tablaUsuarios)
-                            .find('tbody tr[data-id=' + usuario.id + ']')
-                            .append($('<td>')
-                                .append('<button type="button" class="botonEliminarUsuario btn btn-sm btn-secondary" data-toggle="tooltip" data-placement="top" title="Eliminar">'
-                                        + '<span class="fa fa-trash"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );
-                    //}
-
-                    // Si el usuario está habilitado.
-                    //if(utilidades.tienePermiso(respuesta.permisos, 6) && usuario.habilitado == "1")
-                    if(usuario.habilitado == "1")
-                    {
-                        $(tablaUsuarios)
-                            .find('tbody tr[data-id=' + usuario.id + ']') 
-                            .append($('<td>')
-                                // Botón Deshabilitar Usuario.
-                                .append('<button type="button" class="botonDeshabilitarUsuario btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
-                                        + '<span class="fa fa-ban"></span>'
-                                    + ' </button>'
-                                )
-                                .attr('class', 'text-center')
-                            );
-                    }
-                    // Si el usuario está deshabilitado.
-                    //else if(utilidades.tienePermiso(respuesta.permisos, 5))
-                    if(usuario.habilitado == "0")
-                    {
-                        $(tablaUsuarios)
-                            .find('tbody tr[data-id=' + usuario.id + ']')
-                            .append($('<td>')
-                                // Botón Habilitar Usuario.
-                                .append('<button type="button" class="botonHabilitarUsuario btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
-                                        + '<span class="fa fa-check"></span>'
-                                    + ' </button>'
-                                )
                                 .attr('class', 'text-center')
                             )
-                        // Fila de color rojo.
-                        .attr('class', 'table-danger');
+                            .attr('data-id', usuario.id)
+                        );
+                        
+                    let acciones = "";
+                    
+                    // Botón Editar.
+                    if(utilidades.tienePermiso(respuesta.permisos, 5) || utilidades.tienePermiso(respuesta.permisos, 62))
+                    {
+                        acciones += '<button type="button" name="editar" class="btn btn-sm btn-warning" title="Editar">'
+                                        + '<span class="fa fa-pencil-alt"></span>'
+                                + '</button>';
                     }
+                    // Botón Eliminar.
+                    if(utilidades.tienePermiso(respuesta.permisos, 7) || utilidades.tienePermiso(respuesta.permisos, 64))
+                    {
+                        acciones += '&nbsp;<button type="button" name="eliminar" class="btn btn-sm btn-secondary" title="Eliminar">'
+                                        + '<span class="fa fa-trash"></span>'
+                                + '</button>';
+                    }
+
+                    // Botón Deshabilitar.
+                    if((utilidades.tienePermiso(respuesta.permisos, 8) || utilidades.tienePermiso(respuesta.permisos, 65)) && usuario.habilitado == "1")
+                    {
+                        acciones += '&nbsp;<button type="button" name="deshabilitar" class="btn btn-sm btn-danger" title="Deshabilitar">'
+                                        + '<span class="fa fa-ban"></span>'
+                                + '</button>';
+                    }
+                    // Botón Habilitar.
+                    else if(utilidades.tienePermiso(respuesta.permisos, 9) || utilidades.tienePermiso(respuesta.permisos, 66)) 
+                    {
+                        acciones += '&nbsp;<button type="button" name="habilitar" class="btn btn-sm btn-success" title="Habilitar">'
+                                        + '<span class="fa fa-check"></span>'
+                                + '</button>';
+                        
+                        $(tablaUsuarios).find('tbody tr:last').addClass('table-danger');
+                    }
+
+                    $(tablaUsuarios).find('tbody tr:last td:last').append(acciones);
                 });
             }
             $(barraCargando).slideUp();
@@ -234,11 +198,12 @@ var usuarios =
         detalles : function(id)
         {
             var datos = {
-                accion : 'buscar_detalles',
+                area : usuarios.area,
+                accion : 'detalles',
                 id : id
             };
             
-            bd.enviar(datos, usuarios.tabla, usuarios.buscar.detallesExito);
+            bd.enviar(datos, usuarios.modulo, usuarios.buscar.detallesExito);
         },
 
         detallesExito : function(respuesta)
@@ -261,10 +226,11 @@ var usuarios =
         buscar : function()
         {
             var datos = {
+                area : usuarios.area,
                 accion : 'nuevo_buscar'
             };
 
-            bd.enviar(datos, usuarios.tabla, usuarios.nuevo.buscarExito);
+            bd.enviar(datos, usuarios.modulo, usuarios.nuevo.buscarExito);
         },
 
         buscarExito : function(respuesta)
@@ -296,6 +262,7 @@ var usuarios =
         {
             var datos = 
             {
+                area : usuarios.area,
                 accion: 'nuevo_confirmar',
                 usuario: {}
             };
@@ -328,12 +295,12 @@ var usuarios =
                 return;
             }
 
-            bd.enviar(datos, usuarios.tabla, usuarios.nuevo.confirmarExito);
+            bd.enviar(datos, usuarios.modulo, usuarios.nuevo.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
         {
-            alertas.exito(respuesta.descripcion, '' , redireccionar.usuarios);
+            alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('usuarios.php?area=' + usuarios.area));
         }
     },
 
@@ -344,11 +311,12 @@ var usuarios =
         buscar : function(id)
         {
             var datos = {
+                area : usuarios.area,
                 accion : 'editar_buscar',
                 id : id
             };
             
-            bd.enviar(datos, usuarios.tabla, usuarios.editar.buscarExito);
+            bd.enviar(datos, usuarios.modulo, usuarios.editar.buscarExito);
         },
 
         buscarExito : function(respuesta)
@@ -381,6 +349,7 @@ var usuarios =
         {
             var datos = 
             {
+                area : usuarios.area,
                 accion: 'editar_confirmar',
                 usuario: {}
             };
@@ -413,12 +382,12 @@ var usuarios =
                 return;
             }
 
-            bd.enviar(datos, usuarios.tabla, usuarios.editar.confirmarExito);
+            bd.enviar(datos, usuarios.modulo, usuarios.editar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
         {
-            alertas.exito(respuesta.descripcion, '' , redireccionar.usuarios);
+            alertas.exito(respuesta.descripcion, '' , () => redireccionar.pagina('usuarios.php?area=' + usuarios.area));
         }
     },
 
@@ -429,11 +398,12 @@ var usuarios =
         confirmar : function(id)
         {
             var datos = {
+                area : usuarios.area,
                 accion : 'eliminar',
                 id : id
             };
             
-            bd.enviar(datos, usuarios.tabla, usuarios.eliminar.confirmarExito);
+            bd.enviar(datos, usuarios.modulo, usuarios.eliminar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
@@ -460,26 +430,29 @@ var usuarios =
         confirmar : function(id)
         {
             var datos = {
+                area : usuarios.area,
                 accion : 'deshabilitar',
                 id : id
             };
             
-            bd.enviar(datos, usuarios.tabla, usuarios.deshabilitar.confirmarExito);
+            bd.enviar(datos, usuarios.modulo, usuarios.deshabilitar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
         {
             // Actualizar fila.
             var id = respuesta.id;
-            var fila = $('#divListadoUsuarios tr[data-id="' + id + '"]');
             
-            $(fila).addClass("table-danger");
-            $(fila).find('td:last').html
-            (
-                '<button type="button" class="botonHabilitarUsuario btn btn-sm btn-success" data-toggle="tooltip" data-placement="top" title="Habilitar">'
-                    + '<span class="fa fa-check"></span>'
-                + ' </button>'
-            );
+            var $fila = $('#divListadoUsuarios tr[data-id="' + id + '"]');
+            var $boton = $fila.find('td:last button[name="deshabilitar"]');
+            
+            $fila.addClass('table-danger');
+            $boton.empty();
+            $boton.removeClass('btn-danger').addClass('btn-success');
+            $boton.attr('name', 'habilitar');
+            $boton.attr('title', 'Habilitar');
+            $boton.append($('<span>').addClass('fa fa-check'));
+            
             usuarios.asignarEventos();
 
             alertas.exito(respuesta.descripcion);
@@ -493,26 +466,29 @@ var usuarios =
         confirmar : function(id)
         {
             var datos = {
+                area : usuarios.area,
                 accion : 'habilitar',
                 id : id
             };
             
-            bd.enviar(datos, usuarios.tabla, usuarios.habilitar.confirmarExito);
+            bd.enviar(datos, usuarios.modulo, usuarios.habilitar.confirmarExito);
         },
 
         confirmarExito : function(respuesta)
         {
             // Actualizar fila.
             var id = respuesta.id;
-            var fila = $('#divListadoUsuarios tr[data-id="' + id + '"]');
             
-            $(fila).removeClass();
-            $(fila).find('td:last').html
-            (
-                '<button type="button" class="botonDeshabilitarUsuario btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" title="Deshabilitar">'
-                    + '<span class="fa fa-ban"></span>'
-                + ' </button>'
-            );
+            var $fila = $('#divListadoUsuarios tr[data-id="' + id + '"]');
+            var $boton = $fila.find('td:last button[name="habilitar"]');
+            
+            $fila.removeClass('table-danger');
+            $boton.empty();
+            $boton.removeClass('btn-success').addClass('btn-danger');
+            $boton.attr('name', 'deshabilitar');
+            $boton.attr('title', 'Deshabilitar');
+            $boton.append($('<span>').addClass('fa fa-ban'));
+            
             usuarios.asignarEventos();
 
             alertas.exito(respuesta.descripcion);

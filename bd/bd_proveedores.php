@@ -16,11 +16,11 @@
         $conexion = AbrirConexion();
         
         $area = $_POST['area'];
-        $modulo = $_POST['modulo'];
+        $modulo = 7;
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de proveedores.
-        if($accion == "buscar_listado") 
+        if($accion == "listado") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
@@ -43,11 +43,12 @@
             {
                 $respuesta['exito'] = true;
                 $respuesta['proveedores'] = $proveedores;
+                $respuesta['permisos'] = $_SESSION['usuario']->permisos;
             }
         }
 
         // BUSCAR: Detalles de proveedor por id.
-        else if($accion == "buscar_detalles")
+        else if($accion == "detalles")
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);

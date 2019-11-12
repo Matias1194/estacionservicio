@@ -3,7 +3,7 @@
     
     include 'bd_conexion.php';
 
-    $tabla = 'proveedores';
+    $tabla = 'playa_proveedores';
 
     // Prepara la respuesta.
     $respuesta = array(
@@ -15,10 +15,12 @@
         // Abre una nueva conexión con la base de datos.
         $conexion = AbrirConexion();
         
+        $area = $_POST['area'];
+        $modulo = 7;
         $accion = $_POST['accion'];
 
         // BUSCAR: Listado de proveedores.
-        if($accion == "buscar_listado") 
+        if($accion == "listado") 
         {
             // Valida si el perfil de usuario tiene permiso para realizar esa acción.
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, true);
@@ -41,6 +43,7 @@
             {
                 $respuesta['exito'] = true;
                 $respuesta['proveedores'] = $proveedores;
+                $respuesta['permisos'] = $_SESSION['usuario']->permisos;
             }
         }
         

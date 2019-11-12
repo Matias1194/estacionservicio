@@ -31,6 +31,8 @@
 
 		<!-- Contenido -->
 		<div class="container">
+
+			<input type="hidden" id="area" value="<?php echo $_GET['area']; ?>">
 			
 			<!-- Listado de Proveedores -->
 			<div id="divListadoProveedores">
@@ -40,19 +42,20 @@
 	                <!-- Título -->
 	                <div class="col-sm-6">
 	                    <h1 class="font-weight-normal">
-	                        Listado de Proveedores
+							<span class="fa fa-parachute-box"></span>
+	                        Proveedores
 	                    </h1>
 	                </div>
 
-	                <?php //if(tienePermiso(10)) { ?>
-	                <!-- Nuevo curso -->
+	                <?php if(tienePermiso(36) || tienePermiso(93)) { ?>
+	                <!-- Nuevo Proveedor -->
                     <div class="col-sm-6 text-right">
                         <button type="button" id="botonNuevoProveedor" class="btn btn-primary mt-2" data-toggle="tooltip" data-placement="left" title="Nuevo Proveedor">
                             <span class="fa fa-plus"></span>
                             <span class="fa fa-parachute-box fa-lg"></span>
                         </button>
                     </div>
-	            	<?php //} ?>
+	            	<?php } ?>
 
 	            </div>
 
