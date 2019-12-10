@@ -1,5 +1,5 @@
 <?php
-    header('Content-Type: application/pdf');
+    //header('Content-Type: application/pdf');
 
     require_once __DIR__ . '/../vendor/autoload.php';
     require_once __DIR__ . '/../bd/bd_conexion.php';
@@ -8,30 +8,55 @@
     
     try {
 
+        $id_area = $_GET["id_area"];
         $id_venta = $_GET['id'];
 
-        $ventas= "ventas";
-        $id_area = $_GET["id_area"];
+        $ventas = "ventas";
 
         if ($id_area == 1)
         {
-            $ventas = "playa_".$ventas;
+            // Prepara la consulta.
+            $query = "SELECT playa_ventas.id as 'numero_factura', 
+                            playa_ventas.fecha_venta,
+                            tipos_pagos.descripcion as 'tipo_pago',
+                            CONCAT(usuarios.nombres, ' ', usuarios.apellidos) as 'vendedor',
+                            playa_ventas.razon_social,
+                            playa_ventas.cuit,
+                            playa_ventas.domicilio,
+                            playa_ventas.telefono,
+                            playa_ventas.importe_total
+                    
+                    FROM playa_ventas
+                    
+                    INNER JOIN tipos_pagos
+                        ON playa_ventas.id_tipo_pago = tipos_pagos.id
+                    INNER JOIN usuarios
+                        ON playa_ventas.id_usuario_vendedor = usuarios.id
+                    
+                    WHERE playa_ventas.id = $id_venta";
         }
-        // Prepara la consulta.
-        $query = "SELECT $ventas.numero_factura, 
-                         $ventas.fecha_venta,
-                         tipos_pagos.descripcion as 'tipo_pago',
-                         CONCAT(usuarios.nombres, ' ', usuarios.apellidos) as 'vendedor',
-                         $ventas.razon_social,
-                         $ventas.cuit,
-                         $ventas.domicilio,
-                         $ventas.telefono
-                  FROM $ventas
-                  INNER JOIN tipos_pagos
-                    ON tipos_pagos.id = $tabla.id_tipo_pago
-                  INNER JOIN usuarios
-                    ON $ventas.id_usuario_vendedor = usuarios.id
-                  WHERE $ventas.id = $id_venta";
+        else
+        {
+            // Prepara la consulta.
+            $query = "SELECT ventas.id as 'numero_factura', 
+                            ventas.fecha_venta,
+                            tipos_pagos.descripcion as 'tipo_pago',
+                            CONCAT(usuarios.nombres, ' ', usuarios.apellidos) as 'vendedor',
+                            ventas.razon_social,
+                            ventas.cuit,
+                            ventas.domicilio,
+                            ventas.telefono,
+                            ventas.importe_total
+                    
+                    FROM ventas
+                    
+                    INNER JOIN tipos_pagos
+                        ON ventas.id_tipo_pago = tipos_pagos.id
+                    INNER JOIN usuarios
+                        ON ventas.id_usuario_vendedor = usuarios.id
+                    
+                    WHERE ventas.id = $id_venta";
+        }
 
         // Consulta una venta.
         $venta = consultar_registro($conexion, $query);
@@ -44,15 +69,37 @@
         // Si la consulta fue exitosa y la venta se encuentra.
         else 
         {
-            // Prepara la consulta.
-            $query = "SELECT productos.descripcion as 'producto', 
-                        $ventas_detalles.cantidad,
-                        $ventas_detalles.precio_unitario,
-                        $ventas_detalles.precio_total 
-                FROM $ventas_detalles
-                INNER JOIN productos
-                    ON $ventas_detalles.id_producto = productos.id
-                WHERE $ventas_detalles.id_venta = $id_venta";
+            if($id_area == 1)
+            {
+                // Prepara la consulta.
+                $query = "SELECT playa_productos.descripcion as 'producto', 
+                                 playa_ventas_detalles.cantidad,
+                                 playa_ventas_detalles.precio_unitario,
+                                 playa_ventas_detalles.precio_total 
+                        
+                        FROM playa_ventas_detalles
+                        
+                        INNER JOIN playa_productos
+                            ON playa_ventas_detalles.id_producto = playa_productos.id
+                        
+                        WHERE playa_ventas_detalles.id_venta = $id_venta";
+            }
+            else
+            {
+                // Prepara la consulta.
+                $query = "SELECT productos.descripcion as 'producto', 
+                                 ventas_detalles.cantidad,
+                                 ventas_detalles.precio_unitario,
+                                 ventas_detalles.precio_total 
+                        
+                        FROM ventas_detalles
+                        
+                        INNER JOIN productos
+                            ON ventas_detalles.id_producto = productos.id
+                        
+                        WHERE ventas_detalles.id_venta = $id_venta";
+            }
+            
 
             // Consulta el listado de ventas_detalle.
             $venta_detalles = consultar_listado($conexion, $query);
@@ -118,8 +165,7 @@
 
             <br>
             <br>
-            <hr>
-            <h3>Numero de Factura: ' . $venta->numero_factura . '</h3>
+            <h3>N° de Factura: ' . $venta->numero_factura . '</h3>
             
             <hr>
 
@@ -153,14 +199,17 @@
             $contenido .= '
                 </tbody>
             </table>
+            
+            <h3 style="text-align:right;">Total: $ ' . $venta->importe_total . '</h3>
+        
         </div>';
         
         // Escribir PDF.
         $mpdf->WriteHTML($contenido);
 
         // Descarga PDF.
-        //$mpdf->Output('factura-' . $id_venta . '.pdf', 'D');
-        $mpdf->Output();
+        $mpdf->Output('factura-' . $id_venta . '.pdf', 'D');
+        //$mpdf->Output();
         
     }
     catch(Excepcion $e) {

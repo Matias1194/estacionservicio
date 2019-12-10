@@ -261,7 +261,7 @@
 							
 							<!-- Cantidad -->
 							<div class="form-group mx-sm-3 mb-2">
-								<input type="number" class="form-control" name="cantidad" min="0" step="1" placeholder="Cantidad">
+								<input type="number" class="form-control" name="cantidad" min="1" step="1" placeholder="Cantidad">
 							</div>
 
 							<!-- Precio unitario-->
@@ -300,9 +300,6 @@
 										</th>
 										<th scope="col">
 											Precio Total
-										</th>
-										<th class="text-center" scope="col">
-											Acciones
 										</th>
 									</tr>
 								</thead>
@@ -465,7 +462,7 @@
 							
 							<!-- Cantidad -->
 							<div class="form-group mx-sm-3 mb-2">
-								<input type="number" class="form-control" name="cantidad" min="0" step="1" placeholder="Cantidad">
+								<input type="number" class="form-control" name="cantidad" min="1" step="1" placeholder="Cantidad">
 							</div>
 
 							<!-- Precio unitario-->
@@ -504,9 +501,6 @@
 										</th>
 										<th scope="col">
 											Precio Total
-										</th>
-										<th class="text-center" scope="col">
-											Acciones
 										</th>
 									</tr>
 								</thead>

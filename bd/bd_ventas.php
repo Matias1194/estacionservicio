@@ -65,26 +65,74 @@
         {
             $saldo = $_POST['saldo'];
 
-            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
-                      VALUES (
-                          1,
-                          $saldo,
-                          0, "
-                        . $_SESSION['usuario']->id . "
-                      )";
-            
-            // Abre la caja.
-            $apertura = ejecutar($conexion, $query);
+            // Obtenemos el último registro de caja.
+            $query = "SELECT saldo 
+                      FROM movimientos_caja 
+                      ORDER BY id DESC LIMIT 1";
+
+            $ultimo_registro = consultar_registro($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
-            if($apertura === false)
+            if($ultimo_registro === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al abrir la caja (L 81).";
+                $respuesta['descripcion'] = "Ocurrió un error al buscar último registro de caja (L 78).";
             }
             // Si la consulta fue exitosa.
             else
             {
-                $respuesta['exito'] = true;
+                $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
+                        VALUES (
+                            1,
+                            $saldo,
+                            0, "
+                            . $_SESSION['usuario']->id . "
+                        )";
+                
+                // Abre la caja.
+                $apertura = ejecutar($conexion, $query);
+
+                // Si hubo error ejecutando la consulta.
+                if($apertura === false)
+                {
+                    $respuesta['descripcion'] = "Ocurrió un error al abrir la caja (L 81).";
+                }
+                // Si la consulta fue exitosa.
+                else
+                {
+                    $diferencia = $saldo - $ultimo_registro->saldo;
+                    
+                    if($diferencia != 0)
+                    {
+                        $columna = $diferencia > 0 ? 'entrada' : 'salida';
+                        $saldo += $diferencia;
+                        $diferencia = abs($diferencia);
+                    
+                        $query = "INSERT INTO movimientos_caja 
+                                    (id_tipo_registro_caja, 
+                                    saldo, 
+                                    $columna,
+                                    id_pago, 
+                                    id_usuario) 
+                                  
+                                  VALUES (
+                                    10,
+                                    $saldo,
+                                    $diferencia,
+                                    0, "
+                                    . $_SESSION['usuario']->id . "
+                                )";
+                        
+                        $diferencia_caja = ejecutar($conexion, $query);
+
+                        // Si hubo error ejecutando la consulta.
+                        if($diferencia_caja === false)
+                        {
+                            $respuesta['descripcion'] = "Ocurrió un error al cerrar la caja (L 124).";
+                        }
+                    }
+
+                    $respuesta['exito'] = true;
+                }
             }
         }
 
@@ -93,26 +141,75 @@
         {
             $saldo = $_POST['saldo'];
 
-            $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
-                      VALUES (
-                          3,
-                          $saldo,
-                          0, "
-                        . $_SESSION['usuario']->id . "
-                      )";
-            
-            // Cierra la caja.
-            $cierre = ejecutar($conexion, $query);
+            // Obtenemos el último registro de caja.
+            $query = "SELECT saldo 
+                      FROM movimientos_caja 
+                      ORDER BY id DESC LIMIT 1";
+
+            $ultimo_registro = consultar_registro($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
-            if($cierre === false)
+            if($ultimo_registro === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al cerrar la caja (L 108).";
+                $respuesta['descripcion'] = "Ocurrió un error al buscar último registro de caja (L 78).";
             }
             // Si la consulta fue exitosa.
             else
             {
-                $respuesta['exito'] = true;
+
+                $query = "INSERT INTO movimientos_caja (id_tipo_registro_caja, saldo, id_pago, id_usuario) 
+                        VALUES (
+                            3,
+                            $saldo,
+                            0, "
+                            . $_SESSION['usuario']->id . "
+                        )";
+                
+                // Cierra la caja.
+                $cierre = ejecutar($conexion, $query);
+
+                // Si hubo error ejecutando la consulta.
+                if($cierre === false)
+                {
+                    $respuesta['descripcion'] = "Ocurrió un error al cerrar la caja (L 108).";
+                }
+                // Si la consulta fue exitosa.
+                else
+                {
+                    $diferencia = $saldo - $ultimo_registro->saldo;
+                    
+                    if($diferencia != 0)
+                    {
+                        $columna = $diferencia > 0 ? 'entrada' : 'salida';
+                        $saldo += $diferencia;
+                        $diferencia = abs($diferencia);
+                    
+                        $query = "INSERT INTO movimientos_caja 
+                                    (id_tipo_registro_caja, 
+                                    saldo, 
+                                    $columna,
+                                    id_pago, 
+                                    id_usuario) 
+                                  
+                                  VALUES (
+                                    10,
+                                    $saldo,
+                                    $diferencia,
+                                    0, "
+                                    . $_SESSION['usuario']->id . "
+                                )";
+                        
+                        $diferencia_caja = ejecutar($conexion, $query);
+
+                        // Si hubo error ejecutando la consulta.
+                        if($diferencia_caja === false)
+                        {
+                            $respuesta['descripcion'] = "Ocurrió un error al cerrar la caja (L 124).";
+                        }
+                    }
+
+                    $respuesta['exito'] = true;
+                }
             }
         }
 
@@ -322,9 +419,18 @@
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
 
             // Prepara la consulta.
-            $query = "SELECT id, descripcion, precio_unitario 
-                        FROM productos
-                        WHERE habilitado = 1";
+            $query = "SELECT productos.id, 
+                             productos.descripcion,
+                             productos.precio_unitario,
+                             stock.unidades
+                      
+                      FROM productos
+
+                      INNER JOIN stock
+                        ON productos.id = stock.id_producto
+
+                      WHERE productos.habilitado = 1
+                        AND stock.unidades > 0";
 
             // Consulta los tipos de productos habilitados.
             $productos = consultar_listado($conexion, $query);
@@ -440,7 +546,7 @@
                     // Si hubo error ejecutando la consulta.
                     if($resultado === false)
                     {
-                        $respuesta['descripcion'] = "Ocurrió un error al editar la venta (L 214).";
+                        $respuesta['descripcion'] = "Stock insuficiente.";
                     }
                     // Si la consulta fue exitosa.
                     else
@@ -506,9 +612,18 @@
             else
             {
                 // Prepara la consulta.
-                $query = "SELECT id, descripcion, precio_unitario 
-                            FROM productos
-                            WHERE habilitado = 1";
+                $query = "SELECT productos.id, 
+                                 productos.descripcion,
+                                 productos.precio_unitario,
+                                 stock.unidades
+                        
+                          FROM productos
+
+                          INNER JOIN stock
+                          ON productos.id = stock.id_producto
+
+                          WHERE productos.habilitado = 1
+                          AND stock.unidades > 0";
 
                 // Consulta los tipos de productos habilitados.
                 $productos = consultar_listado($conexion, $query);

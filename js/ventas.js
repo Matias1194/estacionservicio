@@ -236,8 +236,13 @@ var ventas =
             this.$div.find('button[name="volver"]').click(() => ventas.inicio.mostrar());
 
             // Actualiza el precio unitario del producto seleccionado.
-            this.$div.find('select[name="id_producto"]').change((e) => {
-                this.$div.find('input[name="precio_unitario"]').val($(':selected', e.target).data('precio'));
+            this.$div.find('select[name="id_producto"]').change((e) => 
+            {
+                this.$div.find('input[name="precio_unitario"]')
+                    .val($(':selected', e.target).data('precio'));
+                
+                this.$div.find('input[name="cantidad"]')
+                    .attr('max', $(':selected', e.target).data('max'));
             });
 
             // Agregar Producto.
@@ -280,6 +285,7 @@ var ventas =
                             .val(producto.id)
                             .html(producto.descripcion)
                             .attr('data-precio', producto.precio_unitario)
+                            .attr('data-max', producto.unidades)
                         );
                 });
 
@@ -327,6 +333,13 @@ var ventas =
 
                 producto[$(campo).attr('name')] = Number($(campo).val());
             });
+
+            if(Number($('#tickets input[name="cantidad"]').val()) > Number($('#tickets input[name="cantidad"]').attr('max')))
+            {
+                $('#tickets input[name="cantidad"]').focus();
+                
+                return false;
+            }
 
             if(camposCompletos)
             {
@@ -503,7 +516,11 @@ var ventas =
 
             // Actualiza el precio unitario del producto seleccionado.
             this.$div.find('select[name="id_producto"]').change((e) => {
-                this.$div.find('input[name="precio_unitario"]').val($(':selected', e.target).data('precio'));
+                this.$div.find('input[name="precio_unitario"]')
+                    .val($(':selected', e.target).data('precio'));
+
+                this.$div.find('input[name="cantidad"]')
+                    .attr('max', $(':selected', e.target).data('max'));
             });
 
             // Agregar Producto.
@@ -558,6 +575,7 @@ var ventas =
                             .val(producto.id)
                             .html(producto.descripcion)
                             .attr('data-precio', producto.precio_unitario)
+                            .attr('data-max', producto.unidades)
                         );
                 });
 
@@ -635,6 +653,13 @@ var ventas =
                 producto[$(campo).attr('name')] = Number($(campo).val());
             });
 
+            if(Number($('#factura input[name="cantidad"]').val()) > Number($('#factura input[name="cantidad"]').attr('max')))
+            {
+                $('#factura input[name="cantidad"]').focus();
+                
+                return false;
+            }
+
             if(camposCompletos)
             {
                 var tablaVentas = $('#factura_divProductosAgregadosNueva table');
@@ -664,13 +689,13 @@ var ventas =
                         .append($('<td>')
                             .append(utilidades.formatearDinero(producto.precio_total))
                         )
-                        .append($('<td>')
+                        /*.append($('<td>')
                             .append('<button type="button" class="btn btn-sm btn-secondary" name="eliminar-producto" data-toggle="tooltip" data-placement="top" title="Eliminar">'
                                     + '<span class="fa fa-trash"></span>'
                                 + ' </button>'
                             )
                             .attr('class', 'text-center')
-                        )
+                        )*/
                         .attr('data-id_producto', producto.id_producto)
                     )
                     .hide()

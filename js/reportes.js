@@ -5,18 +5,22 @@ $(function()
 
 var reportes =
 {
+    $div: null,
     area : null,
     modulo : 'reportes',
 
     inicializar : function()
     {
+        this.$div = $('#inicio');
         this.area = $('#area').val();
         if(this.area == "1")
         {
             this.modulo = 'playa_' + this.modulo;
         }
 
-        $('#inicio').fadeIn();
+        this.$div.fadeIn();
+        
+        this.asignarEventos();
     },
 
 	asignarEventos : function() 
@@ -27,8 +31,14 @@ var reportes =
         // Desasignar eventos.
         this.$div.find('button').unbind('click');
 
-        // Descargar.
-        this.$div.find('button[name="descargar"]').click(() => reportes.ventas_descargar());
+        // Descargar Ventas.
+        this.$div.find('button[name="descargar_ventas"]').click(() => reportes.descargar_ventas());
+
+        // Descargar Compras.
+        this.$div.find('button[name="descargar_compras"]').click(() => reportes.descargar_compras());
+
+        // Descargar Stock.
+        this.$div.find('button[name="descargar_stock"]').click(() => reportes.descargar_stock());
 	},
 	
     // Ocultar pantallas.
@@ -38,8 +48,18 @@ var reportes =
         $('.container').children().hide();
     },
 
-    descargar : function(id)
+    descargar_ventas : function()
     {   
-        redireccionar.pagina('reportes/reporte_ticket.php?id=' + id + '&id_area=' + reportes.area);
+        redireccionar.pagina('reportes/reporte_ventas.php?id_area=' + reportes.area);
+    },
+
+    descargar_compras : function()
+    {   
+        redireccionar.pagina('reportes/reporte_compras.php?id_area=' + reportes.area);
+    },
+
+    descargar_stock : function()
+    {   
+        redireccionar.pagina('reportes/reporte_stock.php?id_area=' + reportes.area);
     },
 }

@@ -87,7 +87,8 @@
             . "VALUES"
             . "("
                 . $producto['id_tipo_producto'] . ", "
-                . "'" . $producto['descripcion'] . "'"
+                . "'" . $producto['descripcion'] . "', "
+                . $producto['precio_unitario']
             . ")";
             
             // Inserta un nuevo producto.
@@ -131,21 +132,26 @@
             validarPermiso($conexion, $area, $modulo, $accion, $respuesta, false);
 
             $id_producto = $_POST['id'];
-
+            
             // Prepara la consulta.
-            $query = "SELECT id, id_proveedor, id_tipo_comprobante, numero_factura, orden_producto_numero, DATE_FORMAT(orden_producto_fecha, '%d/%m/%Y') as 'orden_producto_fecha', gastos_envio, gastos_envio_iva, gastos_envio_impuestos, detalle
-            FROM productos
-            WHERE id = $id_producto AND eliminado = 0";
+            $query = "SELECT id, 
+                             descripcion,
+                             precio_unitario,
+                             id_tipo_producto
+                             
+                      FROM productos
+                        
+                      WHERE id = $id_producto";
 
-            // Consulta la producto a editar.
+            // Consulta detalles de el producto.
             $producto = consultar_registro($conexion, $query);
 
             // Si hubo error ejecutando la consulta.
             if($producto === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al buscar la producto (L 136).";
+                $respuesta['descripcion'] = "Ocurrió un error al buscar los detalles del producto (L 172).";
             }
-            // Si la consulta fue exitosa y no existe la producto.
+            // Si la consulta fue exitosa y no existe el producto.
             else if(empty($producto))
             {
                 $respuesta['descripcion'] = "La producto que se intenta editar no existe.";
@@ -154,80 +160,25 @@
             else
             {
                 // Prepara la consulta.
-                $query = "SELECT productos_detalles.id, productos_detalles.id_producto, productos.descripcion, productos_detalles.cantidad, productos_detalles.precio_unitario, productos_detalles.precio_total
-                          FROM productos_detalles
-                          INNER JOIN productos
-                            ON productos_detalles.id_producto = productos.id
-                          WHERE productos_detalles.id_producto = $id_producto";
+                $query = "SELECT id, 
+                                 descripcion
+                            
+                    FROM tipos_productos";
 
-                // Consulta detalles de la producto.
-                $detalles = consultar_listado($conexion, $query);
+                // Consulta tipos de productos.
+                $tipos_productos = consultar_listado($conexion, $query);
 
                 // Si hubo error ejecutando la consulta.
-                if($detalles === false)
+                if($tipos_productos === false)
                 {
-                    $respuesta['descripcion'] = "Ocurrió un error al buscar los detalles de la producto (L 136).";
+                $respuesta['descripcion'] = "Ocurrió un error al buscar los detalles del producto (L 172).";
                 }
-                // Si la consulta fue exitosa.
+                // Si la consulta fue exitosa y no existe el producto.
                 else
                 {
-                    // Prepara la consulta.
-                    $query = "SELECT id, razon_social 
-                            FROM proveedores
-                            WHERE habilitado = 1";
-
-                    // Consulta los tipos de proveedores habilitados.
-                    $proveedores = consultar_listado($conexion, $query);
-
-                    // Si hubo error ejecutando la consulta.
-                    if($proveedores === false)
-                    {
-                        $respuesta['descripcion'] = "Ocurrió un error al buscar los proveedores (L 104).";
-                    }
-                    // Si la consulta fue exitosa.
-                    else
-                    {
-                        // Prepara la consulta.
-                        $query = "SELECT id, descripcion 
-                                FROM tipos_comprobantes
-                                WHERE habilitado = 1";
-
-                        // Consulta los tipos de comprobantes habilitados.
-                        $tipos_comprobantes = consultar_listado($conexion, $query);
-
-                        // Si hubo error ejecutando la consulta.
-                        if($tipos_comprobantes === false)
-                        {
-                            $respuesta['descripcion'] = "Ocurrió un error al buscar los tipos de comprobantes (L 120).";
-                        }
-                        // Si la consulta fue exitosa.
-                        else
-                        {
-                            // Prepara la consulta.
-                            $query = "SELECT id, descripcion 
-                                    FROM productos
-                                    WHERE habilitado = 1";
-
-                            // Consulta los tipos de productos habilitados.
-                            $productos = consultar_listado($conexion, $query);
-
-                            // Si hubo error ejecutando la consulta.
-                            if($productos === false)
-                            {
-                                $respuesta['descripcion'] = "Ocurrió un error al buscar los productos (L 136).";
-                            }
-                            // Si la consulta fue exitosa.
-                            else
-                            {
-                                $respuesta['exito'] = true;
-                                $respuesta['producto'] = $producto;
-                                $respuesta['detalles'] = $detalles;
-                                $respuesta['proveedores'] = $proveedores;
-                                $respuesta['tipos_comprobantes'] = $tipos_comprobantes;
-                                $respuesta['productos'] = $productos;
-                            }
-                        }
-                    }
+                    $respuesta['exito'] = true;
+                    $respuesta['producto'] = $producto;
+                    $respuesta['tipos_productos'] = $tipos_productos;
                 }
             }
         }
@@ -239,20 +190,13 @@
             validarPermiso($conexion, $area, $modulo, "nuevo_buscar", $respuesta, false);
             
             $producto = $_POST["producto"];
-            $productos = $producto["productos"];
             
             // Prepara la consulta.
-            $query = "UPDATE productos 
-                      SET id_proveedor = " . $producto['id_proveedor'] . ",
-                      id_tipo_comprobante = " . $producto['id_tipo_comprobante'] . ",
-                      numero_factura = " . $producto["numero_factura"] . ",
-                      orden_producto_numero = " . $producto['orden_producto_numero'] . ",
-                      orden_producto_fecha = STR_TO_DATE('" . $producto['orden_producto_fecha'] . "', '%d/%m/%Y'),
-                      gastos_envio = " . $producto['gastos_envio'] . ",
-                      gastos_envio_iva = " . $producto['gastos_envio_iva'] . ",
-                      gastos_envio_impuestos = " . $producto['gastos_envio_impuestos'] . ",  
-                      importe_total = " . $producto['importe_total'] . ",  
-                      detalle = '" . $producto['detalle'] . "'
+            $query = "UPDATE playa_productos 
+                      SET id_tipo_producto = " . $producto['id_tipo_producto'] . ", 
+                          descripcion = '" . $producto['descripcion'] . "',
+                          precio_unitario = " . $producto['precio_unitario'] . "
+                      
                       WHERE id = " . $producto['id'];
             
             // Edita una producto.
@@ -261,13 +205,13 @@
             // Si hubo error ejecutando la consulta.
             if($resultado === false)
             {
-                $respuesta['descripcion'] = "Ocurrió un error al editar la producto (L 383).";
+                $respuesta['descripcion'] = "Ocurrió un error al editar el producto (L 208).";
             }
             // Si la consulta fue exitosa.
             else
             {
                 $respuesta['exito'] = true;
-                $respuesta['descripcion'] = "<b>" . $producto["detalle"] . "</b> se editó correctamente.";
+                $respuesta['descripcion'] = "<b>" . $producto["descripcion"] . "</b> se editó correctamente.";
             }
         }
 

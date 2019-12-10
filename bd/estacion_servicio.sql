@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-11-2019 a las 12:47:43
--- Versión del servidor: 10.4.6-MariaDB
--- Versión de PHP: 7.1.31
+-- Tiempo de generación: 10-12-2019 a las 02:11:17
+-- Versión del servidor: 10.4.8-MariaDB
+-- Versión de PHP: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -98,7 +98,9 @@ INSERT INTO `compras` (`id`, `id_proveedor`, `id_tipo_comprobante`, `numero_fact
 (3, 1, 1, 1, 0, '2019-10-10 00:00:00', '0.00', '0.00', '0.00', 8000.00, 'ASD', '2019-09-20 19:56:50', 0),
 (4, 3, 1, 36, 150, '2019-09-20 00:00:00', '30.00', '21.00', '13.50', 3500.00, 'Golosinas Septiembre', '2019-09-20 20:00:57', 0),
 (5, 3, 1, 8, 9, '2019-09-24 00:00:00', '100.00', '21.00', '10.00', 9000.00, 'Compra de yerba', '2019-09-24 18:37:43', 0),
-(6, 3, 1, 9, 9, '2019-09-24 00:00:00', '100.00', '21.00', '100.00', 2550.00, 'Agua mineral', '2019-09-24 19:19:30', 0);
+(6, 3, 1, 9, 9, '2019-09-24 00:00:00', '100.00', '21.00', '100.00', 2550.00, 'Agua mineral', '2019-09-24 19:19:30', 1),
+(7, 3, 1, 23, 123, '2019-10-10 00:00:00', '350.00', '21.00', '120.00', 60.00, 'Compra Alfajores', '2019-11-12 19:22:22', 0),
+(8, 3, 1, 39, 156, '2019-12-01 00:00:00', '200.00', '21.00', '100.00', 2400.00, 'Compra de Golosinas', '2019-12-09 21:56:13', 0);
 
 -- --------------------------------------------------------
 
@@ -125,7 +127,10 @@ INSERT INTO `compras_detalles` (`id`, `id_compra`, `id_producto`, `cantidad`, `p
 (5, 4, 10, 100, '35.00', '3500'),
 (6, 5, 11, 100, '90.00', '9000'),
 (7, 6, 1, 50, '45.00', '2250'),
-(8, 6, 2, 5, '60.00', '300');
+(8, 6, 2, 5, '60.00', '300'),
+(9, 7, 10, 2, '30.00', '60'),
+(10, 8, 6, 20, '60.00', '1200'),
+(11, 8, 8, 10, '120.00', '1200');
 
 -- --------------------------------------------------------
 
@@ -186,7 +191,32 @@ INSERT INTO `movimientos_caja` (`id`, `id_tipo_registro_caja`, `entrada`, `salid
 (7, 7, '56.00', NULL, '1336.00', 2, '2019-11-05 21:33:17', 3),
 (8, 7, '28.00', NULL, '1364.00', 1, '2019-11-05 21:34:58', 3),
 (9, 7, '56.00', NULL, '1420.00', 1, '2019-11-05 21:38:16', 3),
-(10, 7, '110.00', NULL, '1530.00', 3, '2019-11-05 21:40:16', 3);
+(10, 7, '110.00', NULL, '1530.00', 3, '2019-11-05 21:40:16', 3),
+(11, 1, NULL, NULL, '2000.00', 0, '2019-11-12 18:11:48', 1),
+(12, 3, NULL, NULL, '1000.00', 0, '2019-11-12 18:13:39', 1),
+(13, 1, NULL, NULL, '1000.00', 0, '2019-11-12 18:33:44', 1),
+(14, 8, NULL, NULL, NULL, NULL, '2019-11-12 18:33:46', 1),
+(15, 5, '1100.00', NULL, '2100.00', NULL, '2019-11-12 18:33:53', 1),
+(16, 9, NULL, NULL, NULL, NULL, '2019-11-12 18:34:10', 1),
+(17, 3, NULL, NULL, '1200.00', 0, '2019-11-12 18:34:17', 1),
+(18, 1, NULL, NULL, '1000.00', 0, '2019-11-12 18:40:03', 1),
+(19, 8, NULL, NULL, NULL, NULL, '2019-11-12 18:40:05', 1),
+(20, 7, '56.00', NULL, '1056.00', 1, '2019-11-12 19:22:59', 1),
+(21, 7, '28.00', NULL, '1084.00', 1, '2019-11-12 19:24:05', 1),
+(22, 7, '28.00', NULL, '1112.00', 1, '2019-11-12 19:24:45', 1),
+(23, 7, '28.00', NULL, '1140.00', 1, '2019-11-12 19:26:14', 1),
+(24, 7, '28.00', NULL, '1168.00', 1, '2019-11-12 19:26:44', 1),
+(25, 7, '28.00', NULL, '1196.00', 1, '2019-11-12 19:28:09', 1),
+(26, 7, '28.00', NULL, '1224.00', 1, '2019-11-12 19:29:09', 1),
+(27, 7, '28.00', NULL, '1252.00', 1, '2019-11-12 19:38:23', 1),
+(28, 7, '28.00', NULL, '1280.00', 1, '2019-11-12 19:39:29', 1),
+(29, 7, '28.00', NULL, '1308.00', 1, '2019-11-12 19:40:15', 1),
+(30, 1, NULL, NULL, '1500.00', 0, '2019-12-09 18:39:30', 3),
+(31, 10, '192.00', NULL, '1308.00', 0, '2019-12-09 18:39:30', 3),
+(32, 3, NULL, NULL, '1500.00', 0, '2019-12-09 18:39:53', 3),
+(33, 10, '192.00', NULL, '1308.00', 0, '2019-12-09 18:39:53', 3),
+(34, 1, NULL, NULL, '1600.00', 0, '2019-12-09 18:42:33', 3),
+(35, 10, '292.00', NULL, '1308.00', 0, '2019-12-09 18:42:33', 3);
 
 -- --------------------------------------------------------
 
@@ -725,6 +755,13 @@ CREATE TABLE `playa_clientes` (
   `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `playa_clientes`
+--
+
+INSERT INTO `playa_clientes` (`id`, `id_tipo_cliente`, `razon_social`, `cuit`, `domicilio`, `telefono`, `email`, `fecha_creacion`, `habilitado`, `eliminado`) VALUES
+(1, 1, 'Carlitos Tevez', 203857402, 'Fuerte Apache 666', '44447779', 'ctevez@noproblem.com', '2019-11-12 18:24:47', 1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -747,6 +784,14 @@ CREATE TABLE `playa_compras` (
   `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `playa_compras`
+--
+
+INSERT INTO `playa_compras` (`id`, `id_proveedor`, `id_tipo_comprobante`, `numero_factura`, `orden_compra_numero`, `orden_compra_fecha`, `gastos_envio`, `gastos_envio_iva`, `gastos_envio_impuestos`, `importe_total`, `detalle`, `fecha_compra`, `eliminado`) VALUES
+(7, 5, 1, 203948, 123, '0000-00-00 00:00:00', '123.00', '21.00', '350.00', 400.00, 'Compra de aceites', '2019-11-12 18:07:49', 0),
+(8, 5, 1, 29, 100, '2019-12-09 00:00:00', '100.00', '21.00', '25.00', 3500.00, 'Compra Aceites DIC 19', '2019-12-09 19:36:18', 0);
+
 -- --------------------------------------------------------
 
 --
@@ -761,6 +806,14 @@ CREATE TABLE `playa_compras_detalles` (
   `precio_unitario` decimal(8,2) UNSIGNED NOT NULL,
   `precio_total` decimal(8,0) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `playa_compras_detalles`
+--
+
+INSERT INTO `playa_compras_detalles` (`id`, `id_compra`, `id_producto`, `cantidad`, `precio_unitario`, `precio_total`) VALUES
+(9, 7, 12, 2, '200.00', '400'),
+(10, 8, 16, 10, '350.00', '3500');
 
 -- --------------------------------------------------------
 
@@ -779,6 +832,57 @@ CREATE TABLE `playa_movimientos_caja` (
   `id_usuario` int(10) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `playa_movimientos_caja`
+--
+
+INSERT INTO `playa_movimientos_caja` (`id`, `id_tipo_registro_caja`, `entrada`, `salida`, `saldo`, `id_pago`, `fecha`, `id_usuario`) VALUES
+(11, 1, NULL, NULL, '1000.00', 0, '2019-11-12 18:14:24', 1),
+(12, 8, NULL, NULL, NULL, NULL, '2019-11-12 18:16:20', 1),
+(13, 7, '200.00', NULL, '1200.00', 1, '2019-11-12 18:21:53', 1),
+(14, 7, '200.00', NULL, '1400.00', 1, '2019-11-12 18:28:16', 1),
+(15, 7, '200.00', NULL, '1600.00', 1, '2019-11-12 18:28:26', 1),
+(16, 7, '200.00', NULL, '1800.00', 1, '2019-11-12 18:30:25', 1),
+(17, 5, '1000.00', NULL, '2800.00', NULL, '2019-11-12 18:31:01', 1),
+(18, 6, NULL, '1000.00', '1800.00', NULL, '2019-11-12 18:33:26', 1),
+(19, 1, NULL, NULL, '1700.00', 0, '2019-12-09 18:05:10', 3),
+(20, 3, NULL, NULL, '1700.00', 0, '2019-12-09 18:20:55', 3),
+(21, 1, NULL, NULL, '1600.00', 0, '2019-12-09 18:21:33', 3),
+(22, 1, NULL, NULL, '1600.00', 0, '2019-12-09 18:24:21', 3),
+(23, 1, NULL, NULL, '1500.00', 0, '2019-12-09 18:24:42', 3),
+(24, 10, NULL, NULL, '-100.00', 0, '2019-12-09 18:24:42', 3),
+(25, 3, NULL, NULL, '1500.00', 0, '2019-12-09 18:26:43', 3),
+(26, 1, NULL, NULL, '1300.00', 0, '2019-12-09 18:27:11', 3),
+(27, 10, NULL, NULL, '-200.00', 0, '2019-12-09 18:27:11', 3),
+(28, 3, NULL, NULL, '1600.00', 0, '2019-12-09 18:27:27', 3),
+(29, 1, NULL, NULL, '1600.00', 0, '2019-12-09 18:28:31', 3),
+(30, 3, NULL, NULL, '1500.00', 0, '2019-12-09 18:28:39', 3),
+(31, 10, NULL, NULL, '-100.00', 0, '2019-12-09 18:28:39', 3),
+(32, 1, NULL, NULL, '1700.00', 0, '2019-12-09 18:28:52', 3),
+(33, 10, NULL, NULL, '1800.00', 0, '2019-12-09 18:28:52', 3),
+(34, 3, NULL, NULL, '2000.00', 0, '2019-12-09 18:43:32', 3),
+(35, 10, '200.00', NULL, '1800.00', 0, '2019-12-09 18:43:32', 3),
+(36, 1, NULL, NULL, '1000.00', 0, '2019-12-09 18:46:39', 3),
+(37, 10, NULL, '800.00', '1800.00', 0, '2019-12-09 18:46:39', 3),
+(38, 3, NULL, NULL, '1700.00', 0, '2019-12-09 18:50:08', 3),
+(39, 10, NULL, '100.00', '1600.00', 0, '2019-12-09 18:50:08', 3),
+(40, 1, NULL, NULL, '1800.00', 0, '2019-12-09 18:50:25', 3),
+(41, 10, '200.00', NULL, '2000.00', 0, '2019-12-09 18:50:25', 3),
+(42, 3, NULL, NULL, '2300.00', 0, '2019-12-09 18:50:42', 3),
+(43, 10, '300.00', NULL, '2600.00', 0, '2019-12-09 18:50:42', 3),
+(44, 1, NULL, NULL, '2300.00', 0, '2019-12-09 18:52:52', 3),
+(45, 10, NULL, '300.00', '2000.00', 0, '2019-12-09 18:52:52', 3),
+(46, 3, NULL, NULL, '2000.00', 0, '2019-12-09 18:53:04', 3),
+(47, 1, NULL, NULL, '2000.00', 0, '2019-12-09 18:53:13', 3),
+(48, 8, NULL, NULL, NULL, NULL, '2019-12-09 18:53:22', 3),
+(49, 7, '200.00', NULL, '2200.00', 1, '2019-12-09 18:53:45', 3),
+(50, 7, '200.00', NULL, '2400.00', 1, '2019-12-09 18:56:48', 3),
+(51, 7, '200.00', NULL, '2600.00', 2, '2019-12-09 19:02:57', 3),
+(52, 7, '200.00', NULL, '2800.00', 1, '2019-12-09 19:07:14', 3),
+(53, 7, '1658.00', NULL, '4458.00', 1, '2019-12-09 20:10:25', 3),
+(54, 7, '480.00', NULL, '4938.00', 1, '2019-12-09 21:05:20', 3),
+(55, 7, '200.00', NULL, '5138.00', 3, '2019-12-09 21:24:22', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -794,6 +898,18 @@ CREATE TABLE `playa_productos` (
   `habilitado` tinyint(1) UNSIGNED NOT NULL DEFAULT 1,
   `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `playa_productos`
+--
+
+INSERT INTO `playa_productos` (`id`, `id_tipo_producto`, `descripcion`, `precio_unitario`, `fecha_registro`, `habilitado`, `eliminado`) VALUES
+(12, 5, 'Bardhal 1L', '200.00', '2019-11-12 18:04:39', 1, 0),
+(13, 5, 'Aceite 50/30 Shell', '287.00', '2019-11-12 18:41:27', 1, 0),
+(14, 6, 'Molikote 1L', '190.00', '2019-11-12 18:42:45', 1, 0),
+(15, 6, 'Molikote 1.5L', '200.00', '2019-11-12 18:43:26', 1, 0),
+(16, 6, 'Lubri 2L', '349.00', '2019-12-09 19:33:14', 1, 0),
+(17, 5, 'Lubri 3L', '480.00', '2019-12-09 19:42:12', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -819,6 +935,13 @@ CREATE TABLE `playa_proveedores` (
   `eliminado` tinyint(1) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `playa_proveedores`
+--
+
+INSERT INTO `playa_proveedores` (`id`, `razon_social`, `id_tipo_documento`, `documento`, `sucursal`, `pais`, `provincia`, `localidad`, `calle`, `email`, `telefono`, `fecha_modificacion`, `fecha_creacion`, `habilitado`, `eliminado`) VALUES
+(5, 'Kyraceites', 1, 3005686845, '13', 'Argenkyra', 'Buenos Aires', 'CABA', 'Las perris 123', 'kyra@aceites.com', 44447777, NULL, '2019-11-12 18:02:30', 1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -831,6 +954,17 @@ CREATE TABLE `playa_stock` (
   `unidades` int(10) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Volcado de datos para la tabla `playa_stock`
+--
+
+INSERT INTO `playa_stock` (`id`, `id_producto`, `unidades`) VALUES
+(12, 13, 10),
+(13, 14, 20),
+(14, 15, 4),
+(15, 16, 30),
+(16, 17, 59);
+
 -- --------------------------------------------------------
 
 --
@@ -841,6 +975,14 @@ CREATE TABLE `playa_tipos_productos` (
   `id` int(11) UNSIGNED NOT NULL,
   `descripcion` varchar(50) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `playa_tipos_productos`
+--
+
+INSERT INTO `playa_tipos_productos` (`id`, `descripcion`) VALUES
+(5, 'Aceite'),
+(6, 'Lubricante');
 
 -- --------------------------------------------------------
 
@@ -862,6 +1004,29 @@ CREATE TABLE `playa_ventas` (
   `fecha_venta` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `playa_ventas`
+--
+
+INSERT INTO `playa_ventas` (`id`, `razon_social`, `cuit`, `domicilio`, `telefono`, `email`, `id_tipo_pago`, `importe_total`, `id_usuario_vendedor`, `numero_factura`, `fecha_venta`) VALUES
+(51, NULL, NULL, NULL, NULL, NULL, 1, 200.00, 1, 0, '2019-11-12 18:21:53'),
+(52, 'Carlitos Tevez', 203857402, 'Fuerte Apache 666', '44447779', 'ctevez@noproblem.com', 1, 200.00, 1, 0, '2019-11-12 18:28:16'),
+(53, 'Carlitos Tevez', 203857402, 'Fuerte Apache 666', '44447779', 'ctevez@noproblem.com', 1, 200.00, 1, 0, '2019-11-12 18:28:26'),
+(54, 'Carlitos Tevez', 203857402, 'Fuerte Apache 666', '44447779', 'ctevez@noproblem.com', 1, 200.00, 1, 0, '2019-11-12 18:30:25'),
+(55, NULL, NULL, NULL, NULL, NULL, 1, 200.00, 3, 0, '2019-12-09 18:53:45'),
+(56, NULL, NULL, NULL, NULL, NULL, 1, 200.00, 3, 0, '2019-12-09 18:56:48'),
+(57, NULL, NULL, NULL, NULL, NULL, 2, 200.00, 3, 0, '2019-12-09 19:02:57'),
+(58, NULL, NULL, NULL, NULL, NULL, 1, 0.00, 3, 0, '2019-12-09 19:06:11'),
+(59, NULL, NULL, NULL, NULL, NULL, 1, 0.00, 3, 0, '2019-12-09 19:06:17'),
+(60, NULL, NULL, NULL, NULL, NULL, 1, 200.00, 3, 0, '2019-12-09 19:07:14'),
+(61, NULL, NULL, NULL, NULL, NULL, 1, 1658.00, 3, 0, '2019-12-09 20:10:24'),
+(62, NULL, NULL, NULL, NULL, NULL, 1, 3141.00, 3, 0, '2019-12-09 20:24:22'),
+(63, NULL, NULL, NULL, NULL, NULL, 1, 3141.00, 3, 0, '2019-12-09 20:26:35'),
+(64, NULL, NULL, NULL, NULL, NULL, 1, 3141.00, 3, 0, '2019-12-09 20:32:34'),
+(65, NULL, NULL, NULL, NULL, NULL, 1, 5584.00, 3, 0, '2019-12-09 20:52:57'),
+(66, 'Carlitos Tevez', 203857402, 'Fuerte Apache 666', '44447779', 'ctevez@noproblem.com', 1, 480.00, 3, 0, '2019-12-09 21:05:20'),
+(67, 'Carlitos Tevez', 203857402, 'Fuerte Apache 666', '44447779', 'ctevez@noproblem.com', 3, 200.00, 3, 0, '2019-12-09 21:24:22');
+
 -- --------------------------------------------------------
 
 --
@@ -876,6 +1041,31 @@ CREATE TABLE `playa_ventas_detalles` (
   `precio_unitario` decimal(8,2) NOT NULL,
   `precio_total` decimal(8,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `playa_ventas_detalles`
+--
+
+INSERT INTO `playa_ventas_detalles` (`id`, `id_venta`, `id_producto`, `cantidad`, `precio_unitario`, `precio_total`) VALUES
+(52, 51, 12, 1, '200.00', '200'),
+(53, 52, 12, 1, '200.00', '200'),
+(54, 53, 12, 1, '200.00', '200'),
+(55, 54, 12, 1, '200.00', '200'),
+(56, 55, 12, 1, '200.00', '200'),
+(57, 56, 12, 1, '200.00', '200'),
+(58, 57, 12, 1, '200.00', '200'),
+(59, 58, 13, 1, '0.00', '0'),
+(60, 59, 13, 1, '0.00', '0'),
+(61, 60, 12, 1, '200.00', '200'),
+(62, 61, 17, 2, '480.00', '960'),
+(63, 61, 16, 2, '349.00', '698'),
+(64, 62, 16, 9, '349.00', '3141'),
+(65, 63, 16, 9, '349.00', '3141'),
+(66, 64, 16, 9, '349.00', '3141'),
+(67, 65, 16, 8, '349.00', '2792'),
+(68, 65, 16, 8, '349.00', '2792'),
+(69, 66, 17, 1, '480.00', '480'),
+(70, 67, 15, 1, '200.00', '200');
 
 -- --------------------------------------------------------
 
@@ -908,7 +1098,8 @@ INSERT INTO `productos` (`id`, `id_tipo_producto`, `descripcion`, `precio_unitar
 (8, 3, 'Sonrisas frambuesa pack x3', '90.00', '2019-06-08 23:54:10', 1, 0),
 (9, 4, 'La Merced Campo y Monte 500g', '129.00', '2019-06-09 17:11:21', 1, 0),
 (10, 3, 'Alfajor Jorgito Choco 100g', '28.00', '2019-09-20 19:24:20', 1, 0),
-(11, 4, 'La Merced 500 gr', '132.00', '2019-09-24 18:34:45', 1, 0);
+(11, 4, 'La Merced 500 gr', '132.00', '2019-09-24 18:34:45', 1, 0),
+(12, 4, 'La Merced Frutos Silvestres 1kg', '0.00', '2019-11-12 18:37:30', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -961,17 +1152,18 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`id`, `id_producto`, `unidades`) VALUES
-(1, 10, 75),
+(1, 10, 66),
 (2, 1, 0),
 (3, 2, 1),
 (4, 3, 39),
 (5, 4, 0),
 (6, 5, 0),
-(7, 6, 0),
+(7, 6, 20),
 (8, 7, 0),
-(9, 8, 0),
+(9, 8, 10),
 (10, 9, 0),
-(11, 11, 100);
+(11, 11, 100),
+(12, 12, 0);
 
 -- --------------------------------------------------------
 
@@ -1080,7 +1272,8 @@ INSERT INTO `tipos_productos` (`id`, `descripcion`) VALUES
 (1, 'Bebida'),
 (2, 'Cigarrillos'),
 (3, 'Galletitas'),
-(4, 'Yerba');
+(4, 'Yerba'),
+(5, 'Aceite');
 
 -- --------------------------------------------------------
 
@@ -1105,7 +1298,8 @@ INSERT INTO `tipos_registros_caja` (`id`, `descripcion`, `habilitado`) VALUES
 (6, 'Egreso de Efectivo', 1),
 (7, 'Venta', 1),
 (8, 'Comienzo de Turno', 1),
-(9, 'Fin de Turno', 1);
+(9, 'Fin de Turno', 1),
+(10, 'Diferencia de Caja', 1);
 
 -- --------------------------------------------------------
 
@@ -1136,7 +1330,7 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id`, `id_perfil`, `id_tipo_documento`, `documento`, `usuario`, `clave`, `nombres`, `apellidos`, `email`, `telefono`, `fecha_registro`, `habilitado`, `eliminado`) VALUES
 (1, 1, 6, 393721512, 'ruben', 'ruben', 'Ruben', 'Molina', 'rubenmolina_cabj@hotmail.com', '45291477', '2019-06-08 14:40:06', 1, 0),
 (2, 2, 2, 34262849, 'david', 'david', 'David', 'Bustamante', 'david@mail.com', '44442222', '2019-06-08 14:40:41', 1, 0),
-(3, 5, 0, 0, 'mati', 'mati', 'Matias', 'Montiel', '', '', '2019-06-08 14:41:01', 1, 0),
+(3, 4, 5, 3800000, 'mati', 'mati', 'Matias', 'Montiel', 'mmontiel@mail.com', '44448888', '2019-06-08 14:41:01', 1, 0),
 (4, 1, 0, 0, 'irko', 'irko', 'Irko', 'Cat', '', '', '2019-06-08 19:27:33', 1, 0),
 (5, 1, 0, 0, 'kyra', 'kyra', 'Kyra', 'Dog', '', '', '2019-06-08 19:27:57', 1, 0),
 (6, 1, 2, 123123123, 'user', 'user', 'Usuario', 'Prueba', 'user@mail.com', '123123', '2019-09-06 19:03:30', 1, 1),
@@ -1216,7 +1410,17 @@ INSERT INTO `ventas` (`id`, `razon_social`, `cuit`, `domicilio`, `telefono`, `em
 (47, NULL, NULL, NULL, NULL, NULL, 2, 56.00, 3, 0, '2019-11-05 21:33:17'),
 (48, NULL, NULL, NULL, NULL, NULL, 1, 28.00, 3, 0, '2019-11-05 21:34:58'),
 (49, 'Combustibles Uruguay', 30158593840, 'Las casas 123', '42424343', 'comburu@mail.com', 1, 56.00, 3, 0, '2019-11-05 21:38:16'),
-(50, 'Gonzalo Escudero', 2033333390, 'Las cascadas 6969', '44448888', 'creo@mail.com', 3, 110.00, 3, 0, '2019-11-05 21:40:15');
+(50, 'Gonzalo Escudero', 2033333390, 'Las cascadas 6969', '44448888', 'creo@mail.com', 3, 110.00, 3, 0, '2019-11-05 21:40:15'),
+(51, NULL, NULL, NULL, NULL, NULL, 1, 56.00, 1, 0, '2019-11-12 19:22:59'),
+(52, NULL, NULL, NULL, NULL, NULL, 1, 28.00, 1, 0, '2019-11-12 19:24:05'),
+(53, NULL, NULL, NULL, NULL, NULL, 1, 28.00, 1, 0, '2019-11-12 19:24:45'),
+(54, NULL, NULL, NULL, NULL, NULL, 1, 28.00, 1, 0, '2019-11-12 19:26:14'),
+(55, NULL, NULL, NULL, NULL, NULL, 1, 28.00, 1, 0, '2019-11-12 19:26:44'),
+(56, NULL, NULL, NULL, NULL, NULL, 1, 28.00, 1, 0, '2019-11-12 19:28:09'),
+(57, 'Pedro', 202349393, 'Casares 123', '44447772', 'pedro@gmail.com', 1, 28.00, 1, 0, '2019-11-12 19:29:08'),
+(58, 'Carlos Tevez', 203943875, 'Fuerte Apache 2325', '555557863', 'carlostevez@mail.com', 1, 28.00, 1, 0, '2019-11-12 19:38:23'),
+(59, 'Carlos Tevez', 209474747, 'asdasd', '123123', '123123', 1, 28.00, 1, 0, '2019-11-12 19:39:29'),
+(60, 'Carlitos', 203844636, 'asdasd', '12312365', '1asdasd@', 1, 28.00, 1, 0, '2019-11-12 19:40:15');
 
 -- --------------------------------------------------------
 
@@ -1288,7 +1492,17 @@ INSERT INTO `ventas_detalles` (`id`, `id_venta`, `id_producto`, `cantidad`, `pre
 (48, 47, 10, 2, '28.00', '56'),
 (49, 48, 10, 1, '28.00', '28'),
 (50, 49, 10, 2, '28.00', '56'),
-(51, 50, 3, 1, '110.00', '110');
+(51, 50, 3, 1, '110.00', '110'),
+(52, 51, 10, 2, '28.00', '56'),
+(53, 52, 10, 1, '28.00', '28'),
+(54, 53, 10, 1, '28.00', '28'),
+(55, 54, 10, 1, '28.00', '28'),
+(56, 55, 10, 1, '28.00', '28'),
+(57, 56, 10, 1, '28.00', '28'),
+(58, 57, 10, 1, '28.00', '28'),
+(59, 58, 10, 1, '28.00', '28'),
+(60, 59, 10, 1, '28.00', '28'),
+(61, 60, 10, 1, '28.00', '28');
 
 --
 -- Índices para tablas volcadas
@@ -1482,19 +1696,19 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `compras`
 --
 ALTER TABLE `compras`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `compras_detalles`
 --
 ALTER TABLE `compras_detalles`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `movimientos_caja`
 --
 ALTER TABLE `movimientos_caja`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT de la tabla `perfiles`
@@ -1518,67 +1732,67 @@ ALTER TABLE `permisos`
 -- AUTO_INCREMENT de la tabla `playa_clientes`
 --
 ALTER TABLE `playa_clientes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `playa_compras`
 --
 ALTER TABLE `playa_compras`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `playa_compras_detalles`
 --
 ALTER TABLE `playa_compras_detalles`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `playa_movimientos_caja`
 --
 ALTER TABLE `playa_movimientos_caja`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT de la tabla `playa_productos`
 --
 ALTER TABLE `playa_productos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT de la tabla `playa_proveedores`
 --
 ALTER TABLE `playa_proveedores`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `playa_stock`
 --
 ALTER TABLE `playa_stock`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `playa_tipos_productos`
 --
 ALTER TABLE `playa_tipos_productos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `playa_ventas`
 --
 ALTER TABLE `playa_ventas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT de la tabla `playa_ventas_detalles`
 --
 ALTER TABLE `playa_ventas_detalles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
@@ -1590,7 +1804,7 @@ ALTER TABLE `proveedores`
 -- AUTO_INCREMENT de la tabla `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT de la tabla `tipos_clientes`
@@ -1620,13 +1834,13 @@ ALTER TABLE `tipos_pagos`
 -- AUTO_INCREMENT de la tabla `tipos_productos`
 --
 ALTER TABLE `tipos_productos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `tipos_registros_caja`
 --
 ALTER TABLE `tipos_registros_caja`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -1638,13 +1852,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas_detalles`
 --
 ALTER TABLE `ventas_detalles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

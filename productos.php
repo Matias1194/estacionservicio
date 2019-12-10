@@ -266,7 +266,7 @@
 	                <!-- Primera fila -->
 	                <div class="form-row">
 
-	                	<!-- Proveedor -->
+	                	<!-- Tipo Producto -->
 	                	<div class="form-group col-md-3">
 	                        <label>
 	                            Tipo Producto
@@ -274,12 +274,20 @@
 	                        <select class="form-control" name="id_tipo_producto" data-requerido></select> 
 	                    </div>
 
-	                    <!-- Tipo Comprobante -->
+	                    <!-- Descripción -->
 	                    <div class="form-group col-md-3">
 	                        <label>
 	                            Descripción
 	                        </label>
 	                        <input type="text" class="form-control" name="descripcion" data-requerido></select> 
+	                    </div>
+
+						<!-- Precio unitario -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            Precio unitario
+	                        </label>
+	                        <input type="number" class="form-control" name="precio_unitario" min="1" data-requerido></select> 
 	                    </div>
 
                     </div>
@@ -325,7 +333,7 @@
 	                <!-- Primera fila -->
 	                <div class="form-row">
 
-	                	<!-- Proveedor -->
+	                	<!-- Tipo Producto -->
 	                	<div class="form-group col-md-3">
 	                        <label>
 	                            Tipo Producto
@@ -333,12 +341,20 @@
 	                        <select class="form-control" name="id_tipo_producto" data-requerido></select> 
 	                    </div>
 
-	                    <!-- Tipo Comprobante -->
+	                    <!-- Descripción -->
 	                    <div class="form-group col-md-3">
 	                        <label>
 	                            Descripción
 	                        </label>
-	                        <select class="form-control" name="descripcion" data-requerido></select> 
+	                        <input type="text" class="form-control" name="descripcion" data-requerido></select> 
+	                    </div>
+
+						<!-- Precio unitario -->
+	                    <div class="form-group col-md-3">
+	                        <label>
+	                            Precio unitario
+	                        </label>
+	                        <input type="number" class="form-control" name="precio_unitario" min="1" data-requerido></select> 
 	                    </div>
 
                     </div>

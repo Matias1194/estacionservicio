@@ -61,10 +61,10 @@
 	                        <thead>
 	                            <tr>
 	                                <th scope="col">
-	                                    Columna
+	                                    Módulo
 	                                </th>
 									<th scope="col">
-                                        Columna 2
+                                        Período
 	                                </th>
 	                                <th class="text-center" scope="col">
 	                                    Acciones
@@ -75,36 +75,27 @@
 	                        <tbody>
                                 <tr>
                                     <td>Ventas</td>
-                                    <td>Mensual</td>
+                                    <td>Último Mes</td>
                                     <td class="text-center">
-                                        <button class="btn btn-success mt-2" name="descargar">
+                                        <button class="btn btn-success mt-2" name="descargar_ventas">
                                             <span class="fa fa-file-pdf fa-lg"></span>
                                         </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Compras</td>
-                                    <td>Mensual</td>
+                                    <td>Último Mes</td>
                                     <td class="text-center">
-                                        <button class="btn btn-success mt-2" name="descargar">
+                                        <button class="btn btn-success mt-2" name="descargar_compras">
                                             <span class="fa fa-file-pdf fa-lg"></span>
                                         </button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Stock</td>
-                                    <td>Mensual</td>
+                                    <td>Actual</td>
                                     <td class="text-center">
-                                        <button class="btn btn-success mt-2" name="descargar">
-                                            <span class="fa fa-file-pdf fa-lg"></span>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>...</td>
-                                    <td>Mensual</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-success mt-2" name="descargar">
+                                        <button class="btn btn-success mt-2" name="descargar_stock">
                                             <span class="fa fa-file-pdf fa-lg"></span>
                                         </button>
                                     </td>

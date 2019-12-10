@@ -260,7 +260,7 @@ var productos =
             this.$div.find('button').unbind('click');
 
             // Vuelve a la pantalla anterior.
-            this.$div.find('button[name="volver"]').click(() => productos.inicio.mostrar());
+            this.$div.find('button[name="volver"]').click(() => productos.listado.buscar());
 
             // Agregar Producto.
             this.$div.find('button[name="agregar-producto"]').click(() => this.agregarProducto());
@@ -299,7 +299,7 @@ var productos =
                 
                 $.each(respuesta.tipos_productos, function(i, opcion)
                 {
-                    $(comboTipoProducto).append($("<option>").val(opcion.id).html(opcion.razon_social));
+                    $(comboTipoProducto).append($("<option>").val(opcion.id).html(opcion.descripcion));
                 });
 
                 // Lleno los campos.
@@ -345,21 +345,11 @@ var productos =
                 datos.producto[$(campo).attr('name')] = $(campo).val();
             });
 
-            datos.producto.importe_total = utilidades.desformatearDinero(datos.producto.importe_total);
-            
             if(mensajeError)
             {
                 alertas.advertencia(mensajeError, '', funcionCerrar);
                 return;
             }
-
-            if(this.productos.length == 0)
-            {
-                alertas.advertencia("No se ingresaron productos", '', () => $formulario.find('[name="id_producto"]').focus());
-                return;
-            }
-
-            datos.producto.productos = this.productos;
             
             // Envía los datos.
             bd.enviar(datos, productos.modulo, (respuesta) =>

@@ -6,39 +6,52 @@
     
     $conexion = AbrirConexion();
     
-    try {
+    try 
+    {
 
         $id_venta = $_GET['id'];
-        
-        $tabla_ventas= "ventas";
-
         $id_area = $_GET["id_area"];
 
-        if ($id_area == 1){
-
-            $tabla="playa_".$tabla;
-        
-        }
-
-        // Prepara la consulta.
-        $query = "SELECT $tabla_ventas.numero_factura, 
-                         $tabla_ventas.fecha_venta,
+        if ($id_area == 1)
+        {
+            $query = "SELECT playa_ventas.id as 'numero_factura', 
+                         playa_ventas.fecha_venta,
                          tipos_pagos.descripcion as 'tipo_pago',
-                         CONCAT(usuarios.nombres, ' ', usuarios.apellidos) as 'vendedor'
-                  FROM $tabla_ventas
-                  INNER JOIN tipos_pagos
-                    ON tipos_pagos.id = $tabla_ventas.id_tipo_pago
+                         CONCAT(usuarios.nombres, ' ', usuarios.apellidos) as 'vendedor',
+                         playa_ventas.importe_total
+                  
+                  FROM playa_ventas INNER JOIN tipos_pagos
+                    ON tipos_pagos.id = playa_ventas.id_tipo_pago
                   INNER JOIN usuarios
-                    ON $tabla_ventas.id_usuario_vendedor = usuarios.id
-                  WHERE $tabla_ventas.id = $id_venta";
-
+                    ON playa_ventas.id_usuario_vendedor = usuarios.id
+                  
+                  WHERE playa_ventas.id = $id_venta";
+        } 
+        else 
+        {
+            // Prepara la consulta.
+            $query = "SELECT ventas.id as 'numero_factura', 
+                            ventas.fecha_venta,
+                            tipos_pagos.descripcion as 'tipo_pago',
+                            CONCAT(usuarios.nombres, ' ', usuarios.apellidos) as 'vendedor',
+                            ventas.importe_total
+                    
+                    FROM ventas INNER JOIN tipos_pagos
+                        ON tipos_pagos.id = ventas.id_tipo_pago
+                    INNER JOIN usuarios
+                        ON ventas.id_usuario_vendedor = usuarios.id
+                    
+                    WHERE ventas.id = $id_venta";
+        }
+        
+        
         // Consulta una venta.
-        $tabla_ventas = consultar_registro($conexion, $query);
+        $venta = consultar_registro($conexion, $query);
             
         // Si hubo error ejecutando la consulta.
-        if($tabla_ventas === false)
+        if($venta === false)
         {
-            $respuesta['descripcion'] = "Ocurrió un error al buscar la venta (L 31).";
+            $respuesta['descripcion'] = "Ocurrió un error al buscar la venta (L 43).";
         }
         // Si la consulta fue exitosa y la venta se encuentra.
         else 
@@ -46,28 +59,30 @@
             $tabla_ventas_detalles = "ventas_detalles";
             $tabla_productos = "productos";
 
-            $id_area = $_GET["id_area"];
-    
-            if ($id_area == 1){
-    
-                $tabla_ventas_detalles="playa_".$tabla_ventas_detalles;
-            
+            if ($id_area == 1)
+            {
+                $tabla_ventas_detalles = "playa_" . $tabla_ventas_detalles;
+                $tabla_productos = "playa_" . $tabla_productos;
             }
+
             // Prepara la consulta.
-            $query = "SELECT $tabla_productos.descripcion as 'producto', 
+            $query2 = "SELECT $tabla_productos.descripcion as 'producto', 
                         $tabla_ventas_detalles.cantidad,
                         $tabla_ventas_detalles.precio_unitario,
                         $tabla_ventas_detalles.precio_total 
+                
                 FROM $tabla_ventas_detalles
+                
                 INNER JOIN $tabla_productos
                     ON $tabla_ventas_detalles.id_producto = $tabla_productos.id
+                
                 WHERE $tabla_ventas_detalles.id_venta = $id_venta";
 
             // Consulta el listado de ventas_detalle.
-            $tabla_ventas_detalles = consultar_listado($conexion, $query);
+            $venta_detalles = consultar_listado($conexion, $query2);
             
             // Si hubo error ejecutando la consulta.
-            if($tabla_ventas_detalles === false)
+            if($venta_detalles === false)
             {
                 die("Ocurrió un error al buscar el listado de ventas_detalles. " . $query);
             }    
@@ -102,20 +117,18 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    Medio de pago: <b>' . $tabla_ventas->tipo_pago . '</b>
+                    Medio de pago: <b>' . $venta->tipo_pago . '</b>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6">
-                    Vendedor: <b>' . $tabla_ventas->vendedor . '</b>
+                    Vendedor: <b>' . $venta->vendedor . '</b>
                 </div>
             </div>
 
             <br>
-            <br>
-            <hr>
-            <h3>Numero de Ticket: ' . $tabla_ventas->numero_factura . '</h3>
+            <h3>N° de Ticket: ' . $venta->numero_factura . '</h3>
             
             <hr>
 
@@ -135,20 +148,23 @@
 
                 <tbody>';
                 
-                foreach ($tabla_ventas_detalles as $tabla_producto)
+                foreach ($venta_detalles as $detalle)
                 {
-                    $contenido .='
+                    $contenido .= '
                     <tr>
-                        <td>' . $tabla_producto['producto'] . '</td>
-                        <td>' . $tabla_producto['cantidad'] . '</td>
-                        <td align="right"> $' . $tabla_producto['precio_unitario'] . '</td>
-                        <td align="right"> $' . $tabla_producto['precio_total'] . '</td>
+                        <td>' . $detalle['producto'] . '</td>
+                        <td>' . $detalle['cantidad'] . '</td>
+                        <td align="right"> $ ' . $detalle['precio_unitario'] . '</td>
+                        <td align="right"> $ ' . $detalle['precio_total'] . '</td>
                     </tr>';
                 }
                 
             $contenido .= '
                 </tbody>
             </table>
+            
+            <h3 style="text-align:right;">Total: $ ' . $venta->importe_total . '</h3>
+        
         </div>';
         
         // Escribir PDF.
